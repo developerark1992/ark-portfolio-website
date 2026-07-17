@@ -1,0 +1,94 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base active="estimate" title="Estimate — Abdul Rehman Khan" description="Instant website cost calculator — build your project and get a live estimate.">
+  <section id="page-estimate" style="padding-bottom:0;">
+    <div class="wrap">
+      <p class="eyebrow reveal">Instant estimate</p>
+      <h1 class="reveal" style="font-size:clamp(32px,5.4vw,58px);margin-bottom:16px;">What will it cost?</h1>
+      <p class="sec-lead reveal" style="margin-bottom:8px;">Build your project below and watch the estimate update live. It's an <em>indicative range</em> — your exact quote comes after a quick chat.</p>
+    </div>
+  </section>
+  <section style="padding-top:40px;">
+    <div class="wrap calc-grid">
+      <div class="calc-controls">
+        <div class="calc-block reveal">
+          <div class="calc-label"><span class="calc-num">01</span> Project type</div>
+          <div class="seg" data-group="type">
+            <button class="seg-btn active" data-val="landing">Landing page</button>
+            <button class="seg-btn" data-val="website">Multi-page site</button>
+            <button class="seg-btn" data-val="ecommerce">E-commerce</button>
+            <button class="seg-btn" data-val="webapp">Web app</button>
+            <button class="seg-btn" data-val="automation">Automation</button>
+          </div>
+        </div>
+        <div class="calc-block reveal">
+          <div class="calc-label"><span class="calc-num">02</span> Number of pages <b id="pageVal">5</b></div>
+          <input type="range" id="pageRange" min="1" max="30" value="5" class="calc-range" />
+          <div class="calc-scale"><span>1</span><span>15</span><span>30+</span></div>
+        </div>
+        <div class="calc-block reveal">
+          <div class="calc-label"><span class="calc-num">03</span> Platform</div>
+          <div class="chips" data-group="platform">
+            <button class="chip-b active" data-val="wp">WordPress</button>
+            <button class="chip-b" data-val="shopify">Shopify</button>
+            <button class="chip-b" data-val="custom">Custom build</button>
+            <button class="chip-b" data-val="nosure">Not sure</button>
+          </div>
+        </div>
+        <div class="calc-block reveal">
+          <div class="calc-label"><span class="calc-num">04</span> Design level</div>
+          <div class="chips" data-group="design">
+            <button class="chip-b" data-val="template">Template-based</button>
+            <button class="chip-b active" data-val="custom">Custom design</button>
+            <button class="chip-b" data-val="premium">Premium bespoke</button>
+          </div>
+        </div>
+        <div class="calc-block reveal">
+          <div class="calc-label"><span class="calc-num">05</span> Features &amp; add-ons</div>
+          <div class="chips multi" data-group="features">
+            <button class="chip-b" data-val="cms">CMS / blog</button>
+            <button class="chip-b" data-val="payments">Payments / cart</button>
+            <button class="chip-b" data-val="multilang">Multilingual</button>
+            <button class="chip-b" data-val="booking">Booking / appointments</button>
+            <button class="chip-b" data-val="seo">SEO setup</button>
+            <button class="chip-b" data-val="anim">Rich animations</button>
+            <button class="chip-b" data-val="a11y">Accessibility (EAA)</button>
+            <button class="chip-b" data-val="automation">Automations / integrations</button>
+            <button class="chip-b" data-val="maint">Maintenance plan</button>
+          </div>
+        </div>
+        <div class="calc-block reveal">
+          <div class="calc-label"><span class="calc-num">06</span> Timeline</div>
+          <div class="chips" data-group="timeline">
+            <button class="chip-b active" data-val="standard">Standard</button>
+            <button class="chip-b" data-val="rush">Rush (+priority)</button>
+          </div>
+        </div>
+      </div>
+
+      <aside class="calc-result reveal">
+        <div class="calc-card">
+          <div class="calc-card-top">
+            <span class="calc-est-label">Estimated investment</span>
+            <div class="cur-toggle" data-group="currency">
+              <button class="cur-b active" data-val="USD">$</button>
+              <button class="cur-b" data-val="EUR">€</button>
+              <button class="cur-b" data-val="GBP">£</button>
+            </div>
+          </div>
+          <div class="calc-figure"><span id="estMin">0</span> <span class="dash">–</span> <span id="estMax">0</span></div>
+          <div class="calc-monthly" id="estMonthly" hidden>+ <b><span id="monthlyVal">0</span></b> / month maintenance</div>
+          <div class="calc-gauge"><div class="calc-gauge-fill" id="gaugeFill"></div></div>
+          <div class="calc-gauge-cap"><span>Simple</span><span id="scopeLabel">Standard build</span><span>Complex</span></div>
+          <ul class="calc-breakdown" id="breakdown"></ul>
+          <div class="calc-actions">
+            <a id="calcQuote" class="btn primary" href="#">Request exact quote →</a>
+            <button id="calcChat" class="btn ghost" type="button">Discuss with assistant</button>
+          </div>
+          <p class="calc-note">Indicative only. Final scope &amp; price are confirmed after a short call — no obligation.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+</Base>

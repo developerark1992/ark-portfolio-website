@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+const ICONS = {
+  code:'<path d="m9 8-4 4 4 4M15 8l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>',
+  cart:'<circle cx="9" cy="20" r="1.4" fill="currentColor"/><circle cx="17" cy="20" r="1.4" fill="currentColor"/><path d="M3 4h2l2.2 11h10.6L20 8H6.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>',
+  bolt:'<path d="M13 3 4 14h6l-1 7 9-11h-6l1-7Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>',
+  cloud:'<path d="M7 18a4 4 0 0 1-.6-7.96A5.5 5.5 0 0 1 17 9.5a4.5 4.5 0 0 1-.5 8.5H7Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>'
+};
+const services = [
+  { icon:'code', t:'Web Development', d:'Custom, fast, maintainable websites built to convert — not just to look good.', items:['WordPress & custom themes','Component-based front-ends','Technical SEO foundations','Performance tuning'] },
+  { icon:'cart', t:'E-commerce', d:'Stores that are easy for you to run and easy for customers to buy from.', items:['WooCommerce & Shopify builds','Catalog & checkout customization','Payment gateway integration','Inventory & order workflows'] },
+  { icon:'bolt', t:'Automation', d:'Remove the manual busywork from your business with connected workflows.', items:['n8n, Make & Zapier flows','CRM & lead-routing automation','AI-assisted content/support flows','Reporting & ops automation'] },
+  { icon:'cloud', t:'DevOps & Cloud', d:'Hosting, deployment and infrastructure that just quietly works.', items:['AWS EC2 / Lightsail setup','CI/CD pipelines','SSL, DNS & domain management','Backups, migrations & monitoring'] },
+];
+---
+<Base active="services" title="Services — Abdul Rehman Khan" description="Web development, e-commerce, automation and DevOps services by Abdul Rehman Khan.">
+  <section style="padding-bottom:0;">
+    <div class="wrap">
+      <p class="eyebrow reveal">What I do</p>
+      <h1 class="reveal" style="font-size:clamp(32px,5.4vw,58px);margin-bottom:16px;">Services.</h1>
+      <p class="sec-lead reveal" style="margin-bottom:40px;">From a single landing page to a fully automated back office — scoped to what your project actually needs.</p>
+    </div>
+  </section>
+  <section style="padding-top:0;">
+    <div class="wrap svc-grid">
+      {services.map((s) => (
+        <div class="svc-card reveal">
+          <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" set:html={ICONS[s.icon]}></svg></div>
+          <h3>{s.t}</h3><p>{s.d}</p>
+          <ul>{s.items.map((i)=> <li>{i}</li>)}</ul>
+        </div>
+      ))}
+    </div>
+  </section>
+  <section>
+    <div class="wrap">
+      <div class="cta-band reveal"><div class="glow"></div>
+        <h2 class="serif">Not sure what you need?</h2>
+        <p>Get an instant ballpark with the calculator, or tell me about the project and I'll recommend the right scope.</p>
+        <div class="hero-cta"><a href="/estimate" class="btn primary">Try the calculator</a><a href="/contact" class="btn ghost">Start a conversation</a></div>
+      </div>
+    </div>
+  </section>
+</Base>

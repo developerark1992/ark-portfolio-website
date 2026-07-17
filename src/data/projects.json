@@ -1,0 +1,722 @@
+[
+ {
+  "slug": "accessibility-partners",
+  "title": "Accessibility Partners",
+  "platform": "WordPress",
+  "category": "Services",
+  "live": "https://accessibilitypartners.ca",
+  "img": "/images/projects/accessibility-partners.webp"
+ },
+ {
+  "slug": "aj-enterprises",
+  "title": "Aj- Enterprises",
+  "platform": "WordPress",
+  "category": "Services",
+  "live": null,
+  "img": "/images/projects/aj-enterprises.webp"
+ },
+ {
+  "slug": "aje-virtual-solutions",
+  "title": "Aje Virtual Solutions",
+  "platform": "WordPress",
+  "category": "Services",
+  "live": null,
+  "img": "/images/projects/aje-virtual-solutions.webp"
+ },
+ {
+  "slug": "bluefish-shop",
+  "title": "Bluefish Shop",
+  "platform": "WordPress",
+  "category": "E-commerce",
+  "live": null,
+  "img": "/images/projects/bluefish-shop.webp"
+ },
+ {
+  "slug": "boatique-staffing",
+  "title": "Boatique Staffing",
+  "platform": "WordPress",
+  "category": "Services",
+  "live": "https://boatiquestaffing.com",
+  "img": "/images/projects/boatique-staffing.webp"
+ },
+ {
+  "slug": "crowle-ca",
+  "title": "Crowle-ca",
+  "platform": "WordPress",
+  "category": "Corporate",
+  "live": null,
+  "img": "/images/projects/crowle-ca.webp"
+ },
+ {
+  "slug": "dr-umer-pain-relief-clinic",
+  "title": "Dr Umer Pain Relief Clinic",
+  "platform": "WordPress",
+  "category": "Healthcare",
+  "live": "https://drumerpainrelief.pk",
+  "img": "/images/projects/dr-umer-pain-relief-clinic.webp"
+ },
+ {
+  "slug": "evad",
+  "title": "Evad",
+  "platform": "WordPress",
+  "category": "Corporate",
+  "live": "https://evad-me.com",
+  "img": "/images/projects/evad.webp"
+ },
+ {
+  "slug": "fitngrip",
+  "title": "FitNGrip",
+  "platform": "WordPress",
+  "category": "E-commerce",
+  "live": null,
+  "img": "/images/projects/fitngrip.webp"
+ },
+ {
+  "slug": "freakin-protein-oats",
+  "title": "Freakin Protein Oats",
+  "platform": "Shopify",
+  "category": "E-commerce",
+  "live": null,
+  "img": "/images/projects/freakin-protein-oats.webp"
+ },
+ {
+  "slug": "fynchconsulting",
+  "title": "Fynchconsulting",
+  "platform": "WordPress",
+  "category": "Services",
+  "live": null,
+  "img": "/images/projects/fynchconsulting.webp"
+ },
+ {
+  "slug": "galaxy-pharma",
+  "title": "Galaxy Pharma",
+  "platform": "WordPress",
+  "category": "Healthcare",
+  "live": null,
+  "img": "/images/projects/galaxy-pharma.webp"
+ },
+ {
+  "slug": "henryscheinmena",
+  "title": "Henryscheinmena",
+  "platform": "WordPress",
+  "category": "Corporate",
+  "live": null,
+  "img": "/images/projects/henryscheinmena.webp"
+ },
+ {
+  "slug": "hepius",
+  "title": "Hepius",
+  "platform": "WordPress",
+  "category": "Healthcare",
+  "live": "https://hepius.ae",
+  "img": "/images/projects/hepius.webp"
+ },
+ {
+  "slug": "kr-costruction",
+  "title": "Kr-Costruction",
+  "platform": "WordPress",
+  "category": "Real Estate",
+  "live": null,
+  "img": "/images/projects/kr-costruction.webp"
+ },
+ {
+  "slug": "krystosoft-new",
+  "title": "Krystosoft New",
+  "platform": "WordPress",
+  "category": "Corporate",
+  "live": null,
+  "img": "/images/projects/krystosoft-new.webp"
+ },
+ {
+  "slug": "lascolinas",
+  "title": "Lascolinas",
+  "platform": "WordPress",
+  "category": "Real Estate",
+  "live": null,
+  "img": "/images/projects/lascolinas.webp"
+ },
+ {
+  "slug": "madinatap",
+  "title": "Madinatap",
+  "platform": "WordPress",
+  "category": "Real Estate",
+  "live": null,
+  "img": "/images/projects/madinatap.webp"
+ },
+ {
+  "slug": "nashville-taiko",
+  "title": "Nashville Taiko",
+  "platform": "WordPress",
+  "category": "Education & Media",
+  "live": null,
+  "img": "/images/projects/nashville-taiko.webp"
+ },
+ {
+  "slug": "numerix-solutions",
+  "title": "Numerix Solutions",
+  "platform": "Wix",
+  "category": "Finance",
+  "live": null,
+  "img": "/images/projects/numerix-solutions.webp"
+ },
+ {
+  "slug": "opnato",
+  "title": "Opnato",
+  "platform": "Webflow",
+  "category": "Corporate",
+  "live": null,
+  "img": "/images/projects/opnato.webp"
+ },
+ {
+  "slug": "perfect10solutions",
+  "title": "Perfect10solutions",
+  "platform": "WordPress",
+  "category": "Services",
+  "live": null,
+  "img": "/images/projects/perfect10solutions.webp"
+ },
+ {
+  "slug": "prescott-uae",
+  "title": "Prescott UAE",
+  "platform": "WordPress",
+  "category": "Real Estate",
+  "live": "https://prescott.ae",
+  "img": "/images/projects/prescott-uae.webp"
+ },
+ {
+  "slug": "rapidmdnow",
+  "title": "Rapidmdnow",
+  "platform": "WordPress",
+  "category": "Healthcare",
+  "live": null,
+  "img": "/images/projects/rapidmdnow.webp"
+ },
+ {
+  "slug": "seoastronauts",
+  "title": "Seoastronauts",
+  "platform": "WordPress",
+  "category": "Services",
+  "live": null,
+  "img": "/images/projects/seoastronauts.webp"
+ },
+ {
+  "slug": "smartground-clay",
+  "title": "Smartground Clay",
+  "platform": "WordPress",
+  "category": "E-commerce",
+  "live": null,
+  "img": "/images/projects/smartground-clay.webp"
+ },
+ {
+  "slug": "smartturnaround",
+  "title": "Smartturnaround",
+  "platform": "WordPress",
+  "category": "Services",
+  "live": null,
+  "img": "/images/projects/smartturnaround.webp"
+ },
+ {
+  "slug": "stakzz-credit",
+  "title": "Stakzz Credit",
+  "platform": "WordPress",
+  "category": "Finance",
+  "live": null,
+  "img": "/images/projects/stakzz-credit.webp"
+ },
+ {
+  "slug": "stone-gym-solutions",
+  "title": "Stone Gym Solutions",
+  "platform": "Shopify",
+  "category": "E-commerce",
+  "live": null,
+  "img": "/images/projects/stone-gym-solutions.webp"
+ },
+ {
+  "slug": "takada-asset-management",
+  "title": "Takada Asset Management",
+  "platform": "WordPress",
+  "category": "Finance",
+  "live": null,
+  "img": "/images/projects/takada-asset-management.webp"
+ },
+ {
+  "slug": "tovlajr",
+  "title": "Tovlajr",
+  "platform": "Shopify",
+  "category": "E-commerce",
+  "live": null,
+  "img": "/images/projects/tovlajr.webp"
+ },
+ {
+  "slug": "websity-digital",
+  "title": "Websity Digital",
+  "platform": "WordPress",
+  "category": "Corporate",
+  "live": null,
+  "img": "/images/projects/websity-digital.webp"
+ },
+ {
+  "slug": "yarmouksteel",
+  "title": "Yarmouksteel",
+  "platform": "WordPress",
+  "category": "Real Estate",
+  "live": null,
+  "img": "/images/projects/yarmouksteel.webp"
+ },
+ {
+  "slug": "rsdb-partners",
+  "title": "rsdb-partners",
+  "platform": "WordPress",
+  "category": "Services",
+  "live": null,
+  "img": "/images/projects/rsdb-partners.webp"
+ },
+ {
+  "slug": "aamartists",
+  "title": "Aamartists",
+  "platform": "WordPress",
+  "category": "Corporate",
+  "live": null,
+  "img": "/images/projects/aamartists.webp"
+ },
+ {
+  "slug": "abdullahgadit",
+  "title": "Abdullahgadit",
+  "platform": "WordPress",
+  "category": "Corporate",
+  "live": null,
+  "img": "/images/projects/abdullahgadit.webp"
+ },
+ {
+  "slug": "accessibilitypartners",
+  "title": "Accessibilitypartners",
+  "platform": "WordPress",
+  "category": "Services",
+  "live": "https://accessibilitypartners.ca",
+  "img": "/images/projects/accessibilitypartners.webp"
+ },
+ {
+  "slug": "advbizclan",
+  "title": "Advbizclan",
+  "platform": "WordPress",
+  "category": "Corporate",
+  "live": null,
+  "img": "/images/projects/advbizclan.webp"
+ },
+ {
+  "slug": "amazonpublishingcentral",
+  "title": "Amazonpublishingcentral",
+  "platform": "WordPress",
+  "category": "Education & Media",
+  "live": null,
+  "img": "/images/projects/amazonpublishingcentral.webp"
+ },
+ {
+  "slug": "avanasolutions",
+  "title": "Avanasolutions",
+  "platform": "WordPress",
+  "category": "Services",
+  "live": null,
+  "img": "/images/projects/avanasolutions.webp"
+ },
+ {
+  "slug": "bame-studio",
+  "title": "Bame Studio",
+  "platform": "WordPress",
+  "category": "Services",
+  "live": null,
+  "img": "/images/projects/bame-studio.webp"
+ },
+ {
+  "slug": "bizhub",
+  "title": "Bizhub",
+  "platform": "WordPress",
+  "category": "Corporate",
+  "live": "https://bizhub.ae",
+  "img": "/images/projects/bizhub.webp"
+ },
+ {
+  "slug": "clatter",
+  "title": "Clatter",
+  "platform": "WordPress",
+  "category": "AI & Tech",
+  "live": "https://clatter.ai",
+  "img": "/images/projects/clatter.webp"
+ },
+ {
+  "slug": "collabsocial",
+  "title": "Collabsocial",
+  "platform": "WordPress",
+  "category": "Corporate",
+  "live": "https://collabsocial.co",
+  "img": "/images/projects/collabsocial.webp"
+ },
+ {
+  "slug": "cristalplastic",
+  "title": "Cristalplastic",
+  "platform": "WordPress",
+  "category": "Corporate",
+  "live": null,
+  "img": "/images/projects/cristalplastic.webp"
+ },
+ {
+  "slug": "datavanguard",
+  "title": "Datavanguard",
+  "platform": "WordPress",
+  "category": "AI & Tech",
+  "live": "https://datavanguard.ai",
+  "img": "/images/projects/datavanguard.webp"
+ },
+ {
+  "slug": "drumerpainrelief",
+  "title": "Drumerpainrelief",
+  "platform": "WordPress",
+  "category": "Healthcare",
+  "live": "https://drumerpainrelief.pk",
+  "img": "/images/projects/drumerpainrelief.webp"
+ },
+ {
+  "slug": "epsilontechconsultants",
+  "title": "Epsilontechconsultants",
+  "platform": "WordPress",
+  "category": "AI & Tech",
+  "live": null,
+  "img": "/images/projects/epsilontechconsultants.webp"
+ },
+ {
+  "slug": "fknailpalace",
+  "title": "Fknailpalace",
+  "platform": "WordPress",
+  "category": "E-commerce",
+  "live": null,
+  "img": "/images/projects/fknailpalace.webp"
+ },
+ {
+  "slug": "fromhighschooltouni",
+  "title": "Fromhighschooltouni",
+  "platform": "WordPress",
+  "category": "Education & Media",
+  "live": null,
+  "img": "/images/projects/fromhighschooltouni.webp"
+ },
+ {
+  "slug": "ftlubricants",
+  "title": "Ftlubricants",
+  "platform": "WordPress",
+  "category": "Services",
+  "live": null,
+  "img": "/images/projects/ftlubricants.webp"
+ },
+ {
+  "slug": "kiplingstationetobicoke",
+  "title": "Kiplingstationetobicoke",
+  "platform": "WordPress",
+  "category": "Corporate",
+  "live": null,
+  "img": "/images/projects/kiplingstationetobicoke.webp"
+ },
+ {
+  "slug": "krystalite",
+  "title": "Krystalite",
+  "platform": "WordPress",
+  "category": "Corporate",
+  "live": "https://krystalite.pk",
+  "img": "/images/projects/krystalite.webp"
+ },
+ {
+  "slug": "krystosoft",
+  "title": "Krystosoft",
+  "platform": "WordPress",
+  "category": "Corporate",
+  "live": null,
+  "img": "/images/projects/krystosoft.webp"
+ },
+ {
+  "slug": "krystosoft-clients-stemtutoring",
+  "title": "Krystosoft Clients Stemtutoring",
+  "platform": "WordPress",
+  "category": "Education & Media",
+  "live": null,
+  "img": "/images/projects/krystosoft-clients-stemtutoring.webp"
+ },
+ {
+  "slug": "krystosoft-templates-aquadentalconsultants",
+  "title": "Krystosoft Templates Aquadentalconsultants",
+  "platform": "WordPress",
+  "category": "Healthcare",
+  "live": null,
+  "img": "/images/projects/krystosoft-templates-aquadentalconsultants.webp"
+ },
+ {
+  "slug": "krystosoft-templates-dentalstreet",
+  "title": "Krystosoft Templates Dentalstreet",
+  "platform": "WordPress",
+  "category": "Healthcare",
+  "live": null,
+  "img": "/images/projects/krystosoft-templates-dentalstreet.webp"
+ },
+ {
+  "slug": "krystosoft-templates-orthodontistheaven",
+  "title": "Krystosoft Templates Orthodontistheaven",
+  "platform": "WordPress",
+  "category": "Healthcare",
+  "live": null,
+  "img": "/images/projects/krystosoft-templates-orthodontistheaven.webp"
+ },
+ {
+  "slug": "krystosoft-templates-pediatricdentistry",
+  "title": "Krystosoft Templates Pediatricdentistry",
+  "platform": "WordPress",
+  "category": "Healthcare",
+  "live": null,
+  "img": "/images/projects/krystosoft-templates-pediatricdentistry.webp"
+ },
+ {
+  "slug": "krystosoft-templates-brighthourdentalconsultancy",
+  "title": "Krystosoft Templates Brighthourdentalconsultancy",
+  "platform": "WordPress",
+  "category": "Healthcare",
+  "live": null,
+  "img": "/images/projects/krystosoft-templates-brighthourdentalconsultancy.webp"
+ },
+ {
+  "slug": "krystosoft-templates-clinicofdrharrison",
+  "title": "Krystosoft Templates Clinicofdrharrison",
+  "platform": "WordPress",
+  "category": "Healthcare",
+  "live": null,
+  "img": "/images/projects/krystosoft-templates-clinicofdrharrison.webp"
+ },
+ {
+  "slug": "krystosoft-templates-cosmetics",
+  "title": "Krystosoft Templates Cosmetics",
+  "platform": "WordPress",
+  "category": "Corporate",
+  "live": null,
+  "img": "/images/projects/krystosoft-templates-cosmetics.webp"
+ },
+ {
+  "slug": "krystosoft-templates-delawaredentalclinic",
+  "title": "Krystosoft Templates Delawaredentalclinic",
+  "platform": "WordPress",
+  "category": "Healthcare",
+  "live": null,
+  "img": "/images/projects/krystosoft-templates-delawaredentalclinic.webp"
+ },
+ {
+  "slug": "krystosoft-templates-dentalclinicdrgeller",
+  "title": "Krystosoft Templates Dentalclinicdrgeller",
+  "platform": "WordPress",
+  "category": "Healthcare",
+  "live": null,
+  "img": "/images/projects/krystosoft-templates-dentalclinicdrgeller.webp"
+ },
+ {
+  "slug": "krystosoft-templates-dentique",
+  "title": "Krystosoft Templates Dentique",
+  "platform": "WordPress",
+  "category": "Corporate",
+  "live": null,
+  "img": "/images/projects/krystosoft-templates-dentique.webp"
+ },
+ {
+  "slug": "krystosoft-templates-greendentalclinic",
+  "title": "Krystosoft Templates Greendentalclinic",
+  "platform": "WordPress",
+  "category": "Healthcare",
+  "live": null,
+  "img": "/images/projects/krystosoft-templates-greendentalclinic.webp"
+ },
+ {
+  "slug": "laundromate",
+  "title": "Laundromate",
+  "platform": "WordPress",
+  "category": "Corporate",
+  "live": "https://laundromate.co",
+  "img": "/images/projects/laundromate.webp"
+ },
+ {
+  "slug": "londonnewwave",
+  "title": "Londonnewwave",
+  "platform": "WordPress",
+  "category": "Corporate",
+  "live": null,
+  "img": "/images/projects/londonnewwave.webp"
+ },
+ {
+  "slug": "magnoliadentaltexas",
+  "title": "Magnoliadentaltexas",
+  "platform": "WordPress",
+  "category": "Healthcare",
+  "live": null,
+  "img": "/images/projects/magnoliadentaltexas.webp"
+ },
+ {
+  "slug": "mermaiddigitals-website-lp",
+  "title": "Mermaiddigitals Website Lp",
+  "platform": "WordPress",
+  "category": "AI & Tech",
+  "live": null,
+  "img": "/images/projects/mermaiddigitals-website-lp.webp"
+ },
+ {
+  "slug": "mermaidpublishers",
+  "title": "Mermaidpublishers",
+  "platform": "WordPress",
+  "category": "Education & Media",
+  "live": null,
+  "img": "/images/projects/mermaidpublishers.webp"
+ },
+ {
+  "slug": "mermaidpublishers-services",
+  "title": "Mermaidpublishers Services",
+  "platform": "WordPress",
+  "category": "Education & Media",
+  "live": null,
+  "img": "/images/projects/mermaidpublishers-services.webp"
+ },
+ {
+  "slug": "mnhyachts",
+  "title": "Mnhyachts",
+  "platform": "WordPress",
+  "category": "Corporate",
+  "live": null,
+  "img": "/images/projects/mnhyachts.webp"
+ },
+ {
+  "slug": "myhealthjunction",
+  "title": "Myhealthjunction",
+  "platform": "WordPress",
+  "category": "Healthcare",
+  "live": null,
+  "img": "/images/projects/myhealthjunction.webp"
+ },
+ {
+  "slug": "mystic-advertising",
+  "title": "Mystic Advertising",
+  "platform": "WordPress",
+  "category": "Services",
+  "live": null,
+  "img": "/images/projects/mystic-advertising.webp"
+ },
+ {
+  "slug": "mysticstudio",
+  "title": "Mysticstudio",
+  "platform": "WordPress",
+  "category": "Services",
+  "live": "https://mysticstudio.ae",
+  "img": "/images/projects/mysticstudio.webp"
+ },
+ {
+  "slug": "nextacllc",
+  "title": "Nextacllc",
+  "platform": "WordPress",
+  "category": "Corporate",
+  "live": "https://nextacllc.co",
+  "img": "/images/projects/nextacllc.webp"
+ },
+ {
+  "slug": "nialawfirm",
+  "title": "Nialawfirm",
+  "platform": "WordPress",
+  "category": "Corporate",
+  "live": "https://nialawfirm.ae",
+  "img": "/images/projects/nialawfirm.webp"
+ },
+ {
+  "slug": "ocwomenssurrogacy",
+  "title": "Ocwomenssurrogacy",
+  "platform": "WordPress",
+  "category": "Corporate",
+  "live": null,
+  "img": "/images/projects/ocwomenssurrogacy.webp"
+ },
+ {
+  "slug": "perimeterfzco",
+  "title": "Perimeterfzco",
+  "platform": "WordPress",
+  "category": "Real Estate",
+  "live": null,
+  "img": "/images/projects/perimeterfzco.webp"
+ },
+ {
+  "slug": "roach",
+  "title": "Roach",
+  "platform": "WordPress",
+  "category": "AI & Tech",
+  "live": "https://roach.ai",
+  "img": "/images/projects/roach.webp"
+ },
+ {
+  "slug": "saraniweddings",
+  "title": "Saraniweddings",
+  "platform": "WordPress",
+  "category": "Education & Media",
+  "live": null,
+  "img": "/images/projects/saraniweddings.webp"
+ },
+ {
+  "slug": "shaistanasir",
+  "title": "Shaistanasir",
+  "platform": "WordPress",
+  "category": "AI & Tech",
+  "live": null,
+  "img": "/images/projects/shaistanasir.webp"
+ },
+ {
+  "slug": "staging-fynchconsulting",
+  "title": "Staging Fynchconsulting",
+  "platform": "WordPress",
+  "category": "Services",
+  "live": null,
+  "img": "/images/projects/staging-fynchconsulting.webp"
+ },
+ {
+  "slug": "steeline",
+  "title": "Steeline",
+  "platform": "WordPress",
+  "category": "Real Estate",
+  "live": "https://steeline.pk",
+  "img": "/images/projects/steeline.webp"
+ },
+ {
+  "slug": "thenextac",
+  "title": "Thenextac",
+  "platform": "WordPress",
+  "category": "Corporate",
+  "live": null,
+  "img": "/images/projects/thenextac.webp"
+ },
+ {
+  "slug": "thenextac-portfolio",
+  "title": "Thenextac Portfolio",
+  "platform": "WordPress",
+  "category": "Corporate",
+  "live": null,
+  "img": "/images/projects/thenextac-portfolio.webp"
+ },
+ {
+  "slug": "wikicyclopedia",
+  "title": "Wikicyclopedia",
+  "platform": "WordPress",
+  "category": "Education & Media",
+  "live": null,
+  "img": "/images/projects/wikicyclopedia.webp"
+ },
+ {
+  "slug": "wikicyclopedia-landing-page",
+  "title": "Wikicyclopedia Landing Page",
+  "platform": "WordPress",
+  "category": "Education & Media",
+  "live": null,
+  "img": "/images/projects/wikicyclopedia-landing-page.webp"
+ },
+ {
+  "slug": "woodlandsqb",
+  "title": "Woodlandsqb",
+  "platform": "WordPress",
+  "category": "Corporate",
+  "live": null,
+  "img": "/images/projects/woodlandsqb.webp"
+ }
+]

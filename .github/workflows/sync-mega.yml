@@ -1,0 +1,42 @@
+name: Sync projects from MEGA
+
+on:
+  schedule:
+    - cron: '0 * * * *'      # hourly — adjust as you like
+  workflow_dispatch: {}        # lets you run it manually from the Actions tab
+
+permissions:
+  contents: write              # allow the job to commit new projects back
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install megatools
+        run: sudo apt-get update && sudo apt-get install -y megatools
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Pull new screenshots from MEGA
+        env:
+          MEGA_FOLDER: ${{ secrets.MEGA_FOLDER || 'https://mega.nz/folder/9j5mmTKZ#Zd5VWalc9TK58Zkg57ZzsA' }}
+        run: npm run sync
+
+      - name: Commit new projects
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name  "ark-bot"
+            git config user.email "actions@github.com"
+            git add public/images/projects src/data/projects.json src/data/manifest.json
+            git commit -m "chore: sync new projects from MEGA [skip ci]"
+            git push
+          else
+            echo "Nothing new to commit."
+          fi

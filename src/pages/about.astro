@@ -1,0 +1,72 @@
+---
+import Base from '../layouts/Base.astro';
+const experience = [
+  { when:'2026 — Present', role:'Senior CMS Developer / DevOps Specialist', co:'Chameleon Ideas Inc.', d:'Production websites, deployments, hosting and client delivery.' },
+  { when:'2024 — 2026', role:'Senior Software Developer / Team Lead', co:'Websity Digital', d:'Led CMS & web delivery — WordPress, WooCommerce, Webflow, Shopify, AWS.' },
+  { when:'2022 — 2024', role:'Senior CMS & Web Developer', co:'Krystosoft', d:'International clients — WordPress, Shopify, custom PHP/JS, mentoring.' },
+  { when:'2022 — 2022', role:'Full-Stack & CMS Developer', co:'Novatex / Nextac / Logicose', d:'Full-stack & CMS delivery — WordPress, PHP, MySQL, responsive builds.' },
+  { when:'2021 — 2022', role:'Software Developer', co:'Mystic Advertising', d:'WordPress & Shopify — theme customization, Elementor, e-commerce.' },
+  { when:'2020 — 2021', role:'Frontend Web Developer', co:'Nisshinbo Holdings', d:'ASP.NET MVC & front-end components for production interfaces.' },
+];
+const skills = [
+  { n:'01', t:'CMS & E-commerce', s:['WordPress','WooCommerce','Shopify','Webflow','Wix','OpenCart'] },
+  { n:'02', t:'Frontend', s:['HTML5/CSS3','JavaScript ES6+','React','Tailwind','SASS','Bootstrap'] },
+  { n:'03', t:'Backend & Data', s:['PHP','MySQL','C#/.NET','PostgreSQL','REST APIs','Firebase'] },
+  { n:'04', t:'DevOps, Cloud & Automation', s:['AWS EC2/Lightsail','Git & CI/CD','n8n','Make','Zapier','SSL/DNS'] },
+];
+---
+<Base active="about" title="About — Abdul Rehman Khan" description="8+ years across web engineering, CMS, DevOps and automation. Based in Karachi, open to remote EU/UK roles.">
+  <section>
+    <div class="wrap about-hero">
+      <div class="about-photo reveal"><img src="/images/photo.webp" alt="Abdul Rehman Khan" width="620" height="740" /></div>
+      <div class="reveal">
+        <p class="eyebrow">About me</p>
+        <h1 class="sec-title" style="font-size:clamp(30px,4.6vw,48px);">Software engineer, CMS architect, and the person who handles the DevOps nobody wants to.</h1>
+        <p class="sec-lead" style="margin:18px 0 24px;">Based in Karachi, Pakistan — open to remote EU/UK roles and B2B contracts, with visa sponsorship. I've spent 8+ years across web engineering, design and IT operations, and the last 5+ focused entirely on CMS and full-stack development.</p>
+        <p class="sec-lead">I care about the parts of a project that outlast launch day: clean architecture, fast load times, accessible markup, and infrastructure that doesn't page anyone at 2am.</p>
+        <div class="hero-cta" style="margin-top:26px;">
+          <a class="btn primary" href="/Abdul-Rehman-Khan-CV.pdf" download>Download résumé ↓</a>
+          <a href="/contact" class="btn ghost">Get in touch</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="reveal" style="margin-bottom:44px;"><p class="eyebrow">Career journey</p><h2 class="sec-title">Where I've worked</h2></div>
+      <div class="journey">
+        {experience.map((e) => (
+          <div class="jitem reveal"><div class="when">{e.when}</div><h3>{e.role}</h3><div class="co">{e.co}</div><p>{e.d}</p></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="reveal" style="margin-bottom:44px;"><p class="eyebrow">Expertise</p><h2 class="sec-title">Skills &amp; tools</h2></div>
+      <div class="skill-grid">
+        {skills.map((s) => (
+          <div class="skill-card reveal"><span class="num">{s.n}</span><h3>{s.t}</h3><ul>{s.s.map((x)=> <li>{x}</li>)}</ul></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+      <div class="reveal edu-card">
+        <p class="eyebrow" style="margin-bottom:16px;">Education</p>
+        <h3>Bachelor of Software Engineering</h3>
+        <div class="meta">Iqra University, Pakistan · 2022 · CGPA 3.16</div>
+      </div>
+      <div class="reveal edu-card">
+        <p class="eyebrow" style="margin-bottom:16px;">Certifications</p>
+        <div class="cert-list">
+          <span>WordPress SEO — Coursera</span><span>Build a Website — Coursera</span><span>Google Analytics — Skillshop</span><span>Wix — Coursera</span><span>OpenCart — Mind Luster</span><span>Webflow — Coursera</span><span>Adobe XD — LinkedIn Learning</span><span>Aptech ACCP</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

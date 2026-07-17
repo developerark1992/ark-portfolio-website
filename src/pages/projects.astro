@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import projects from '../data/projects.json';
+
+const counts = {};
+projects.forEach((p) => { counts[p.category] = (counts[p.category] || 0) + 1; });
+const cats = [['all', 'All', projects.length]].concat(
+  Object.keys(counts).sort().map((c) => [c, c, counts[c]])
+);
+---
+<Base active="projects" title="Projects — Abdul Rehman Khan" description="90+ web, e-commerce and app projects by Abdul Rehman Khan across healthcare, real estate, e-commerce, finance and more.">
+  <section style="padding-bottom:0;">
+    <div class="wrap">
+      <p class="eyebrow reveal">Portfolio</p>
+      <h1 class="reveal" style="font-size:clamp(32px,5.4vw,58px);margin-bottom:16px;">All projects.</h1>
+      <p class="sec-lead reveal" style="margin-bottom:40px;">{projects.length} production builds across healthcare, real estate, e-commerce, finance, agencies and more — Pakistan, the UAE, Canada and beyond. Filter by category.</p>
+      <div class="filters reveal" id="filters">
+        {cats.map(([key, label, n], i) => (
+          <button class={`filt ${i === 0 ? 'active' : ''}`} data-filter={key}>{label}<span class="count">{n}</span></button>
+        ))}
+      </div>
+    </div>
+  </section>
+  <section style="padding-top:0;">
+    <div class="wrap">
+      <div class="proj-grid" id="allProjects">
+        {projects.map((p) => <ProjectCard p={p} />)}
+      </div>
+    </div>
+  </section>
+</Base>

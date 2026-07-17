@@ -1,0 +1,52 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base active="contact" title="Contact — Abdul Rehman Khan" description="Get in touch with Abdul Rehman Khan for web development, e-commerce, automation and cloud projects.">
+  <section>
+    <div class="wrap">
+      <p class="eyebrow reveal">Get in touch</p>
+      <h1 class="reveal" style="font-size:clamp(32px,5.4vw,58px);margin-bottom:16px;">Let's build something.</h1>
+      <p class="sec-lead reveal" style="margin-bottom:48px;">Tell me a little about your project — I read every message and reply personally, usually within a day.</p>
+      <div class="contact-grid">
+        <form class="reveal" id="contactForm">
+          <div class="field"><label for="cf-name">Name</label><input id="cf-name" required placeholder="Your name" /></div>
+          <div class="field"><label for="cf-email">Email</label><input id="cf-email" type="email" required placeholder="you@company.com" /></div>
+          <div class="field"><label for="cf-type">Project type</label>
+            <select id="cf-type"><option>New website</option><option>Redesign</option><option>E-commerce store</option><option>Web app</option><option>Automation / workflow</option><option>Other</option></select>
+          </div>
+          <div class="field"><label for="cf-msg">Message</label><textarea id="cf-msg" required placeholder="What are you looking to build?"></textarea></div>
+          <button type="submit" class="btn primary">Send message →</button>
+          <p class="form-note">Opens your email app with everything filled in, addressed to Abdul.</p>
+        </form>
+        <div class="contact-info reveal">
+          <div class="info-row"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16v12H4z" stroke="currentColor" stroke-width="1.7"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.7"/></svg></span>
+            <div><h4>Email</h4><a href="mailto:ark.educationalist@gmail.com">ark.educationalist@gmail.com</a></div></div>
+          <div class="info-row"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.1 7-11.5a7 7 0 1 0-14 0C5 14.9 12 21 12 21Z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="9.5" r="2.4" stroke="currentColor" stroke-width="1.7"/></svg></span>
+            <div><h4>Location</h4><p>Karachi, Pakistan · Open to EU / UK remote</p></div></div>
+          <div class="info-row"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M8 12h8M12 8v8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/></svg></span>
+            <div><h4>Availability</h4><p>Freelance · B2B contract · Full-time</p></div></div>
+          <div>
+            <h4 class="mono" style="font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);margin-bottom:12px;">Elsewhere</h4>
+            <div class="social-row">
+              <a href="https://www.linkedin.com/in/developerark/" target="_blank" rel="noopener">LinkedIn ↗</a>
+              <a href="https://arkdesigningbureau.com" target="_blank" rel="noopener">Portfolio ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script is:inline>
+    document.addEventListener('astro:page-load', function(){
+      var f=document.getElementById('contactForm'); if(!f) return;
+      f.onsubmit=function(e){
+        e.preventDefault();
+        var n=document.getElementById('cf-name').value.trim(),em=document.getElementById('cf-email').value.trim(),
+            t=document.getElementById('cf-type').value,m=document.getElementById('cf-msg').value.trim();
+        var subject='Project enquiry — '+n+' ('+t+')';
+        var body='Name: '+n+'\nEmail: '+em+'\nProject type: '+t+'\n\nMessage:\n'+m;
+        window.location.href='mailto:ark.educationalist@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+      };
+    });
+  </script>
+</Base>

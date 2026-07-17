@@ -1,0 +1,104 @@
+---
+import Base from '../layouts/Base.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import projects from '../data/projects.json';
+
+const featuredSlugs = ['prescott-uae','hepius','galaxy-pharma','stone-gym-solutions','accessibility-partners','takada-asset-management'];
+let featured = featuredSlugs.map((s) => projects.find((p) => p.slug === s)).filter(Boolean);
+if (featured.length < 6) featured = featured.concat(projects.filter((p) => !featured.includes(p))).slice(0, 6);
+const skills = [
+  { n:'01', t:'CMS & E-commerce', s:['WordPress','WooCommerce','Shopify','Webflow','Wix','OpenCart'] },
+  { n:'02', t:'Frontend', s:['HTML5/CSS3','JavaScript ES6+','React','Tailwind','SASS','Bootstrap'] },
+  { n:'03', t:'Backend & Data', s:['PHP','MySQL','C#/.NET','PostgreSQL','REST APIs','Firebase'] },
+  { n:'04', t:'DevOps, Cloud & Automation', s:['AWS','Git & CI/CD','n8n','Make','Zapier','SSL/DNS'] },
+];
+---
+<Base active="home">
+  <header class="hero">
+    <div class="glow"></div>
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow reveal">Software Engineer · Karachi, PK</p>
+        <h1 class="reveal">Engineering<br>software with <em>craft</em>.</h1>
+        <p class="sub reveal">I'm Abdul — I build <b>fast, accessible web platforms</b> end to end, from CMS and e-commerce to full-stack apps, and <b>automate</b> the operational work behind them. 8+ years, shipped to production.</p>
+        <div class="hero-cta reveal">
+          <a href="/projects" class="btn primary">View my work</a>
+          <a href="/contact" class="btn ghost">Start a project</a>
+          <span class="avail"><span class="pulse"></span>Available for new work</span>
+        </div>
+      </div>
+      <div class="hero-portrait reveal">
+        <img src="/images/photo.webp" alt="Abdul Rehman Khan" width="620" height="740" />
+        <span class="badge">Est. 2018</span>
+        <span class="tag">◆ Full-stack · DevOps · Automation</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap"><div class="marquee reveal"><div class="track">
+    <span>WordPress</span><span>WooCommerce</span><span>Shopify</span><span>React</span><span>PHP</span><span>AWS</span><span>n8n</span><span>Make</span><span>Zapier</span><span>C# / .NET</span>
+    <span>WordPress</span><span>WooCommerce</span><span>Shopify</span><span>React</span><span>PHP</span><span>AWS</span><span>n8n</span><span>Make</span><span>Zapier</span><span>C# / .NET</span>
+  </div></div></div>
+
+  <section>
+    <div class="wrap about-blurb">
+      <div class="reveal">
+        <p class="eyebrow">About</p>
+        <p class="big">I bridge <em>engineering</em> and <em>design</em> — building CMS platforms, e-commerce and full-stack apps that are fast, maintainable, and shipped with real DevOps discipline behind them.</p>
+        <div class="hero-cta" style="margin-top:28px;"><a href="/about" class="btn ghost">More about me →</a></div>
+      </div>
+      <div class="stat-row reveal">
+        <div class="stat"><div class="v"><b>8</b>+</div><div class="l">Years experience</div></div>
+        <div class="stat"><div class="v"><b>90</b>+</div><div class="l">Projects shipped</div></div>
+        <div class="stat"><div class="v"><b>9</b></div><div class="l">CMS platforms</div></div>
+        <div class="stat"><div class="v"><b>AWS</b></div><div class="l">Cloud &amp; DevOps</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="reveal"><p class="eyebrow">Selected work</p><h2 class="sec-title">Six recent builds</h2></div>
+        <a href="/projects" class="btn ghost reveal">View all projects →</a>
+      </div>
+      <div class="proj-grid">
+        {featured.map((p) => <ProjectCard p={p} />)}
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="reveal" style="margin-bottom:44px;"><p class="eyebrow">Toolkit</p><h2 class="sec-title">Skills &amp; technologies</h2></div>
+      <div class="skill-grid">
+        {skills.map((s) => (
+          <div class="skill-card reveal"><span class="num">{s.n}</span><h3>{s.t}</h3><ul>{s.s.map((x)=> <li>{x}</li>)}</ul></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="reveal" style="margin-bottom:36px;"><p class="eyebrow">Track record</p><h2 class="sec-title">Achievements</h2>
+      <p class="sec-lead">Testimonials are being collected from recent clients — the numbers speak for the range meanwhile.</p></div>
+      <div class="ach-grid reveal">
+        <div class="ach"><div class="v"><b>8</b>+ yrs</div><div class="l">Professional experience</div></div>
+        <div class="ach"><div class="v"><b>90</b>+</div><div class="l">Projects delivered</div></div>
+        <div class="ach"><div class="v"><b>7</b></div><div class="l">Industries served</div></div>
+        <div class="ach"><div class="v"><b>3</b></div><div class="l">Countries — PK · UAE · CA</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="cta-band reveal"><div class="glow"></div>
+        <h2 class="serif">Have a project in mind?</h2>
+        <p>Web builds, e-commerce, automation or cloud — from first idea to a live, production site.</p>
+        <div class="hero-cta"><a href="/estimate" class="btn primary">Get an instant estimate</a><a href="/contact" class="btn ghost">Get in touch</a></div>
+      </div>
+    </div>
+  </section>
+</Base>

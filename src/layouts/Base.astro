@@ -1,0 +1,215 @@
+---
+import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+const { title = 'Abdul Rehman Khan — Software Engineer', description = 'Software engineer, full-stack & CMS developer, DevOps and automation specialist. 8+ years, based in Karachi, open to remote EU/UK work.', active = 'home' } = Astro.props;
+const links = [
+  { href: '/',         name: 'Home',     key: 'home' },
+  { href: '/about',    name: 'About',    key: 'about' },
+  { href: '/projects', name: 'Projects', key: 'projects' },
+  { href: '/services', name: 'Services', key: 'services' },
+  { href: '/estimate', name: 'Estimate', key: 'estimate' },
+];
+const AV = '/images/avatar.webp';
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%230C0A08' stroke='%23D3A94B' stroke-width='1.5'/%3E%3Ctext x='16' y='21' font-family='Georgia,serif' font-size='13' fill='%23D3A94B' text-anchor='middle'%3EAK%3C/text%3E%3C/svg%3E" />
+  <ClientRouter />
+</head>
+<body>
+  <nav class="topnav">
+    <div class="nav-in">
+      <a href="/" class="brandmark"><span class="ring">AK</span> Abdul&nbsp;Rehman&nbsp;Khan</a>
+      <button class="navburger" id="burger" aria-label="Toggle menu">☰</button>
+      <div class="navlinks" id="navlinks">
+        {links.map((l) => (
+          <a href={l.href} class={active === l.key ? 'active' : ''}>{l.name}</a>
+        ))}
+        <a href="/contact" class={`cta ${active === 'contact' ? 'active' : ''}`}>Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <slot />
+  </main>
+
+  <footer><div class="wrap foot-in">
+    <span>© <span id="yr"></span> Abdul Rehman Khan</span>
+    <span>Software Engineer · Full-Stack · DevOps · Automation</span>
+    <a href="/contact">Let's talk →</a>
+  </div></footer>
+
+  <!-- chatbot -->
+  <button class="ark-launch" id="arkLaunch" aria-label="Open chat assistant">
+    <span class="pg"></span>
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5.5h16v11H8l-4 3.5V5.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+    Ask about me
+  </button>
+  <section class="ark-chat" id="arkChat" role="dialog" aria-label="ARK Assistant chat" hidden>
+    <div class="ark-head">
+      <img src={AV} alt="" />
+      <div class="who"><b>ARK Assistant</b><span><i></i> Ask about Abdul · or hire him</span></div>
+      <button class="ark-x" id="arkClose" aria-label="Close chat">×</button>
+    </div>
+    <div class="ark-msgs" id="arkMsgs" aria-live="polite"></div>
+    <div class="ark-chips" id="arkChips"></div>
+    <form class="ark-foot" id="arkForm" autocomplete="off">
+      <input id="arkInput" type="text" placeholder="Type a message…" aria-label="Message" />
+      <button type="submit" aria-label="Send">→</button>
+    </form>
+  </section>
+
+  <script is:inline define:vars={{ AV }}>
+    (function(){
+      var EMAIL="ark.educationalist@gmail.com";
+
+      function initReveal(){
+        var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:0.12});
+        document.querySelectorAll('.reveal:not(.in)').forEach(function(el,i){el.style.transitionDelay=(Math.min(i%4,3)*0.06)+'s';io.observe(el);});
+      }
+      function initMenu(){
+        var b=document.getElementById('burger'),n=document.getElementById('navlinks');
+        if(!b||!n)return;
+        b.onclick=function(){n.classList.toggle('open');};
+        n.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){n.classList.remove('open');});});
+      }
+      function setYear(){var y=document.getElementById('yr');if(y)y.textContent=new Date().getFullYear();}
+
+      /* ---------- calculator ---------- */
+      function initCalc(){
+        if(!document.getElementById('estMin'))return;
+        var TYPES={landing:{base:[400,800],incl:1,label:"Landing page"},website:{base:[900,2500],incl:5,label:"Multi-page site"},ecommerce:{base:[1800,5000],incl:8,label:"E-commerce"},webapp:{base:[3000,9000],incl:6,label:"Web app"},automation:{base:[500,2500],incl:1,label:"Automation"}};
+        var PER_PAGE=[70,140];
+        var PLATFORM={wp:1,shopify:1,custom:1.2,nosure:1,_label:{wp:"WordPress",shopify:"Shopify",custom:"Custom build",nosure:"Not sure"}};
+        var DESIGN={template:1,custom:1.25,premium:1.55,_label:{template:"Template",custom:"Custom design",premium:"Premium bespoke"}};
+        var FEAT={cms:[150,400],payments:[500,1500],multilang:[300,800],booking:[250,700],seo:[150,500],anim:[200,700],a11y:[250,800],automation:[300,1500]};
+        var FEAT_LABEL={cms:"CMS / blog",payments:"Payments / cart",multilang:"Multilingual",booking:"Booking",seo:"SEO setup",anim:"Animations",a11y:"Accessibility",automation:"Automations",maint:"Maintenance"};
+        var MAINT_MONTH=[90,180];
+        var CUR={USD:{m:1,s:"$"},EUR:{m:0.92,s:"€"},GBP:{m:0.79,s:"£"}};
+        var state={type:"landing",pages:5,platform:"wp",design:"custom",features:{},timeline:"standard",currency:"USD"};
+        var $=function(id){return document.getElementById(id);};
+        function roundTo(n,s){return Math.round(n/s)*s;}
+        function fmtVal(v){var c=CUR[state.currency];return c.s+roundTo(v*c.m,50).toLocaleString('en-US');}
+        function compute(){
+          var t=TYPES[state.type],min=t.base[0],max=t.base[1],extra=Math.max(0,state.pages-t.incl);
+          min+=extra*PER_PAGE[0];max+=extra*PER_PAGE[1];
+          var bd=[{l:t.label+" · base",v:fmtVal(t.base[0])+"+"}];
+          if(extra>0)bd.push({l:extra+" extra page"+(extra>1?"s":""),v:"+"+fmtVal(extra*PER_PAGE[0])});
+          var monthly=0;
+          Object.keys(state.features).forEach(function(k){if(!state.features[k])return;if(k==="maint"){monthly=MAINT_MONTH;return;}if(k==="payments"&&state.type==="ecommerce")return;var r=FEAT[k];if(r){min+=r[0];max+=r[1];bd.push({l:FEAT_LABEL[k],v:"+"+fmtVal(r[0])});}});
+          var pm=PLATFORM[state.platform],dm=DESIGN[state.design];min*=pm*dm;max*=pm*dm;
+          if(state.platform==="custom")bd.push({l:"Custom platform",v:"+20%"});
+          if(state.design!=="template")bd.push({l:DESIGN._label[state.design],v:"+"+Math.round((dm-1)*100)+"%"});
+          if(state.timeline==="rush"){min*=1.25;max*=1.25;bd.push({l:"Rush timeline",v:"+25%"});}
+          return {min:min,max:max,monthly:monthly,scope:Math.max(0,Math.min(1,(max-400)/(13000-400))),breakdown:bd};
+        }
+        var REDUCE=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        function animateNum(el,to){
+          var from=parseFloat(el.dataset.cur||"0");el.dataset.cur=to;var finalTxt=fmtVal(to);
+          cancelAnimationFrame(el._raf||0);clearTimeout(el._to||0);
+          if(REDUCE||from===to){el.textContent=finalTxt;return;}
+          var start=null;
+          function tick(ts){if(!start)start=ts;var p=Math.min(1,(ts-start)/450),e=1-Math.pow(1-p,3);el.textContent=fmtVal(from+(to-from)*e);if(p<1)el._raf=requestAnimationFrame(tick);else el.textContent=finalTxt;}
+          el._raf=requestAnimationFrame(tick);el._to=setTimeout(function(){el.textContent=finalTxt;},600);
+        }
+        function render(){
+          var r=compute();animateNum($('estMin'),r.min);animateNum($('estMax'),r.max);
+          var mEl=$('estMonthly');if(r.monthly){mEl.hidden=false;$('monthlyVal').textContent=fmtVal(r.monthly[0])+"–"+fmtVal(r.monthly[1]);}else mEl.hidden=true;
+          $('gaugeFill').style.width=(12+r.scope*88)+"%";
+          $('scopeLabel').textContent=r.scope<0.22?"Simple build":r.scope<0.48?"Standard build":r.scope<0.74?"Advanced build":"Complex build";
+          $('breakdown').innerHTML=r.breakdown.map(function(b){return '<li><span>'+b.l+'</span><span>'+b.v+'</span></li>';}).join('')||'<li class="empty">Select options</li>';
+          var rng=$('pageRange');rng.style.setProperty('--fill',((rng.value-rng.min)/(rng.max-rng.min)*100)+"%");
+        }
+        var page=document.querySelector('.calc-grid');
+        page.addEventListener('click',function(e){
+          var b=e.target.closest('button[data-val]');if(!b)return;
+          var group=b.parentElement.getAttribute('data-group');
+          if(group==='features'){var v=b.getAttribute('data-val');state.features[v]=!state.features[v];b.classList.toggle('active',state.features[v]);}
+          else if(group){b.parentElement.querySelectorAll('button').forEach(function(x){x.classList.toggle('active',x===b);});var val=b.getAttribute('data-val');if(group==='type')state.type=val;else if(group==='platform')state.platform=val;else if(group==='design')state.design=val;else if(group==='timeline')state.timeline=val;else if(group==='currency')state.currency=val;}
+          render();
+        });
+        $('pageRange').addEventListener('input',function(){state.pages=+this.value;$('pageVal').textContent=this.value>=30?"30+":this.value;render();});
+        $('calcQuote').addEventListener('click',function(e){
+          e.preventDefault();var r=compute();
+          var feats=Object.keys(state.features).filter(function(k){return state.features[k];}).map(function(k){return FEAT_LABEL[k];}).join(", ")||"none";
+          var subject="Website quote request — "+TYPES[state.type].label;
+          var body="Hi Abdul, I used your calculator — here's my project:\n\nProject type: "+TYPES[state.type].label+"\nPages: "+state.pages+"\nPlatform: "+PLATFORM._label[state.platform]+"\nDesign: "+DESIGN._label[state.design]+"\nFeatures: "+feats+"\nTimeline: "+state.timeline+"\n\nEstimated range shown: "+fmtVal(r.min)+" – "+fmtVal(r.max)+(r.monthly?(" (+ "+fmtVal(r.monthly[0])+"–"+fmtVal(r.monthly[1])+"/mo maintenance)"):"")+"\n\nPlease send me an exact quote.";
+          window.location.href="mailto:"+EMAIL+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
+        });
+        $('calcChat').addEventListener('click',function(){if(window.arkOpenChat)window.arkOpenChat();});
+        render();
+      }
+
+      /* ---------- chatbot ---------- */
+      function initChat(){
+        var launch=document.getElementById('arkLaunch'),chat=document.getElementById('arkChat'),
+            msgs=document.getElementById('arkMsgs'),chipsEl=document.getElementById('arkChips'),
+            form=document.getElementById('arkForm'),input=document.getElementById('arkInput'),
+            closeBtn=document.getElementById('arkClose');
+        if(!launch||!chat)return;
+        var started=false,mode='menu',step=0,data={};
+        function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+        function scroll(){msgs.scrollTop=msgs.scrollHeight;}
+        function me(t){var r=document.createElement('div');r.className='ark-row me';r.innerHTML='<div class="ark-bub">'+esc(t)+'</div>';msgs.appendChild(r);scroll();}
+        function typing(){var r=document.createElement('div');r.className='ark-row bot';r.id='arkT';r.innerHTML='<img src="'+AV+'" alt=""><div class="ark-bub"><span class="ark-typing"><i></i><i></i><i></i></span></div>';msgs.appendChild(r);scroll();}
+        function untype(){var t=document.getElementById('arkT');if(t)t.remove();}
+        function bot(html,chips,delay){typing();setTimeout(function(){untype();var r=document.createElement('div');r.className='ark-row bot';r.innerHTML='<img src="'+AV+'" alt=""><div class="ark-bub">'+html+'</div>';msgs.appendChild(r);setChips(chips||[]);scroll();},delay||520);}
+        function setChips(list){chipsEl.innerHTML='';list.forEach(function(c){var b=document.createElement('button');b.className='ark-chip'+(c.send?' send':'');b.textContent=c.label;b.onclick=function(){c.onClick?c.onClick():pick(c.val||c.label,c.label);};chipsEl.appendChild(b);});}
+        var MENU=[{label:'About Abdul',val:'about'},{label:'His work',val:'work'},{label:'Services',val:'services'},{label:'Price estimate',val:'estimate'},{label:'Get a quote',val:'quote'}];
+        function answer(intent){
+          if(intent==='about')return bot("Abdul Rehman Khan is a <b>Software Engineer</b> with <b>8+ years</b> across full-stack, CMS and DevOps. He builds fast, accessible websites, e-commerce and web apps — and <b>automates</b> the busywork with n8n, Make &amp; Zapier. Based in Karachi, open to remote EU/UK work.",MENU.concat([{label:'Start an enquiry',val:'quote'}]));
+          if(intent==='work')return bot("He's shipped <b>50+ projects</b> — real estate (Prescott), health-tech &amp; pharma (Hepius, Galaxy Pharma), Shopify e-commerce, finance and services. Browse the <b>Projects</b> page to explore them all.",[{label:'Get a quote',val:'quote'},{label:'Services',val:'services'}]);
+          if(intent==='services')return bot("Abdul offers:<ul><li>Web development (WordPress / custom)</li><li>E-commerce (WooCommerce / Shopify)</li><li>Workflow &amp; AI automation</li><li>DevOps &amp; cloud (AWS, CI/CD)</li></ul>",[{label:'Price estimate',val:'estimate'},{label:'Get a quote',val:'quote'}]);
+          if(intent==='estimate'){bot("Opening the instant cost calculator — build your project and see a live estimate. 👇",[]);setTimeout(function(){close();window.location.href='/estimate';},700);return;}
+          if(intent==='pricing')return bot("Projects are quoted to scope. Use the <b>calculator</b> for an instant ballpark, or share details for an exact quote.",[{label:'Price estimate',val:'estimate'},{label:'Get a quote',val:'quote'}]);
+          if(intent==='quote'){startEnquiry();return;}
+          return bot("I can tell you about Abdul's work, give a price estimate, or take your details for a quote. What would you like?",MENU);
+        }
+        var STEPS=[
+          {key:'name',q:"Perfect — let's get you a tailored quote. First, what's your <b>name</b>?",type:'text'},
+          {key:'email',q:function(){return "Thanks "+esc(data.name||'')+"! What's the best <b>email</b>?";},type:'text',validate:function(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);},err:"That doesn't look like a valid email — try again?"},
+          {key:'company',q:"Your <b>company or brand</b>?",type:'text',chips:[{label:'Skip',val:'—'}]},
+          {key:'project',q:"What do you need built?",type:'chips',chips:[{label:'New website'},{label:'Redesign'},{label:'E-commerce store'},{label:'Web app'},{label:'Automation'},{label:'Not sure'}]},
+          {key:'budget',q:"Rough <b>budget</b> range?",type:'chips',chips:[{label:'< $1k'},{label:'$1k – $3k'},{label:'$3k – $8k'},{label:'$8k+'},{label:'Not sure'}]},
+          {key:'timeline',q:"And your <b>timeline</b>?",type:'chips',chips:[{label:'ASAP'},{label:'2–4 weeks'},{label:'1–3 months'},{label:'Flexible'}]},
+          {key:'notes',q:"Anything else Abdul should know?",type:'text',chips:[{label:'Skip',val:'—'}]}
+        ];
+        function startEnquiry(){mode='enquiry';step=0;data={};askStep();}
+        function askStep(){var s=STEPS[step];var q=typeof s.q==='function'?s.q():s.q;bot(q,(s.chips||[]).map(function(c){return {label:c.label,val:c.val||c.label};}));input.placeholder=s.type==='chips'?'Pick an option above…':'Type your answer…';}
+        function record(val){var s=STEPS[step];if(s.validate&&!s.validate(val)){bot(s.err||"Try again?");return;}data[s.key]=val;step++;if(step<STEPS.length)askStep();else finish();}
+        function finish(){mode='done';input.placeholder='Type a message…';
+          var sum="Here's what I've got:<ul><li><b>Name:</b> "+esc(data.name||'')+"</li><li><b>Email:</b> "+esc(data.email||'')+"</li>"+(data.company&&data.company!=='—'?"<li><b>Company:</b> "+esc(data.company)+"</li>":"")+"<li><b>Project:</b> "+esc(data.project||'')+"</li><li><b>Budget:</b> "+esc(data.budget||'')+"</li><li><b>Timeline:</b> "+esc(data.timeline||'')+"</li>"+(data.notes&&data.notes!=='—'?"<li><b>Notes:</b> "+esc(data.notes)+"</li>":"")+"</ul>Send it to Abdul now?";
+          bot(sum,[{label:'✉ Send enquiry',send:true,onClick:sendMail},{label:'Copy details',onClick:copyDetails},{label:'Start over',onClick:function(){answer('quote');}}]);}
+        function body(){return "New project enquiry from your portfolio\n\nName: "+(data.name||'')+"\nEmail: "+(data.email||'')+"\nCompany: "+(data.company&&data.company!=='—'?data.company:'-')+"\nProject: "+(data.project||'')+"\nBudget: "+(data.budget||'')+"\nTimeline: "+(data.timeline||'')+"\nNotes: "+(data.notes&&data.notes!=='—'?data.notes:'-');}
+        function sendMail(){var subj="Project enquiry — "+(data.name||'')+" ("+(data.project||'')+")";window.location.href="mailto:"+EMAIL+"?subject="+encodeURIComponent(subj)+"&body="+encodeURIComponent(body());bot("Opening your email app with everything filled in — just hit <b>send</b>. 🚀",[{label:'Copy details',onClick:copyDetails}]);}
+        function copyDetails(){var txt="To: "+EMAIL+"\n\n"+body();if(navigator.clipboard){navigator.clipboard.writeText(txt).then(function(){bot("Copied! Paste it into an email to "+EMAIL+". 📋");},function(){bot("Here it is:<br><br>"+esc(txt).replace(/\n/g,'<br>'));});}else bot("Here it is:<br><br>"+esc(txt).replace(/\n/g,'<br>'));}
+        function pick(val,label){me(label);if(mode==='enquiry')record(val);else answer(val);}
+        function guess(t){var s=t.toLowerCase();if(/hire|quote|enquir|inquir|start|contact/.test(s))return 'quote';if(/price|cost|estimate|calculat|budget/.test(s))return 'estimate';if(/service|do you|help|skill/.test(s))return 'services';if(/work|project|portfolio/.test(s))return 'work';if(/who|about|abdul|experience|year/.test(s))return 'about';return null;}
+        form.onsubmit=function(e){e.preventDefault();var t=input.value.trim();if(!t)return;input.value='';me(t);if(mode==='enquiry')record(t);else answer(guess(t)||'menu');};
+        function open(){chat.hidden=false;launch.hidden=true;if(!started){started=true;bot("👋 Hi! I'm <b>Abdul's assistant</b>. Ask about his work, get an instant price estimate, or send him a project enquiry.",MENU,260);}setTimeout(function(){input.focus();},300);}
+        function close(){chat.hidden=true;launch.hidden=false;}
+        window.arkOpenChat=open;
+        launch.onclick=open;closeBtn.onclick=close;
+        if(!window.__arkEsc){window.__arkEsc=true;document.addEventListener('keydown',function(e){if(e.key==='Escape'){var c=document.getElementById('arkChat');if(c&&!c.hidden){c.hidden=true;var l=document.getElementById('arkLaunch');if(l)l.hidden=false;}}});}
+      }
+
+      function initFilters(){
+        var wrap=document.getElementById('filters');if(!wrap)return;
+        wrap.onclick=function(e){var b=e.target.closest('.filt');if(!b)return;
+          wrap.querySelectorAll('.filt').forEach(function(x){x.classList.toggle('active',x===b);});
+          var f=b.getAttribute('data-filter');
+          document.querySelectorAll('#allProjects .proj').forEach(function(c){var show=f==='all'||c.getAttribute('data-cat')===f;c.classList.toggle('hide',!show);});
+        };
+      }
+      function initPage(){ setYear(); initReveal(); initMenu(); initFilters(); initCalc(); initChat(); }
+      document.addEventListener('astro:page-load', initPage);
+    })();
+  </script>
+</body>
+</html>
