@@ -1,6 +1,8 @@
 ---
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
+import { siWhatsapp } from 'simple-icons';
+const WA = '923159429998';
 const { title = 'Abdul Rehman Khan — Software Engineer', description = 'Software engineer, full-stack & CMS developer, DevOps and automation specialist. 8+ years, based in Karachi, open to remote EU/UK work.', active = 'home' } = Astro.props;
 const links = [
   { href: '/',         name: 'Home',     key: 'home' },
@@ -55,6 +57,9 @@ const AV = '/images/avatar.webp';
     <div class="ark-head">
       <img src={AV} alt="" />
       <div class="who"><b>ARK Assistant</b><span><i></i> Ask about Abdul · or hire him</span></div>
+      <button class="ark-wa-btn" id="arkWa" aria-label="Message on WhatsApp" title="Message on WhatsApp">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d={siWhatsapp.path} /></svg>
+      </button>
       <button class="ark-x" id="arkClose" aria-label="Close chat">×</button>
     </div>
     <div class="ark-msgs" id="arkMsgs" aria-live="polite"></div>
@@ -65,9 +70,10 @@ const AV = '/images/avatar.webp';
     </form>
   </section>
 
-  <script is:inline define:vars={{ AV }}>
+  <script is:inline define:vars={{ AV, WA }}>
     (function(){
       var EMAIL="ark.educationalist@gmail.com";
+      var WA_NUM=WA;
 
       function initReveal(){
         var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:0.12});
@@ -174,15 +180,15 @@ const AV = '/images/avatar.webp';
             form=document.getElementById('arkForm'),input=document.getElementById('arkInput'),
             closeBtn=document.getElementById('arkClose');
         if(!launch||!chat)return;
-        var started=false,mode='menu',step=0,data={};
+        var started=false,mode='menu',step=0,data={},waStep=0,waData={};
         function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
         function scroll(){msgs.scrollTop=msgs.scrollHeight;}
         function me(t){var r=document.createElement('div');r.className='ark-row me';r.innerHTML='<div class="ark-bub">'+esc(t)+'</div>';msgs.appendChild(r);scroll();}
         function typing(){var r=document.createElement('div');r.className='ark-row bot';r.id='arkT';r.innerHTML='<img src="'+AV+'" alt=""><div class="ark-bub"><span class="ark-typing"><i></i><i></i><i></i></span></div>';msgs.appendChild(r);scroll();}
         function untype(){var t=document.getElementById('arkT');if(t)t.remove();}
         function bot(html,chips,delay){typing();setTimeout(function(){untype();var r=document.createElement('div');r.className='ark-row bot';r.innerHTML='<img src="'+AV+'" alt=""><div class="ark-bub">'+html+'</div>';msgs.appendChild(r);setChips(chips||[]);scroll();},delay||520);}
-        function setChips(list){chipsEl.innerHTML='';list.forEach(function(c){var b=document.createElement('button');b.className='ark-chip'+(c.send?' send':'');b.textContent=c.label;b.onclick=function(){c.onClick?c.onClick():pick(c.val||c.label,c.label);};chipsEl.appendChild(b);});}
-        var MENU=[{label:'About Abdul',val:'about'},{label:'His work',val:'work'},{label:'Services',val:'services'},{label:'Price estimate',val:'estimate'},{label:'Get a quote',val:'quote'}];
+        function setChips(list){chipsEl.innerHTML='';list.forEach(function(c){var b=document.createElement('button');b.className='ark-chip'+(c.send?' send':'')+(c.wa?' wa':'');b.textContent=c.label;b.onclick=function(){c.onClick?c.onClick():pick(c.val||c.label,c.label);};chipsEl.appendChild(b);});}
+        var MENU=[{label:'About Abdul',val:'about'},{label:'His work',val:'work'},{label:'Services',val:'services'},{label:'Price estimate',val:'estimate'},{label:'Get a quote',val:'quote'},{label:'WhatsApp Abdul',val:'whatsapp',wa:true}];
         function answer(intent){
           if(intent==='about')return bot("Abdul Rehman Khan is a <b>Software Engineer</b> with <b>8+ years</b> across full-stack, CMS and DevOps. He builds fast, accessible websites, e-commerce and web apps — and <b>automates</b> the busywork with n8n, Make &amp; Zapier. Based in Karachi, open to remote EU/UK work.",MENU.concat([{label:'Start an enquiry',val:'quote'}]));
           if(intent==='work')return bot("He's shipped <b>50+ projects</b> — real estate (Prescott), health-tech &amp; pharma (Hepius, Galaxy Pharma), Shopify e-commerce, finance and services. Browse the <b>Projects</b> page to explore them all.",[{label:'Get a quote',val:'quote'},{label:'Services',val:'services'}]);
@@ -190,7 +196,8 @@ const AV = '/images/avatar.webp';
           if(intent==='estimate'){bot("Opening the instant cost calculator — build your project and see a live estimate. 👇",[]);setTimeout(function(){close();window.location.href='/estimate';},700);return;}
           if(intent==='pricing')return bot("Projects are quoted to scope. Use the <b>calculator</b> for an instant ballpark, or share details for an exact quote.",[{label:'Price estimate',val:'estimate'},{label:'Get a quote',val:'quote'}]);
           if(intent==='quote'){startEnquiry();return;}
-          return bot("I can tell you about Abdul's work, give a price estimate, or take your details for a quote. What would you like?",MENU);
+          if(intent==='whatsapp'){startWA();return;}
+          return bot("I can tell you about Abdul's work, give a price estimate, take your details for a quote, or connect you on WhatsApp. What would you like?",MENU);
         }
         var STEPS=[
           {key:'name',q:"Perfect — let's get you a tailored quote. First, what's your <b>name</b>?",type:'text'},
@@ -202,6 +209,14 @@ const AV = '/images/avatar.webp';
           {key:'notes',q:"Anything else Abdul should know?",type:'text',chips:[{label:'Skip',val:'—'}]}
         ];
         function startEnquiry(){mode='enquiry';step=0;data={};askStep();}
+        function startWA(){mode='wa';waStep=0;waData={};bot("Sure — let's message Abdul on <b>WhatsApp</b>. First, what's your <b>name</b>?");input.placeholder='Type your name…';}
+        function waRecord(val){
+          if(waStep===0){waData.name=val;waStep=1;bot("Thanks "+esc(val)+"! And your <b>message</b>?");input.placeholder='Type your message…';return;}
+          waData.msg=val;mode='done';input.placeholder='Type a message…';
+          var text="Hi Abdul, I'm "+waData.name+". "+waData.msg;
+          var url="https://wa.me/"+WA_NUM+"?text="+encodeURIComponent(text);
+          bot("Perfect — tap below to open <b>WhatsApp</b> with your message ready to send. 💬",[{label:'Open WhatsApp',wa:true,onClick:function(){window.open(url,'_blank','noopener');}},{label:'Start over',onClick:function(){answer('quote');}}]);
+        }
         function askStep(){var s=STEPS[step];var q=typeof s.q==='function'?s.q():s.q;bot(q,(s.chips||[]).map(function(c){return {label:c.label,val:c.val||c.label};}));input.placeholder=s.type==='chips'?'Pick an option above…':'Type your answer…';}
         function record(val){var s=STEPS[step];if(s.validate&&!s.validate(val)){bot(s.err||"Try again?");return;}data[s.key]=val;step++;if(step<STEPS.length)askStep();else finish();}
         function finish(){mode='done';input.placeholder='Type a message…';
@@ -211,12 +226,14 @@ const AV = '/images/avatar.webp';
         function sendMail(){var subj="Project enquiry — "+(data.name||'')+" ("+(data.project||'')+")";window.location.href="mailto:"+EMAIL+"?subject="+encodeURIComponent(subj)+"&body="+encodeURIComponent(body());bot("Opening your email app with everything filled in — just hit <b>send</b>. 🚀",[{label:'Copy details',onClick:copyDetails}]);}
         function copyDetails(){var txt="To: "+EMAIL+"\n\n"+body();if(navigator.clipboard){navigator.clipboard.writeText(txt).then(function(){bot("Copied! Paste it into an email to "+EMAIL+". 📋");},function(){bot("Here it is:<br><br>"+esc(txt).replace(/\n/g,'<br>'));});}else bot("Here it is:<br><br>"+esc(txt).replace(/\n/g,'<br>'));}
         function pick(val,label){me(label);if(mode==='enquiry')record(val);else answer(val);}
-        function guess(t){var s=t.toLowerCase();if(/hire|quote|enquir|inquir|start|contact/.test(s))return 'quote';if(/price|cost|estimate|calculat|budget/.test(s))return 'estimate';if(/service|do you|help|skill/.test(s))return 'services';if(/work|project|portfolio/.test(s))return 'work';if(/who|about|abdul|experience|year/.test(s))return 'about';return null;}
-        form.onsubmit=function(e){e.preventDefault();var t=input.value.trim();if(!t)return;input.value='';me(t);if(mode==='enquiry')record(t);else answer(guess(t)||'menu');};
+        function guess(t){var s=t.toLowerCase();if(/whatsapp|wa\b/.test(s))return 'whatsapp';if(/hire|quote|enquir|inquir|start|contact/.test(s))return 'quote';if(/price|cost|estimate|calculat|budget/.test(s))return 'estimate';if(/service|do you|help|skill/.test(s))return 'services';if(/work|project|portfolio/.test(s))return 'work';if(/who|about|abdul|experience|year/.test(s))return 'about';return null;}
+        form.onsubmit=function(e){e.preventDefault();var t=input.value.trim();if(!t)return;input.value='';me(t);if(mode==='enquiry')record(t);else if(mode==='wa')waRecord(t);else answer(guess(t)||'menu');};
         function open(){chat.hidden=false;launch.hidden=true;if(!started){started=true;bot("👋 Hi! I'm <b>Abdul's assistant</b>. Ask about his work, get an instant price estimate, or send him a project enquiry.",MENU,260);}setTimeout(function(){input.focus();},300);}
         function close(){chat.hidden=true;launch.hidden=false;}
         window.arkOpenChat=open;
         launch.onclick=open;closeBtn.onclick=close;
+        var waBtn=document.getElementById('arkWa');
+        if(waBtn)waBtn.onclick=function(){if(chat.hidden)open();startWA();};
         if(!window.__arkEsc){window.__arkEsc=true;document.addEventListener('keydown',function(e){if(e.key==='Escape'){var c=document.getElementById('arkChat');if(c&&!c.hidden){c.hidden=true;var l=document.getElementById('arkLaunch');if(l)l.hidden=false;}}});}
       }
 

@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { siWhatsapp } from 'simple-icons';
 ---
 <Base active="contact" title="Contact — Abdul Rehman Khan" description="Get in touch with Abdul Rehman Khan for web development, e-commerce, automation and cloud projects.">
   <section>
@@ -15,12 +16,17 @@ import Base from '../layouts/Base.astro';
             <select id="cf-type"><option>New website</option><option>Redesign</option><option>E-commerce store</option><option>Web app</option><option>Automation / workflow</option><option>Other</option></select>
           </div>
           <div class="field"><label for="cf-msg">Message</label><textarea id="cf-msg" required placeholder="What are you looking to build?"></textarea></div>
-          <button type="submit" class="btn primary">Send message →</button>
-          <p class="form-note">Opens your email app with everything filled in, addressed to Abdul.</p>
+          <div class="hero-cta" style="gap:10px;">
+            <button type="submit" class="btn primary">Send via email →</button>
+            <button type="button" id="waBtn" class="btn wa"><svg viewBox="0 0 24 24" width="16" height="16" style="fill:currentColor" aria-hidden="true"><path d={siWhatsapp.path} /></svg> WhatsApp</button>
+          </div>
+          <p class="form-note">Email opens your mail app · WhatsApp opens a chat — both pre-filled with your name &amp; message.</p>
         </form>
         <div class="contact-info reveal">
           <div class="info-row"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16v12H4z" stroke="currentColor" stroke-width="1.7"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.7"/></svg></span>
             <div><h4>Email</h4><a href="mailto:ark.educationalist@gmail.com">ark.educationalist@gmail.com</a></div></div>
+          <div class="info-row"><span class="ic"><svg viewBox="0 0 24 24" style="fill:currentColor" aria-hidden="true"><path d={siWhatsapp.path} /></svg></span>
+            <div><h4>WhatsApp</h4><a href="https://wa.me/923159429998" target="_blank" rel="noopener">+92 315 9429998</a></div></div>
           <div class="info-row"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.1 7-11.5a7 7 0 1 0-14 0C5 14.9 12 21 12 21Z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="9.5" r="2.4" stroke="currentColor" stroke-width="1.7"/></svg></span>
             <div><h4>Location</h4><p>Karachi, Pakistan · Open to EU / UK remote</p></div></div>
           <div class="info-row"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M8 12h8M12 8v8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/></svg></span>
@@ -39,13 +45,20 @@ import Base from '../layouts/Base.astro';
   <script is:inline>
     document.addEventListener('astro:page-load', function(){
       var f=document.getElementById('contactForm'); if(!f) return;
+      function vals(){return {n:document.getElementById('cf-name').value.trim(),em:document.getElementById('cf-email').value.trim(),t:document.getElementById('cf-type').value,m:document.getElementById('cf-msg').value.trim()};}
       f.onsubmit=function(e){
-        e.preventDefault();
-        var n=document.getElementById('cf-name').value.trim(),em=document.getElementById('cf-email').value.trim(),
-            t=document.getElementById('cf-type').value,m=document.getElementById('cf-msg').value.trim();
-        var subject='Project enquiry — '+n+' ('+t+')';
-        var body='Name: '+n+'\nEmail: '+em+'\nProject type: '+t+'\n\nMessage:\n'+m;
+        e.preventDefault();var v=vals();
+        var subject='Project enquiry — '+v.n+' ('+v.t+')';
+        var body='Name: '+v.n+'\nEmail: '+v.em+'\nProject type: '+v.t+'\n\nMessage:\n'+v.m;
         window.location.href='mailto:ark.educationalist@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+      };
+      var wa=document.getElementById('waBtn');
+      if(wa) wa.onclick=function(){
+        var v=vals();
+        if(!v.n){document.getElementById('cf-name').focus();return;}
+        if(!v.m){document.getElementById('cf-msg').focus();return;}
+        var text="Hi Abdul, I'm "+v.n+"."+(v.t?" ("+v.t+")":"")+" "+v.m;
+        window.open('https://wa.me/923159429998?text='+encodeURIComponent(text),'_blank','noopener');
       };
     });
   </script>

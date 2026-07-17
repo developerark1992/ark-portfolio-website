@@ -15,7 +15,7 @@ npm run sync       # pull new projects from MEGA (needs `megatools` installed)
    ```bash
    git init && git add -A && git commit -m "init"
    git branch -M main
-   git remote add origin https://github.com/<you>/abdul-portfolio.git
+   git remote add origin https://github.com/developerark1992/personal-portfolio.git
    git push -u origin main
    ```
 2. Go to **vercel.com/new** → **Import** the repo. Vercel auto-detects Astro (build `astro build`, output `dist`). Click **Deploy**.
