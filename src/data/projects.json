@@ -662,5 +662,61 @@
   "category": "Corporate",
   "live": null,
   "img": "/images/projects/woodlandsqb.webp"
+ },
+ {
+  "slug": "krystosoft-new",
+  "title": "Krystosoft New",
+  "platform": "WordPress",
+  "category": "Corporate",
+  "live": null,
+  "img": "/images/projects/krystosoft-new.webp"
+ },
+ {
+  "slug": "accessibilitypartners",
+  "title": "Accessibilitypartners",
+  "platform": "WordPress",
+  "category": "Services",
+  "live": "https://accessibilitypartners.ca",
+  "img": "/images/projects/accessibilitypartners.webp"
+ },
+ {
+  "slug": "drumerpainrelief",
+  "title": "Drumerpainrelief",
+  "platform": "WordPress",
+  "category": "Healthcare",
+  "live": "https://drumerpainrelief.pk",
+  "img": "/images/projects/drumerpainrelief.webp"
+ },
+ {
+  "slug": "mermaidpublishers-services",
+  "title": "Mermaidpublishers Services",
+  "platform": "WordPress",
+  "category": "Education & Media",
+  "live": null,
+  "img": "/images/projects/mermaidpublishers-services.webp"
+ },
+ {
+  "slug": "staging-fynchconsulting",
+  "title": "Staging Fynchconsulting",
+  "platform": "WordPress",
+  "category": "Services",
+  "live": null,
+  "img": "/images/projects/staging-fynchconsulting.webp"
+ },
+ {
+  "slug": "thenextac-portfolio",
+  "title": "Thenextac Portfolio",
+  "platform": "WordPress",
+  "category": "Corporate",
+  "live": null,
+  "img": "/images/projects/thenextac-portfolio.webp"
+ },
+ {
+  "slug": "wikicyclopedia-landing-page",
+  "title": "Wikicyclopedia Landing Page",
+  "platform": "WordPress",
+  "category": "Education & Media",
+  "live": null,
+  "img": "/images/projects/wikicyclopedia-landing-page.webp"
  }
 ]
