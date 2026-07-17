@@ -1,5 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
+import IconChip from '../components/IconChip.astro';
+import { groups } from '../data/tech.mjs';
 const experience = [
   { when:'2026 — Present', role:'Senior CMS Developer / DevOps Specialist', co:'Chameleon Ideas Inc.', d:'Production websites, deployments, hosting and client delivery.' },
   { when:'2024 — 2026', role:'Senior Software Developer / Team Lead', co:'Websity Digital', d:'Led CMS & web delivery — WordPress, WooCommerce, Webflow, Shopify, AWS.' },
@@ -47,8 +49,11 @@ const skills = [
     <div class="wrap">
       <div class="reveal" style="margin-bottom:44px;"><p class="eyebrow">Expertise</p><h2 class="sec-title">Skills &amp; tools</h2></div>
       <div class="skill-grid">
-        {skills.map((s) => (
-          <div class="skill-card reveal"><span class="num">{s.n}</span><h3>{s.t}</h3><ul>{s.s.map((x)=> <li>{x}</li>)}</ul></div>
+        {groups.map((g) => (
+          <div class="skill-card reveal">
+            <span class="num">{g.n}</span><h3>{g.t}</h3>
+            <div class="tech-row">{g.items.map((t) => <IconChip label={t.label} path={t.path} />)}</div>
+          </div>
         ))}
       </div>
     </div>

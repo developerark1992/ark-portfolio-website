@@ -1,29 +1,29 @@
 ---
 import Base from '../layouts/Base.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import IconChip from '../components/IconChip.astro';
 import projects from '../data/projects.json';
+import { groups, allTech } from '../data/tech.mjs';
 
 const featuredSlugs = ['prescott-uae','hepius','galaxy-pharma','stone-gym-solutions','accessibility-partners','takada-asset-management'];
 let featured = featuredSlugs.map((s) => projects.find((p) => p.slug === s)).filter(Boolean);
 if (featured.length < 6) featured = featured.concat(projects.filter((p) => !featured.includes(p))).slice(0, 6);
-const skills = [
-  { n:'01', t:'CMS & E-commerce', s:['WordPress','WooCommerce','Shopify','Webflow','Wix','OpenCart'] },
-  { n:'02', t:'Frontend', s:['HTML5/CSS3','JavaScript ES6+','React','Tailwind','SASS','Bootstrap'] },
-  { n:'03', t:'Backend & Data', s:['PHP','MySQL','C#/.NET','PostgreSQL','REST APIs','Firebase'] },
-  { n:'04', t:'DevOps, Cloud & Automation', s:['AWS','Git & CI/CD','n8n','Make','Zapier','SSL/DNS'] },
-];
+const marquee = allTech.concat(allTech);
 ---
 <Base active="home">
   <header class="hero">
-    <div class="glow"></div>
+    <div class="aurora"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+    <div class="grid-ov"></div>
+    <div class="spot" id="heroSpot"></div>
     <div class="wrap hero-grid">
       <div>
         <p class="eyebrow reveal">Software Engineer · Karachi, PK</p>
-        <h1 class="reveal">Engineering<br>software with <em>craft</em>.</h1>
-        <p class="sub reveal">I'm Abdul — I build <b>fast, accessible web platforms</b> end to end, from CMS and e-commerce to full-stack apps, and <b>automate</b> the operational work behind them. 8+ years, shipped to production.</p>
+        <h1 class="reveal">Abdul&nbsp;Rehman<br><em>Khan.</em></h1>
+        <p class="hero-kicker mono reveal">&gt; <span class="rot" id="rot">Software Engineer</span></p>
+        <p class="sub reveal">I build <b>fast, accessible web platforms</b> end to end — from CMS and e-commerce to full-stack apps — and <b>automate</b> the operational work behind them. 8+ years, shipped to production.</p>
         <div class="hero-cta reveal">
           <a href="/projects" class="btn primary">View my work</a>
-          <a href="/contact" class="btn ghost">Start a project</a>
+          <a href="/estimate" class="btn ghost">Get an estimate</a>
           <span class="avail"><span class="pulse"></span>Available for new work</span>
         </div>
       </div>
@@ -36,8 +36,7 @@ const skills = [
   </header>
 
   <div class="wrap"><div class="marquee reveal"><div class="track">
-    <span>WordPress</span><span>WooCommerce</span><span>Shopify</span><span>React</span><span>PHP</span><span>AWS</span><span>n8n</span><span>Make</span><span>Zapier</span><span>C# / .NET</span>
-    <span>WordPress</span><span>WooCommerce</span><span>Shopify</span><span>React</span><span>PHP</span><span>AWS</span><span>n8n</span><span>Make</span><span>Zapier</span><span>C# / .NET</span>
+    {marquee.map((t) => <span class="techchip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={t.path} /></svg><em>{t.label}</em></span>)}
   </div></div></div>
 
   <section>
@@ -72,8 +71,11 @@ const skills = [
     <div class="wrap">
       <div class="reveal" style="margin-bottom:44px;"><p class="eyebrow">Toolkit</p><h2 class="sec-title">Skills &amp; technologies</h2></div>
       <div class="skill-grid">
-        {skills.map((s) => (
-          <div class="skill-card reveal"><span class="num">{s.n}</span><h3>{s.t}</h3><ul>{s.s.map((x)=> <li>{x}</li>)}</ul></div>
+        {groups.map((g) => (
+          <div class="skill-card reveal">
+            <span class="num">{g.n}</span><h3>{g.t}</h3>
+            <div class="tech-row">{g.items.map((t) => <IconChip label={t.label} path={t.path} />)}</div>
+          </div>
         ))}
       </div>
     </div>
@@ -95,7 +97,7 @@ const skills = [
   <section>
     <div class="wrap">
       <div class="cta-band reveal"><div class="glow"></div>
-        <h2 class="serif">Have a project in mind?</h2>
+        <h2>Have a project in mind?</h2>
         <p>Web builds, e-commerce, automation or cloud — from first idea to a live, production site.</p>
         <div class="hero-cta"><a href="/estimate" class="btn primary">Get an instant estimate</a><a href="/contact" class="btn ghost">Get in touch</a></div>
       </div>

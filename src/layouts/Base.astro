@@ -91,11 +91,29 @@ const AV = '/images/avatar.webp';
         var FEAT={cms:[150,400],payments:[500,1500],multilang:[300,800],booking:[250,700],seo:[150,500],anim:[200,700],a11y:[250,800],automation:[300,1500]};
         var FEAT_LABEL={cms:"CMS / blog",payments:"Payments / cart",multilang:"Multilingual",booking:"Booking",seo:"SEO setup",anim:"Animations",a11y:"Accessibility",automation:"Automations",maint:"Maintenance"};
         var MAINT_MONTH=[90,180];
-        var CUR={USD:{m:1,s:"$"},EUR:{m:0.92,s:"€"},GBP:{m:0.79,s:"£"}};
-        var state={type:"landing",pages:5,platform:"wp",design:"custom",features:{},timeline:"standard",currency:"USD"};
+        // Prices computed in USD internally, displayed in the visitor's currency.
+        // m = value_in_currency per 1 USD · step = rounding.
+        var CUR={
+          PKR:{m:280,s:"₨",step:5000}, USD:{m:1,s:"$",step:50}, EUR:{m:0.92,s:"€",step:50},
+          GBP:{m:0.79,s:"£",step:50}, AED:{m:3.67,s:"AED ",step:100}, INR:{m:83,s:"₹",step:500},
+          SAR:{m:3.75,s:"SAR ",step:100}, CAD:{m:1.37,s:"C$",step:50}, AUD:{m:1.5,s:"A$",step:50}
+        };
+        function autoCurrency(){
+          try{
+            var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone)||'';
+            var map={'Asia/Karachi':'PKR','Asia/Dubai':'AED','Asia/Muscat':'AED','Asia/Kolkata':'INR','Asia/Calcutta':'INR','Europe/London':'GBP','Asia/Riyadh':'SAR','America/Toronto':'CAD','America/Vancouver':'CAD','America/Edmonton':'CAD'};
+            if(map[tz])return map[tz];
+            if(/^Europe\//.test(tz))return 'EUR';
+            if(/^Australia\//.test(tz))return 'AUD';
+            if(/^America\//.test(tz))return 'USD';
+            if(/^Asia\//.test(tz))return 'PKR';
+          }catch(e){}
+          return 'PKR';
+        }
+        var state={type:"landing",pages:5,platform:"wp",design:"custom",features:{},timeline:"standard",currency:autoCurrency()};
         var $=function(id){return document.getElementById(id);};
         function roundTo(n,s){return Math.round(n/s)*s;}
-        function fmtVal(v){var c=CUR[state.currency];return c.s+roundTo(v*c.m,50).toLocaleString('en-US');}
+        function fmtVal(v){var c=CUR[state.currency]||CUR.USD;return c.s+roundTo(v*c.m,c.step||50).toLocaleString('en-US');}
         function compute(){
           var t=TYPES[state.type],min=t.base[0],max=t.base[1],extra=Math.max(0,state.pages-t.incl);
           min+=extra*PER_PAGE[0];max+=extra*PER_PAGE[1];
@@ -143,6 +161,9 @@ const AV = '/images/avatar.webp';
           window.location.href="mailto:"+EMAIL+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
         });
         $('calcChat').addEventListener('click',function(){if(window.arkOpenChat)window.arkOpenChat();});
+        // reflect the auto-detected currency in the toggle
+        var curWrap=document.querySelector('[data-group="currency"]');
+        if(curWrap){var m=curWrap.querySelector('[data-val="'+state.currency+'"]');curWrap.querySelectorAll('button').forEach(function(x){x.classList.toggle('active',x===m);});}
         render();
       }
 
@@ -207,7 +228,26 @@ const AV = '/images/avatar.webp';
           document.querySelectorAll('#allProjects .proj').forEach(function(c){var show=f==='all'||c.getAttribute('data-cat')===f;c.classList.toggle('hide',!show);});
         };
       }
-      function initPage(){ setYear(); initReveal(); initMenu(); initFilters(); initCalc(); initChat(); }
+      function initHero(){
+        var rot=document.getElementById('rot');
+        var REDUCE=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if(rot && !REDUCE){
+          var roles=["Software Engineer","Full-Stack Developer","CMS Architect","Automation Specialist","DevOps & Cloud"];
+          var i=0,ch=0,del=false;
+          (function tick(){
+            var w=roles[i]; ch+=del?-1:1; rot.textContent=w.slice(0,ch);
+            var d=del?45:95;
+            if(!del&&ch===w.length){del=true;d=1400;}
+            else if(del&&ch===0){del=false;i=(i+1)%roles.length;d=350;}
+            rot._t=setTimeout(tick,d);
+          })();
+        } else if(rot){ rot.textContent="Software Engineer"; }
+        var spot=document.getElementById('heroSpot'),hero=document.querySelector('.hero'),root=document.documentElement;
+        if(spot&&hero&&!REDUCE&&!window.matchMedia('(pointer: coarse)').matches){
+          hero.addEventListener('pointermove',function(e){var r=hero.getBoundingClientRect();root.style.setProperty('--mx',(e.clientX-r.left)+'px');root.style.setProperty('--my',(e.clientY-r.top)+'px');});
+        }
+      }
+      function initPage(){ setYear(); initReveal(); initMenu(); initFilters(); initHero(); initCalc(); initChat(); }
       document.addEventListener('astro:page-load', initPage);
     })();
   </script>

@@ -10,7 +10,8 @@
     "sync": "node scripts/sync-mega.mjs"
   },
   "dependencies": {
-    "astro": "^5.18.0"
+    "astro": "^5.18.0",
+    "simple-icons": "^16.26.0"
   },
   "devDependencies": {
     "sharp": "^0.33.5"
