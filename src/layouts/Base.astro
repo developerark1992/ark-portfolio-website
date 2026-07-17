@@ -90,19 +90,19 @@ const AV = '/images/avatar.webp';
       /* ---------- calculator ---------- */
       function initCalc(){
         if(!document.getElementById('estMin'))return;
-        var TYPES={landing:{base:[400,800],incl:1,label:"Landing page"},website:{base:[900,2500],incl:5,label:"Multi-page site"},ecommerce:{base:[1800,5000],incl:8,label:"E-commerce"},webapp:{base:[3000,9000],incl:6,label:"Web app"},automation:{base:[500,2500],incl:1,label:"Automation"}};
-        var PER_PAGE=[70,140];
+        // Base prices in PKR (Pakistani-market rates); converted to other currencies below.
+        var TYPES={landing:{base:[20000,50000],incl:1,label:"Landing page"},website:{base:[50000,150000],incl:5,label:"Multi-page site"},ecommerce:{base:[120000,400000],incl:8,label:"E-commerce"},webapp:{base:[250000,800000],incl:6,label:"Web app"},automation:{base:[40000,200000],incl:1,label:"Automation"}};
+        var PER_PAGE=[8000,18000];
         var PLATFORM={wp:1,shopify:1,custom:1.2,nosure:1,_label:{wp:"WordPress",shopify:"Shopify",custom:"Custom build",nosure:"Not sure"}};
         var DESIGN={template:1,custom:1.25,premium:1.55,_label:{template:"Template",custom:"Custom design",premium:"Premium bespoke"}};
-        var FEAT={cms:[150,400],payments:[500,1500],multilang:[300,800],booking:[250,700],seo:[150,500],anim:[200,700],a11y:[250,800],automation:[300,1500]};
+        var FEAT={cms:[15000,40000],payments:[40000,120000],multilang:[25000,70000],booking:[20000,60000],seo:[15000,45000],anim:[20000,60000],a11y:[20000,70000],automation:[30000,150000]};
         var FEAT_LABEL={cms:"CMS / blog",payments:"Payments / cart",multilang:"Multilingual",booking:"Booking",seo:"SEO setup",anim:"Animations",a11y:"Accessibility",automation:"Automations",maint:"Maintenance"};
-        var MAINT_MONTH=[90,180];
-        // Prices computed in USD internally, displayed in the visitor's currency.
-        // m = value_in_currency per 1 USD · step = rounding.
+        var MAINT_MONTH=[8000,20000];
+        // Prices are in PKR; m = value_in_currency per 1 PKR (market FX). step = rounding.
         var CUR={
-          PKR:{m:280,s:"₨",step:5000}, USD:{m:1,s:"$",step:50}, EUR:{m:0.92,s:"€",step:50},
-          GBP:{m:0.79,s:"£",step:50}, AED:{m:3.67,s:"AED ",step:100}, INR:{m:83,s:"₹",step:500},
-          SAR:{m:3.75,s:"SAR ",step:100}, CAD:{m:1.37,s:"C$",step:50}, AUD:{m:1.5,s:"A$",step:50}
+          PKR:{m:1,s:"₨",step:2000}, USD:{m:1/281,s:"$",step:10}, EUR:{m:1/305,s:"€",step:10},
+          GBP:{m:1/356,s:"£",step:10}, AED:{m:1/76,s:"AED ",step:25}, INR:{m:1/3.37,s:"₹",step:100},
+          SAR:{m:1/75,s:"SAR ",step:25}, CAD:{m:1/206,s:"C$",step:10}, AUD:{m:1/187,s:"A$",step:10}
         };
         function autoCurrency(){
           try{
@@ -131,7 +131,7 @@ const AV = '/images/avatar.webp';
           if(state.platform==="custom")bd.push({l:"Custom platform",v:"+20%"});
           if(state.design!=="template")bd.push({l:DESIGN._label[state.design],v:"+"+Math.round((dm-1)*100)+"%"});
           if(state.timeline==="rush"){min*=1.25;max*=1.25;bd.push({l:"Rush timeline",v:"+25%"});}
-          return {min:min,max:max,monthly:monthly,scope:Math.max(0,Math.min(1,(max-400)/(13000-400))),breakdown:bd};
+          return {min:min,max:max,monthly:monthly,scope:Math.max(0,Math.min(1,(max-20000)/(2000000-20000))),breakdown:bd};
         }
         var REDUCE=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         function animateNum(el,to){

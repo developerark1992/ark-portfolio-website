@@ -27,11 +27,11 @@ const OVERRIDE = {
   'boatique staffing':'https://boatiquestaffing.com','evad':'https://evad-me.com',
 };
 const CATS = [
-  ['Healthcare',['pharma','clinic','pain','medical','health','hepius','dental','dentist','orthodont','pediatric','rapidmd','md']],
-  ['E-commerce',['shop','store','shopify','ecommerce','protein','gym','nail','oats','bluefish','fitngrip','clay']],
-  ['Real Estate',['real','estate','construction','costruction','steel','prescott','lascolinas','madinat','perimeter']],
+  ['Healthcare',['pharma','clinic','pain','medical','health','hepius','dental','dentist','dentique','orthodont','pediatric','rapidmd','surrogacy','schein']],
+  ['E-commerce',['shop','store','shopify','ecommerce','protein','gym','oats','bluefish','fitngrip','clay','cosmetic']],
+  ['Real Estate',['real','estate','construction','costruction','steel','prescott','station']],
   ['Finance',['asset','credit','capital','takada','stakzz','numerix']],
-  ['Services',['staffing','consulting','solutions','partners','studio','agency','advertising','virtual','seo','turnaround','smartground','enterprises','fzco','lubricants']],
+  ['Services',['staffing','consulting','solutions','partners','agency','advertising','virtual','seo','turnaround','enterprises','fzco','lubricants','law','legal','yacht','laundry','nail','salon','spa','studio']],
   ['Education & Media',['wedding','sarani','wiki','school','uni','publish','publisher','media','taiko','tutoring']],
   ['AI & Tech',['ai','tech','data','clatter','roach','vanguard','epsilon']],
 ];
