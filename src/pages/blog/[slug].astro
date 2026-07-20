@@ -1,0 +1,32 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const fmt = (d) => d.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+const readMin = Math.max(1, Math.round((post.body || '').split(/\s+/).length / 200));
+---
+<Base active="blog" title={`${post.data.title} — Abdul Rehman Khan`} description={post.data.description}>
+  <article class="post">
+    <div class="wrap post-wrap">
+      <a href="/blog" class="post-back reveal">← All posts</a>
+      <p class="eyebrow reveal" style="margin-top:14px;">{post.data.category}</p>
+      <h1 class="reveal">{post.data.title}</h1>
+      <p class="post-lede reveal">{post.data.description}</p>
+      <div class="post-meta reveal">By {post.data.author} · {fmt(post.data.date)} · {readMin} min read</div>
+      <div class="post-body reveal">
+        <Content />
+      </div>
+      <div class="post-cta reveal">
+        <div><b>Have a project like this?</b><span>Let's talk about what you're building.</span></div>
+        <a href="/contact" class="btn primary">Book a strategy call</a>
+      </div>
+    </div>
+  </article>
+</Base>

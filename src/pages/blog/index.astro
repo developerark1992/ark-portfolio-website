@@ -1,0 +1,61 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const counts = {};
+posts.forEach((p) => { counts[p.data.category] = (counts[p.data.category] || 0) + 1; });
+const cats = [['all', 'All', posts.length]].concat(Object.keys(counts).sort().map((c) => [c, c, counts[c]]));
+const fmt = (d) => d.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+const readMin = (p) => Math.max(1, Math.round((p.body || '').split(/\s+/).length / 200));
+---
+<Base active="blog" title="Blog — Abdul Rehman Khan" description="Practical notes on CMS development, web platforms, hosting, DevOps and AI automation by Abdul Rehman Khan.">
+  <section style="padding-bottom:0;">
+    <div class="wrap">
+      <p class="eyebrow reveal">Blog</p>
+      <h1 class="reveal" style="font-size:clamp(32px,5.4vw,58px);margin-bottom:16px;">Notes &amp; guides.</h1>
+      <p class="sec-lead reveal" style="margin-bottom:32px;">Practical writing on CMS platforms, hosting, DevOps and AI automation — what actually works on real client projects.</p>
+      <div class="filters reveal" id="blogFilters">
+        {cats.map(([key, label, n], i) => (
+          <button class={`filt ${i === 0 ? 'active' : ''}`} data-filter={key}>{label}<span class="count">{n}</span></button>
+        ))}
+      </div>
+    </div>
+  </section>
+  <section style="padding-top:28px;">
+    <div class="wrap">
+      {posts.length === 0 ? (
+        <p class="sec-lead">No posts yet — check back soon.</p>
+      ) : (
+        <div class="blog-grid" id="blogGrid">
+          {posts.map((p) => (
+            <a class="blog-card" href={`/blog/${p.id}`} data-cat={p.data.category}>
+              <div class="blog-card-top">
+                <span class="blog-cat">{p.data.category}</span>
+                <span class="blog-meta">{fmt(p.data.date)} · {readMin(p)} min</span>
+              </div>
+              <h2>{p.data.title}</h2>
+              <p>{p.data.description}</p>
+              <span class="blog-more">Read article →</span>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+  <script is:inline>
+    document.addEventListener('astro:page-load', function(){
+      var wrap=document.getElementById('blogFilters'); if(!wrap) return;
+      wrap.addEventListener('click', function(e){
+        var b=e.target.closest('.filt'); if(!b) return;
+        wrap.querySelectorAll('.filt').forEach(function(x){x.classList.toggle('active',x===b);});
+        var f=b.getAttribute('data-filter');
+        document.querySelectorAll('#blogGrid .blog-card').forEach(function(c){
+          c.style.display=(f==='all'||c.getAttribute('data-cat')===f)?'':'none';
+        });
+      });
+    });
+  </script>
+</Base>

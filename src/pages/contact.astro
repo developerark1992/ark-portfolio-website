@@ -103,7 +103,7 @@ const trust = [
           fetch('/api/contact',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload)})
             .then(function(r){return r.json();})
             .then(function(d){
-              if(d&&d.ok){f.reset();statusEl.style.color='var(--accent)';statusEl.textContent='✓ Sent! I’ll get back to you within a day.';btn.textContent='Sent ✓';}
+              if(d&&d.ok){f.reset();statusEl.style.color='var(--accent)';statusEl.textContent='✓ Sent! Redirecting…';btn.textContent='Sent ✓';window.location.href='/thank-you';}
               else{ // not configured or send failed → open the user's mail app pre-filled
                 statusEl.style.color='';statusEl.textContent='Opening your email app…';btn.disabled=false;btn.textContent=orig;mailtoFallback();
               }
