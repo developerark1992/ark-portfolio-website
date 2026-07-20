@@ -4,7 +4,8 @@
 // If the key is missing or the call fails, we return ok:false so the client
 // falls back to its built-in scripted assistant.
 
-const MODEL = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
+// Ordered fallback list — first that responds wins. Override the primary with GEMINI_MODEL.
+const MODELS = [process.env.GEMINI_MODEL, 'gemini-flash-lite-latest', 'gemini-flash-latest', 'gemini-2.0-flash'].filter(Boolean);
 
 const SYSTEM = `You are the assistant on Abdul Rehman Khan's portfolio site (arkdesigningbureau.com).
 Abdul is a solo freelance CMS EXPERT and software engineer based in Karachi, Pakistan, with 8+ years of experience and 90+ projects shipped.
@@ -36,26 +37,35 @@ export default async function handler(req, res) {
     }
     contents.push({ role: 'user', parts: [{ text: message }] });
 
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${encodeURIComponent(key)}`;
-    const r = await fetch(url, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({
-        systemInstruction: { parts: [{ text: SYSTEM }] },
-        contents,
-        generationConfig: { temperature: 0.6, maxOutputTokens: 400 },
-      }),
+    const payload = JSON.stringify({
+      systemInstruction: { parts: [{ text: SYSTEM }] },
+      contents,
+      generationConfig: { temperature: 0.6, maxOutputTokens: 400 },
     });
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-    if (!r.ok) {
-      const detail = await r.text().catch(() => '');
-      res.status(200).json({ ok: false, error: 'upstream', status: r.status, detail: detail.slice(0, 300) });
-      return;
+    let last = { status: 0, detail: '', model: '' };
+    // try each model; retry once on a transient 503 ("high demand")
+    for (const model of MODELS) {
+      for (let attempt = 0; attempt < 2; attempt++) {
+        const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json', 'x-goog-api-key': key },
+          body: payload,
+        });
+        if (r.ok) {
+          const data = await r.json();
+          const reply = (data.candidates?.[0]?.content?.parts || []).map((p) => p.text || '').join('').trim();
+          if (reply) { res.status(200).json({ ok: true, reply, model }); return; }
+          last = { status: 200, detail: 'empty', model };
+          break; // empty reply → try next model
+        }
+        last = { status: r.status, detail: (await r.text().catch(() => '')).slice(0, 200), model };
+        if (r.status === 503 && attempt === 0) { await sleep(800); continue; } // transient overload → one retry
+        break; // 404 / 429 / other → move to next model
+      }
     }
-    const data = await r.json();
-    const reply = (data.candidates?.[0]?.content?.parts || []).map((p) => p.text || '').join('').trim();
-    if (!reply) { res.status(200).json({ ok: false, error: 'no-reply' }); return; }
-    res.status(200).json({ ok: true, reply });
+    res.status(200).json({ ok: false, error: 'upstream', status: last.status, model: last.model, detail: last.detail });
   } catch (e) {
     res.status(200).json({ ok: false, error: 'exception', detail: String(e).slice(0, 300) });
   }
