@@ -1,28 +1,35 @@
 ---
+export const prerender = false; // server-rendered from the database
 import Base from '../../layouts/Base.astro';
-import { getCollection, render } from 'astro:content';
+import { supabase, supabaseConfigured } from '../../lib/supabase.ts';
+import { marked } from 'marked';
 
-export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ data }) => !data.draft);
-  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+const { slug } = Astro.params;
+let post = null;
+if (supabaseConfigured) {
+  const { data } = await supabase
+    .from('posts')
+    .select('slug,title,description,body,created_at,cover,author:author,categories(name)')
+    .eq('slug', slug).eq('published', true).maybeSingle();
+  post = data || null;
 }
+if (!post) return Astro.redirect('/404');
 
-const { post } = Astro.props;
-const { Content } = await render(post);
-const fmt = (d) => d.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+const category = (post.categories && post.categories.name) || 'General';
+const html = marked.parse(post.body || '', { async: false });
+const fmt = (d) => new Date(d).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
 const readMin = Math.max(1, Math.round((post.body || '').split(/\s+/).length / 200));
 ---
-<Base active="blog" title={`${post.data.title} — Abdul Rehman Khan`} description={post.data.description}>
+<Base active="blog" title={`${post.title} — Abdul Rehman Khan`} description={post.description}>
   <article class="post">
     <div class="wrap post-wrap">
       <a href="/blog" class="post-back reveal">← All posts</a>
-      <p class="eyebrow reveal" style="margin-top:14px;">{post.data.category}</p>
-      <h1 class="reveal">{post.data.title}</h1>
-      <p class="post-lede reveal">{post.data.description}</p>
-      <div class="post-meta reveal">By {post.data.author} · {fmt(post.data.date)} · {readMin} min read</div>
-      <div class="post-body reveal">
-        <Content />
-      </div>
+      <p class="eyebrow reveal" style="margin-top:14px;">{category}</p>
+      <h1 class="reveal">{post.title}</h1>
+      <p class="post-lede reveal">{post.description}</p>
+      <div class="post-meta reveal">By Abdul Rehman Khan · {fmt(post.created_at)} · {readMin} min read</div>
+      {post.cover && <img class="post-cover reveal" src={post.cover} alt={post.title} />}
+      <div class="post-body reveal" set:html={html}></div>
       <div class="post-cta reveal">
         <div><b>Have a project like this?</b><span>Let's talk about what you're building.</span></div>
         <a href="/contact" class="btn primary">Book a strategy call</a>

@@ -1,8 +1,12 @@
 import { defineConfig } from 'astro/config';
+import vercel from '@astrojs/vercel';
 
-// Static output — deploys to Vercel/Netlify/Cloudflare as pure static files (fastest).
+// Hybrid: pages are static by default (fastest); routes that opt in with
+// `export const prerender = false` render on-demand on Vercel — used by the
+// DB-backed blog + dashboard so posts publish instantly without a rebuild.
 export default defineConfig({
-  site: 'https://abdul-portfolio.vercel.app',
+  site: 'https://arkdesigningbureau.com',
   output: 'static',
+  adapter: vercel(),
   build: { inlineStylesheets: 'auto' },
 });

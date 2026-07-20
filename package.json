@@ -10,7 +10,10 @@
     "sync": "node scripts/sync-mega.mjs"
   },
   "dependencies": {
+    "@astrojs/vercel": "^8.2.11",
+    "@supabase/supabase-js": "^2.110.7",
     "astro": "^5.18.0",
+    "marked": "^18.0.6",
     "nodemailer": "^9.0.3",
     "simple-icons": "^16.26.0"
   },

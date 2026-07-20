@@ -5,3 +5,5 @@ dist/
 .vercel/
 *.log
 mega-cache/
+.env
+.env.*

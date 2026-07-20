@@ -1,0 +1,180 @@
+---
+export const prerender = false;
+import Base from '../layouts/Base.astro';
+---
+<Base active="" title="Dashboard — Abdul Rehman Khan" description="Admin dashboard">
+  <section class="dash">
+    <div class="wrap">
+      <!-- login -->
+      <div id="dashLogin" class="dash-login" hidden>
+        <div class="dash-card">
+          <p class="eyebrow" style="justify-content:center;">Admin</p>
+          <h1 style="font-size:26px;text-align:center;margin-bottom:6px;">Dashboard login</h1>
+          <p class="sec-lead" style="text-align:center;font-size:14px;margin:0 auto 22px;">Sign in to manage your blog.</p>
+          <form id="loginForm">
+            <div class="field"><label for="li-email">Email</label><input id="li-email" type="email" required placeholder="you@email.com" /></div>
+            <div class="field"><label for="li-pass">Password</label><input id="li-pass" type="password" required placeholder="••••••••" /></div>
+            <button class="btn primary" style="width:100%;justify-content:center;" type="submit">Sign in →</button>
+            <p class="form-note" id="loginErr" style="color:var(--amber);"></p>
+          </form>
+        </div>
+      </div>
+
+      <!-- app -->
+      <div id="dashApp" hidden>
+        <div class="dash-bar">
+          <div><p class="eyebrow" style="margin:0;">Blog dashboard</p><h1 style="font-size:26px;">Your posts</h1></div>
+          <div class="dash-bar-actions">
+            <button class="btn ghost" id="manageCats">Categories</button>
+            <button class="btn primary" id="newPost">＋ New post</button>
+            <button class="btn ghost" id="logout">Log out</button>
+          </div>
+        </div>
+        <div id="postList" class="dash-list"></div>
+      </div>
+
+      <!-- editor drawer -->
+      <div id="editor" class="dash-editor" hidden>
+        <div class="dash-editor-inner">
+          <div class="dash-editor-head"><h2 id="editorTitle">New post</h2><button class="lb-x" id="editorClose" style="position:static;">×</button></div>
+          <div class="field"><label for="p-title">Title *</label><input id="p-title" placeholder="Post title" /></div>
+          <div class="field"><label for="p-slug">Slug *</label><input id="p-slug" placeholder="post-url-slug" /></div>
+          <div class="field"><label for="p-desc">Description / excerpt</label><textarea id="p-desc" style="min-height:64px;"></textarea></div>
+          <div class="field-row">
+            <div class="field"><label for="p-cat">Category</label><select id="p-cat"></select></div>
+            <div class="field"><label for="p-cover">Cover image URL (optional)</label><input id="p-cover" placeholder="https://…" /></div>
+          </div>
+          <div class="field"><label for="p-body">Body (Markdown)</label><textarea id="p-body" style="min-height:280px;font-family:var(--mono);font-size:13px;"></textarea></div>
+          <label class="dash-check"><input type="checkbox" id="p-pub" /> Published</label>
+          <div class="hero-cta" style="gap:10px;margin-top:8px;">
+            <button class="btn primary" id="savePost">Save post</button>
+            <button class="btn ghost" id="cancelPost">Cancel</button>
+            <span class="form-note" id="saveMsg"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- categories drawer -->
+      <div id="catDrawer" class="dash-editor" hidden>
+        <div class="dash-editor-inner" style="max-width:460px;">
+          <div class="dash-editor-head"><h2>Categories</h2><button class="lb-x" id="catClose" style="position:static;">×</button></div>
+          <div id="catList" class="dash-cats"></div>
+          <div class="field-row" style="margin-top:12px;">
+            <div class="field" style="flex:1;"><label for="c-name">New category</label><input id="c-name" placeholder="e.g. Case studies" /></div>
+          </div>
+          <button class="btn primary" id="addCat">Add category</button>
+        </div>
+      </div>
+
+      <p id="dashUnconfigured" class="sec-lead" hidden style="text-align:center;padding:60px 0;">Dashboard isn't configured yet — set <code>PUBLIC_SUPABASE_URL</code> and <code>PUBLIC_SUPABASE_ANON_KEY</code> in Vercel.</p>
+    </div>
+  </section>
+
+  <script>
+    import { supabase, supabaseConfigured } from '../lib/supabase.ts';
+
+    function initDash(){
+      const root = document.getElementById('dashApp'); if(!root) return; // not the dashboard page
+      const $ = (id) => document.getElementById(id);
+      if(!supabaseConfigured){ $('dashUnconfigured').hidden = false; return; }
+
+      const login = $('dashLogin'), app = $('dashApp'), editor = $('editor'), catDrawer = $('catDrawer');
+      const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+      let cats = [], editingId = null, slugTouched = false;
+
+      async function refresh(){
+        const [{ data: c }, { data: p }] = await Promise.all([
+          supabase.from('categories').select('*').order('name'),
+          supabase.from('posts').select('id,slug,title,published,created_at,categories(name)').order('created_at',{ascending:false}),
+        ]);
+        cats = c || [];
+        renderCatSelect(); renderPosts(p || []); renderCatList();
+      }
+      function renderCatSelect(){
+        $('p-cat').innerHTML = cats.map((c)=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');
+      }
+      function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,(c)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+      function renderPosts(posts){
+        if(!posts.length){ $('postList').innerHTML = '<p class="sec-lead">No posts yet — create your first one.</p>'; return; }
+        $('postList').innerHTML = posts.map((p)=>`
+          <div class="dash-row" data-id="${p.id}">
+            <div class="dash-row-main">
+              <span class="dash-status ${p.published?'on':'off'}">${p.published?'Published':'Draft'}</span>
+              <div><b>${esc(p.title)}</b><span class="dash-row-meta">${(p.categories&&p.categories.name)||'—'} · ${new Date(p.created_at).toLocaleDateString()}</span></div>
+            </div>
+            <div class="dash-row-actions">
+              <a class="dash-mini" href="/blog/${p.slug}" target="_blank" rel="noopener">View</a>
+              <button class="dash-mini" data-edit="${p.id}">Edit</button>
+              <button class="dash-mini danger" data-del="${p.id}">Delete</button>
+            </div>
+          </div>`).join('');
+      }
+      function renderCatList(){
+        $('catList').innerHTML = cats.map((c)=>`<div class="dash-cat-row"><span>${esc(c.name)}</span><button class="dash-mini danger" data-delcat="${c.id}">Delete</button></div>`).join('') || '<p class="form-note">No categories yet.</p>';
+      }
+
+      function openEditor(post){
+        editingId = post ? post.id : null; slugTouched = !!post;
+        $('editorTitle').textContent = post ? 'Edit post' : 'New post';
+        $('p-title').value = post?post.title:''; $('p-slug').value = post?post.slug:'';
+        $('p-desc').value = post?(post.description||''):''; $('p-body').value = post?(post.body||''):'';
+        $('p-cover').value = post?(post.cover||''):''; $('p-pub').checked = post?post.published:false;
+        if(post&&post.category_id) $('p-cat').value = post.category_id;
+        $('saveMsg').textContent=''; editor.hidden=false; document.body.style.overflow='hidden';
+      }
+      function closeEditor(){ editor.hidden=true; document.body.style.overflow=''; }
+
+      // events
+      $('p-title').addEventListener('input', function(){ if(!slugTouched) $('p-slug').value = slugify(this.value); });
+      $('p-slug').addEventListener('input', function(){ slugTouched = true; });
+      $('newPost').onclick = ()=>openEditor(null);
+      $('editorClose').onclick = $('cancelPost').onclick = closeEditor;
+      $('manageCats').onclick = ()=>{ catDrawer.hidden=false; document.body.style.overflow='hidden'; };
+      $('catClose').onclick = ()=>{ catDrawer.hidden=true; document.body.style.overflow=''; };
+      $('logout').onclick = async ()=>{ await supabase.auth.signOut(); location.reload(); };
+
+      $('postList').addEventListener('click', async (e)=>{
+        const ed=e.target.getAttribute('data-edit'), del=e.target.getAttribute('data-del');
+        if(ed){ const { data } = await supabase.from('posts').select('*').eq('id',ed).single(); openEditor(data); }
+        if(del){ if(confirm('Delete this post?')){ await supabase.from('posts').delete().eq('id',del); refresh(); } }
+      });
+      $('catList').addEventListener('click', async (e)=>{
+        const id=e.target.getAttribute('data-delcat');
+        if(id && confirm('Delete this category?')){ await supabase.from('categories').delete().eq('id',id); refresh(); }
+      });
+      $('addCat').onclick = async ()=>{
+        const name=$('c-name').value.trim(); if(!name) return;
+        await supabase.from('categories').insert({ name, slug: slugify(name) });
+        $('c-name').value=''; refresh();
+      };
+      $('savePost').onclick = async ()=>{
+        const rec = {
+          title:$('p-title').value.trim(), slug:slugify($('p-slug').value.trim()||$('p-title').value.trim()),
+          description:$('p-desc').value.trim(), body:$('p-body').value, cover:$('p-cover').value.trim()||null,
+          category_id:$('p-cat').value||null, published:$('p-pub').checked,
+        };
+        if(!rec.title||!rec.slug){ $('saveMsg').textContent='Title and slug are required.'; $('saveMsg').style.color='var(--amber)'; return; }
+        $('saveMsg').style.color=''; $('saveMsg').textContent='Saving…';
+        const q = editingId ? supabase.from('posts').update(rec).eq('id',editingId) : supabase.from('posts').insert(rec);
+        const { error } = await q;
+        if(error){ $('saveMsg').style.color='var(--amber)'; $('saveMsg').textContent=error.message; return; }
+        closeEditor(); refresh();
+      };
+
+      $('loginForm').onsubmit = async (e)=>{
+        e.preventDefault();
+        const { error } = await supabase.auth.signInWithPassword({ email:$('li-email').value.trim(), password:$('li-pass').value });
+        if(error){ $('loginErr').textContent = error.message; return; }
+        gate();
+      };
+
+      async function gate(){
+        const { data:{ session } } = await supabase.auth.getSession();
+        if(session){ login.hidden=true; app.hidden=false; refresh(); }
+        else { login.hidden=false; app.hidden=true; }
+      }
+      gate();
+    }
+    document.addEventListener('astro:page-load', initDash);
+  </script>
+</Base>
