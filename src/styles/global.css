@@ -258,6 +258,38 @@ section{padding:clamp(64px,10vh,120px) 0;}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 @media (max-width:520px){.field-row{grid-template-columns:1fr;}}
 
+/* ===== pricing packages ===== */
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:start;}
+@media (max-width:900px){.price-grid{grid-template-columns:1fr;max-width:460px;margin:0 auto;}}
+.price-card{position:relative;display:flex;flex-direction:column;gap:16px;background:var(--surface);border:1px solid var(--glass-line);border-radius:var(--r-lg);padding:30px 26px;transition:transform .3s,border-color .3s,box-shadow .3s;}
+.price-card:hover{transform:translateY(-5px);border-color:color-mix(in srgb,var(--accent) 40%,var(--glass-line));box-shadow:var(--shadow);}
+.price-card.feat{border-color:var(--accent);background:linear-gradient(180deg,var(--accent-soft),var(--surface));}
+.price-ribbon{position:absolute;top:-11px;left:26px;background:var(--accent);color:var(--on-accent);font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;padding:5px 12px;border-radius:999px;}
+.price-tag{font-family:var(--mono);font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink);}
+.price-tag em{color:var(--ink-faint);font-style:normal;}
+.price-fig{display:flex;align-items:baseline;gap:8px;margin:6px 0 4px;}
+.price-fig b{font-family:var(--serif);font-size:clamp(26px,3.4vw,34px);font-weight:600;color:var(--ink);letter-spacing:-.02em;}
+.price-unit{font-family:var(--mono);font-size:12px;color:var(--ink-faint);}
+.price-blurb{color:var(--ink-soft);font-size:14px;line-height:1.55;margin:0;}
+.price-feats{list-style:none;margin:4px 0;padding:16px 0 0;border-top:1px solid var(--line);display:grid;gap:10px;flex:1;}
+.price-feats li{position:relative;padding-left:24px;font-size:13.5px;color:var(--ink-soft);line-height:1.45;}
+.price-feats li::before{content:"✓";position:absolute;left:0;top:0;color:var(--accent);font-weight:700;}
+.price-card .btn{justify-content:center;margin-top:auto;}
+
+.addon-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;}
+@media (max-width:640px){.addon-grid{grid-template-columns:1fr;}}
+.addon{background:var(--surface-solid);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;gap:14px;}
+.addon span{font-size:14px;color:var(--ink-soft);}
+.addon b{font-family:var(--mono);font-size:12.5px;color:var(--accent);white-space:nowrap;}
+
+.faq{display:grid;gap:10px;max-width:820px;}
+.faq-item{background:var(--surface);border:1px solid var(--glass-line);border-radius:var(--r-md);padding:2px 20px;}
+.faq-item summary{cursor:pointer;list-style:none;padding:16px 0;font-size:15.5px;font-weight:600;color:var(--ink);display:flex;justify-content:space-between;align-items:center;gap:16px;}
+.faq-item summary::-webkit-details-marker{display:none;}
+.faq-item summary::after{content:"+";color:var(--accent);font-size:20px;font-weight:400;transition:transform .2s;}
+.faq-item[open] summary::after{transform:rotate(45deg);}
+.faq-item p{margin:0 0 18px;color:var(--ink-soft);font-size:14.5px;line-height:1.65;}
+
 /* contact channels + trust strip */
 .channels{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px;}
 @media (max-width:820px){.channels{grid-template-columns:1fr;}}
@@ -311,6 +343,8 @@ section{padding:clamp(64px,10vh,120px) 0;}
 .cur-b.active{background:var(--accent);color:var(--on-accent);}
 .calc-figure{font-family:var(--serif);font-size:clamp(28px,4vw,40px);font-weight:600;letter-spacing:-.02em;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1.1;}
 .calc-figure .dash{color:var(--ink-faint);margin:0 2px;}
+.calc-est-sub{font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);margin-top:6px;}
+.calc-est-sub #estPlatform{color:var(--accent);}
 .calc-monthly{font-family:var(--mono);font-size:13px;color:var(--ink-soft);margin-top:8px;}
 .calc-monthly b{color:var(--accent);}
 .calc-gauge{height:6px;border-radius:99px;background:var(--glass-line);margin:20px 0 8px;overflow:hidden;}

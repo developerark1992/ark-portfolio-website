@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import IconChip from '../components/IconChip.astro';
+import Pricing from '../components/Pricing.astro';
 import projects from '../data/projects.json';
 import { groups, allTech } from '../data/tech.mjs';
 
@@ -90,6 +91,18 @@ const marquee = allTech.concat(allTech);
         <div class="ach"><div class="v"><b>7</b></div><div class="l">Industries served</div></div>
         <div class="ach"><div class="v"><b>3</b></div><div class="l">Countries — PK · UAE · CA</div></div>
       </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="reveal"><p class="eyebrow">Pricing</p><h2 class="sec-title">Simple, transparent packages</h2>
+        <p class="sec-lead">Fixed-scope packages to start, or a custom quote for bigger builds. Prices in PKR — use the calculator for your currency.</p></div>
+        <a href="/pricing" class="btn ghost reveal">Compare packages →</a>
+      </div>
+      <div class="reveal"><Pricing compact={true} /></div>
+      <div class="reveal" style="text-align:center;margin-top:26px;"><a href="/estimate" class="btn ghost">Build a live estimate →</a></div>
     </div>
   </section>
 

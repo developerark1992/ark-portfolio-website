@@ -1,0 +1,42 @@
+---
+// Reusable pricing packages — used on the home page and the /pricing page.
+const { compact = false } = Astro.props;
+const packages = [
+  {
+    key: 'economy', name: 'Economy', tag: 'Starter', price: 'PKR 100,000', unit: 'from',
+    blurb: 'A clean, fast site to get you online — ideal for startups and small businesses.',
+    features: ['WordPress / template-based build', 'Up to 5 pages', 'Mobile responsive', 'Basic on-page SEO', 'Contact form + WhatsApp', '1 revision round', '~1–2 weeks delivery'],
+    cta: 'Get started', href: '/contact', featured: false,
+  },
+  {
+    key: 'standard', name: 'Standard', tag: 'Most popular', price: 'PKR 300,000', unit: 'from',
+    blurb: 'A custom-designed CMS site built to convert, with the setup handled end to end.',
+    features: ['Custom CMS build (WordPress / Webflow / Shopify)', 'Up to 10 pages', 'Bespoke design (Figma → build)', 'CMS / blog + integrations', 'Advanced SEO setup', 'Hosting, domain & SSL setup', 'Speed & accessibility pass', '2 revision rounds', '~3–5 weeks delivery'],
+    cta: 'Start your project', href: '/contact', featured: true,
+  },
+  {
+    key: 'custom', name: 'Custom', tag: 'Tailored', price: 'Custom quote', unit: '',
+    blurb: 'Web apps, e-commerce, SaaS and automation — any stack, scoped to your goals.',
+    features: ['Web apps, SaaS, e-commerce & portals', 'Any stack — Astro, Next.js, React, custom PHP', 'AI & workflow automation (Claude, n8n, Zapier)', 'DevOps, CI/CD, migrations, WHM/cPanel', 'Branding & graphic design', 'Priority support & maintenance', 'Timeline scoped to the project'],
+    cta: 'Book a strategy call', href: '/contact', featured: false,
+  },
+];
+---
+<div class="price-grid">
+  {packages.map((p) => (
+    <div class={`price-card${p.featured ? ' feat' : ''}`}>
+      {p.featured && <span class="price-ribbon">{p.tag}</span>}
+      <div class="price-head">
+        <span class="price-tag">{p.name}{!p.featured && <em> · {p.tag}</em>}</span>
+        <div class="price-fig">{p.unit && <span class="price-unit">{p.unit}</span>}<b>{p.price}</b></div>
+        <p class="price-blurb">{p.blurb}</p>
+      </div>
+      {!compact && (
+        <ul class="price-feats">
+          {p.features.map((f) => <li>{f}</li>)}
+        </ul>
+      )}
+      <a href={p.href} class={`btn ${p.featured ? 'primary' : 'ghost'}`}>{p.cta} →</a>
+    </div>
+  ))}
+</div>

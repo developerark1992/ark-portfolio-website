@@ -1,0 +1,66 @@
+---
+import Base from '../layouts/Base.astro';
+import Pricing from '../components/Pricing.astro';
+const addons = [
+  ['Extra pages / templates', 'PKR 15,000 each'],
+  ['E-commerce / payments', 'from PKR 120,000'],
+  ['Multi-language', 'from PKR 100,000'],
+  ['Booking / scheduling', 'from PKR 60,000'],
+  ['AI & workflow automation', 'from PKR 90,000'],
+  ['Hosting & domain setup (WHM/cPanel, DNS/SSL)', 'from PKR 30,000'],
+  ['Logo & brand identity', 'from PKR 40,000'],
+  ['Monthly care & maintenance', 'from PKR 20,000 / mo'],
+];
+const faqs = [
+  ['Why is WordPress cheaper than Shopify or a custom build?', 'Different stacks take different effort. WordPress is fastest to build on, so it is the most affordable. Shopify, Webflow, Squarespace and Framer cost a little more, and fully custom Astro/Next.js apps take the most engineering — the live calculator reflects this.'],
+  ['Are these prices fixed?', 'The Economy and Standard packages are fixed-scope starting points. Anything beyond their scope (more pages, e-commerce, automation, custom apps) is quoted with the calculator or a custom proposal.'],
+  ['What currency do you work in?', 'Prices are shown in PKR, but I work with clients worldwide — the cost calculator converts to USD, EUR, GBP, AED and more automatically.'],
+  ['Do you handle hosting and domains?', 'Yes. I can set up and manage hosting (WHM/cPanel, AWS), domains, DNS and SSL, and handle migrations — so you get one point of contact for everything.'],
+  ['What do you need to start?', 'A short brief and, ideally, a quick call. Book a free 30-minute strategy call and I will recommend the right package and scope.'],
+];
+---
+<Base active="pricing" title="Pricing & Packages — Abdul Rehman Khan" description="Transparent website pricing: Economy, Standard and Custom packages, plus add-ons and a live cost calculator. WordPress, Shopify, Webflow, custom builds and more.">
+  <section style="padding-bottom:0;">
+    <div class="wrap">
+      <p class="eyebrow reveal">Pricing</p>
+      <h1 class="reveal" style="font-size:clamp(32px,5.4vw,58px);margin-bottom:16px;">Packages &amp; pricing.</h1>
+      <p class="sec-lead reveal" style="margin-bottom:40px;">Clear starting points, no surprises. Pick a fixed-scope package or get a custom quote — and price varies by the platform you choose (WordPress is the most affordable; Shopify, Webflow and custom stacks cost a little more).</p>
+    </div>
+  </section>
+
+  <section style="padding-top:8px;">
+    <div class="wrap"><div class="reveal"><Pricing /></div></div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="reveal" style="margin-bottom:28px;"><p class="eyebrow">Add-ons</p><h2 class="sec-title">Bolt on what you need</h2>
+      <p class="sec-lead">Mix these into any package — or build the exact scope live in the calculator.</p></div>
+      <div class="addon-grid reveal">
+        {addons.map(([k, v]) => <div class="addon"><span>{k}</span><b>{v}</b></div>)}
+      </div>
+      <div class="reveal" style="text-align:center;margin-top:30px;"><a href="/estimate" class="btn primary">Open the cost calculator →</a></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="reveal" style="margin-bottom:28px;"><p class="eyebrow">FAQ</p><h2 class="sec-title">Common questions</h2></div>
+      <div class="faq reveal">
+        {faqs.map(([q, a]) => (
+          <details class="faq-item"><summary>{q}</summary><p>{a}</p></details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="cta-band reveal"><div class="glow"></div>
+        <h2>Not sure which fits?</h2>
+        <p>Tell me about your project and I'll recommend the right package and scope — no obligation.</p>
+        <div class="hero-cta"><a href="/contact" class="btn primary">Book a free strategy call</a><a href="/estimate" class="btn ghost">Try the calculator</a></div>
+      </div>
+    </div>
+  </section>
+</Base>

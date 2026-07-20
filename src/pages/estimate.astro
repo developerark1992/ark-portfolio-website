@@ -6,7 +6,7 @@ import Base from '../layouts/Base.astro';
     <div class="wrap">
       <p class="eyebrow reveal">Instant estimate</p>
       <h1 class="reveal" style="font-size:clamp(32px,5.4vw,58px);margin-bottom:16px;">What will it cost?</h1>
-      <p class="sec-lead reveal" style="margin-bottom:8px;">Build your project below and watch the estimate update live. It's an <em>indicative range</em> — your exact quote comes after a quick chat.</p>
+      <p class="sec-lead reveal" style="margin-bottom:8px;">Build your project below and watch the price update live. The <em>stack you pick changes the price</em> — WordPress is the most affordable, Shopify and custom builds cost more. Your exact quote comes after a quick chat.</p>
     </div>
   </section>
   <section style="padding-top:40px;">
@@ -23,7 +23,19 @@ import Base from '../layouts/Base.astro';
           </div>
         </div>
         <div class="calc-block reveal">
-          <div class="calc-label"><span class="calc-num">02</span> Complexity</div>
+          <div class="calc-label"><span class="calc-num">02</span> Platform / stack</div>
+          <div class="chips" data-group="platform">
+            <button class="chip-b active" data-val="wordpress">WordPress</button>
+            <button class="chip-b" data-val="wix">Wix</button>
+            <button class="chip-b" data-val="squarespace">Squarespace</button>
+            <button class="chip-b" data-val="webflow">Webflow</button>
+            <button class="chip-b" data-val="framer">Framer</button>
+            <button class="chip-b" data-val="shopify">Shopify</button>
+            <button class="chip-b" data-val="custom">Custom (Astro / Next.js)</button>
+          </div>
+        </div>
+        <div class="calc-block reveal">
+          <div class="calc-label"><span class="calc-num">03</span> Complexity</div>
           <div class="chips" data-group="complexity">
             <button class="chip-b active" data-val="simple">Simple</button>
             <button class="chip-b" data-val="medium">Medium</button>
@@ -32,12 +44,12 @@ import Base from '../layouts/Base.astro';
           </div>
         </div>
         <div class="calc-block reveal">
-          <div class="calc-label"><span class="calc-num">03</span> Pages / screens <b id="pageVal">5</b></div>
+          <div class="calc-label"><span class="calc-num">04</span> Pages / screens <b id="pageVal">5</b></div>
           <input type="range" id="pageRange" min="1" max="50" value="5" class="calc-range" />
           <div class="calc-scale"><span>1</span><span>25</span><span>50+</span></div>
         </div>
         <div class="calc-block reveal">
-          <div class="calc-label"><span class="calc-num">04</span> Features</div>
+          <div class="calc-label"><span class="calc-num">05</span> Features</div>
           <div class="chips multi" data-group="features">
             <button class="chip-b" data-val="auth">User authentication</button>
             <button class="chip-b" data-val="payments">Payment integration</button>
@@ -52,7 +64,7 @@ import Base from '../layouts/Base.astro';
           </div>
         </div>
         <div class="calc-block reveal">
-          <div class="calc-label"><span class="calc-num">05</span> Timeline</div>
+          <div class="calc-label"><span class="calc-num">06</span> Timeline</div>
           <div class="chips" data-group="timeline">
             <button class="chip-b" data-val="rush">Rush (1–2 wks)</button>
             <button class="chip-b" data-val="fast">Fast (2–4 wks)</button>
@@ -75,8 +87,8 @@ import Base from '../layouts/Base.astro';
               <button class="cur-b" data-val="INR">INR</button>
             </div>
           </div>
-          <div class="calc-figure"><span id="estMin">0</span> <span class="dash">–</span> <span id="estMax">0</span></div>
-          <div class="calc-monthly" id="estMonthly" hidden>+ <b><span id="monthlyVal">0</span></b> / month maintenance</div>
+          <div class="calc-figure"><span id="estPrice">0</span></div>
+          <div class="calc-est-sub">Estimated project price · <span id="estPlatform">WordPress</span></div>
           <div class="calc-gauge"><div class="calc-gauge-fill" id="gaugeFill"></div></div>
           <div class="calc-gauge-cap"><span>Simple</span><span id="scopeLabel">Standard build</span><span>Complex</span></div>
           <ul class="calc-breakdown" id="breakdown"></ul>
