@@ -9,7 +9,7 @@ let post = null;
 if (supabaseConfigured) {
   const { data } = await supabase
     .from('posts')
-    .select('slug,title,description,body,created_at,cover,author:author,categories(name)')
+    .select('slug,title,description,body,created_at,cover,meta_title,meta_description,keywords,categories(name)')
     .eq('slug', slug).eq('published', true).maybeSingle();
   post = data || null;
 }
@@ -19,8 +19,12 @@ const category = (post.categories && post.categories.name) || 'General';
 const html = marked.parse(post.body || '', { async: false });
 const fmt = (d) => new Date(d).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
 const readMin = Math.max(1, Math.round((post.body || '').split(/\s+/).length / 200));
+const seoTitle = post.meta_title || `${post.title} — Abdul Rehman Khan`;
+const seoDesc = post.meta_description || post.description;
 ---
-<Base active="blog" title={`${post.title} — Abdul Rehman Khan`} description={post.description}>
+<Base active="blog" title={seoTitle} description={seoDesc} keywords={post.keywords}
+      ogImage={post.cover || '/images/photo.webp'} ogType="article"
+      publishedTime={new Date(post.created_at).toISOString()}>
   <article class="post">
     <div class="wrap post-wrap">
       <a href="/blog" class="post-back reveal">← All posts</a>

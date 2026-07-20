@@ -7,7 +7,7 @@ let posts = [];
 if (supabaseConfigured) {
   const { data } = await supabase
     .from('posts')
-    .select('slug,title,description,created_at,categories(name)')
+    .select('slug,title,description,cover,created_at,categories(name)')
     .eq('published', true)
     .order('created_at', { ascending: false });
   posts = data || [];
@@ -41,6 +41,7 @@ const fmt = (d) => new Date(d).toLocaleDateString('en-US', { day: 'numeric', mon
         <div class="blog-grid" id="blogGrid">
           {posts.map((p) => (
             <a class="blog-card" href={`/blog/${p.slug}`} data-cat={catOf(p)}>
+              {p.cover && <div class="blog-cover"><img src={p.cover} alt={p.title} loading="lazy" /></div>}
               <div class="blog-card-top">
                 <span class="blog-cat">{catOf(p)}</span>
                 <span class="blog-meta">{fmt(p.created_at)}</span>

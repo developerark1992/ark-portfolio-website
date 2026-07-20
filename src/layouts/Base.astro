@@ -14,7 +14,18 @@ const socials = [
   { n: 'Instagram', href: 'https://www.instagram.com/arkkhan1992',        path: siInstagram.path },
   { n: 'X',         href: 'https://x.com/official_ark92',                 path: siX.path },
 ];
-const { title = 'Abdul Rehman Khan — CMS Expert & Software Engineer', description = 'CMS expert & software engineer — WordPress, Shopify, Webflow, Wix, Squarespace, Framer + custom Astro/Next.js. DevOps & hosting (WHM/cPanel, AWS), graphic design and AI automation. 8+ years, Karachi, open to remote EU/UK work.', active = 'home' } = Astro.props;
+const {
+  title = 'Abdul Rehman Khan — CMS Expert & Software Engineer',
+  description = 'CMS expert & software engineer — WordPress, Shopify, Webflow, Wix, Squarespace, Framer + custom Astro/Next.js. DevOps & hosting (WHM/cPanel, AWS), graphic design and AI automation. 8+ years, Karachi, open to remote EU/UK work.',
+  active = 'home',
+  keywords,
+  ogImage = '/images/photo.webp',
+  ogType = 'website',
+  publishedTime,
+} = Astro.props;
+const SITE_URL = Astro.site || 'https://arkdesigningbureau.com';
+const canonical = new URL(Astro.url.pathname, SITE_URL).href;
+const ogImageUrl = new URL(ogImage, SITE_URL).href;
 const links = [
   { href: '/',         name: 'Home',     key: 'home' },
   { href: '/about',    name: 'About',    key: 'about' },
@@ -33,7 +44,31 @@ const AV = '/images/avatar.webp';
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{title}</title>
   <meta name="description" content={description} />
+  {keywords && <meta name="keywords" content={keywords} />}
+  <meta name="author" content="Abdul Rehman Khan" />
+  <link rel="canonical" href={canonical} />
+  <!-- Open Graph -->
+  <meta property="og:type" content={ogType} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogImageUrl} />
+  <meta property="og:site_name" content="Abdul Rehman Khan" />
+  {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImageUrl} />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%230C0A08' stroke='%23D3A94B' stroke-width='1.5'/%3E%3Ctext x='16' y='21' font-family='Georgia,serif' font-size='13' fill='%23D3A94B' text-anchor='middle'%3EAK%3C/text%3E%3C/svg%3E" />
+  {ogType === 'article' && (
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org', '@type': 'BlogPosting',
+      headline: title, description, image: ogImageUrl, url: canonical,
+      datePublished: publishedTime, author: { '@type': 'Person', name: 'Abdul Rehman Khan', url: SITE_URL },
+      publisher: { '@type': 'Person', name: 'Abdul Rehman Khan' },
+    })} />
+  )}
   <ClientRouter />
 </head>
 <body>

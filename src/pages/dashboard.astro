@@ -45,6 +45,11 @@ import Base from '../layouts/Base.astro';
             <div class="field"><label for="p-cover">Cover image URL (optional)</label><input id="p-cover" placeholder="https://…" /></div>
           </div>
           <div class="field"><label for="p-body">Body (Markdown)</label><textarea id="p-body" style="min-height:280px;font-family:var(--mono);font-size:13px;"></textarea></div>
+          <details class="dash-seo"><summary>SEO settings</summary>
+            <div class="field"><label for="p-mtitle">Meta title <span class="dash-hint">(defaults to the post title)</span></label><input id="p-mtitle" placeholder="Custom title for Google / social" /></div>
+            <div class="field"><label for="p-mdesc">Meta description <span class="dash-hint">(defaults to the description)</span></label><textarea id="p-mdesc" style="min-height:60px;"></textarea></div>
+            <div class="field"><label for="p-keywords">Keywords <span class="dash-hint">(comma-separated)</span></label><input id="p-keywords" placeholder="wordpress, hosting, seo…" /></div>
+          </details>
           <label class="dash-check"><input type="checkbox" id="p-pub" /> Published</label>
           <div class="hero-cta" style="gap:10px;margin-top:8px;">
             <button class="btn primary" id="savePost">Save post</button>
@@ -119,6 +124,7 @@ import Base from '../layouts/Base.astro';
         $('p-title').value = post?post.title:''; $('p-slug').value = post?post.slug:'';
         $('p-desc').value = post?(post.description||''):''; $('p-body').value = post?(post.body||''):'';
         $('p-cover').value = post?(post.cover||''):''; $('p-pub').checked = post?post.published:false;
+        $('p-mtitle').value = post?(post.meta_title||''):''; $('p-mdesc').value = post?(post.meta_description||''):''; $('p-keywords').value = post?(post.keywords||''):'';
         if(post&&post.category_id) $('p-cat').value = post.category_id;
         $('saveMsg').textContent=''; editor.hidden=false; document.body.style.overflow='hidden';
       }
@@ -152,6 +158,7 @@ import Base from '../layouts/Base.astro';
           title:$('p-title').value.trim(), slug:slugify($('p-slug').value.trim()||$('p-title').value.trim()),
           description:$('p-desc').value.trim(), body:$('p-body').value, cover:$('p-cover').value.trim()||null,
           category_id:$('p-cat').value||null, published:$('p-pub').checked,
+          meta_title:$('p-mtitle').value.trim()||null, meta_description:$('p-mdesc').value.trim()||null, keywords:$('p-keywords').value.trim()||null,
         };
         if(!rec.title||!rec.slug){ $('saveMsg').textContent='Title and slug are required.'; $('saveMsg').style.color='var(--amber)'; return; }
         $('saveMsg').style.color=''; $('saveMsg').textContent='Saving…';
