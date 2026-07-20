@@ -1,27 +1,39 @@
 [
  {
+  "slug": "alorasupports-com-wordpress",
+  "title": "Alora Supports",
+  "platform": "WordPress",
+  "category": "Healthcare & Dental",
+  "live": "https://alorasupports.com",
+  "img": "/images/projects/alorasupports-com-wordpress.webp",
+  "added": "2026-07-20T17:28:36.615Z"
+ },
+ {
   "slug": "accessibility-partners",
   "title": "Accessibility Partners",
   "platform": "WordPress",
-  "category": "Services",
+  "category": "Agency & Business",
   "live": "https://accessibilitypartners.ca",
-  "img": "/images/projects/accessibility-partners.webp"
+  "img": "/images/projects/accessibility-partners.webp",
+  "added": "2026-06-01T00:00:00.000Z"
  },
  {
   "slug": "aj-enterprises",
   "title": "Aj- Enterprises",
   "platform": "WordPress",
-  "category": "Services",
+  "category": "Agency & Business",
   "live": null,
-  "img": "/images/projects/aj-enterprises.webp"
+  "img": "/images/projects/aj-enterprises.webp",
+  "added": "2026-05-31T23:59:00.000Z"
  },
  {
   "slug": "aje-virtual-solutions",
   "title": "AJE Virtual Solutions",
   "platform": "WordPress",
-  "category": "Services",
+  "category": "Agency & Business",
   "live": null,
-  "img": "/images/projects/aje-virtual-solutions.webp"
+  "img": "/images/projects/aje-virtual-solutions.webp",
+  "added": "2026-05-31T23:58:00.000Z"
  },
  {
   "slug": "bluefish-shop",
@@ -29,39 +41,44 @@
   "platform": "WordPress",
   "category": "E-commerce",
   "live": null,
-  "img": "/images/projects/bluefish-shop.webp"
+  "img": "/images/projects/bluefish-shop.webp",
+  "added": "2026-05-31T23:57:00.000Z"
  },
  {
   "slug": "boatique-staffing",
   "title": "Boatique Staffing",
   "platform": "WordPress",
-  "category": "Services",
+  "category": "Agency & Business",
   "live": "https://boatiquestaffing.com",
-  "img": "/images/projects/boatique-staffing.webp"
+  "img": "/images/projects/boatique-staffing.webp",
+  "added": "2026-05-31T23:56:00.000Z"
  },
  {
   "slug": "crowle-ca",
   "title": "Crowle",
   "platform": "WordPress",
-  "category": "Corporate",
+  "category": "Agency & Business",
   "live": null,
-  "img": "/images/projects/crowle-ca.webp"
+  "img": "/images/projects/crowle-ca.webp",
+  "added": "2026-05-31T23:55:00.000Z"
  },
  {
   "slug": "dr-umer-pain-relief-clinic",
   "title": "Dr Umer Pain Relief Clinic",
   "platform": "WordPress",
-  "category": "Healthcare",
+  "category": "Healthcare & Dental",
   "live": "https://drumerpainrelief.pk",
-  "img": "/images/projects/dr-umer-pain-relief-clinic.webp"
+  "img": "/images/projects/dr-umer-pain-relief-clinic.webp",
+  "added": "2026-05-31T23:54:00.000Z"
  },
  {
   "slug": "evad",
   "title": "Evad",
   "platform": "WordPress",
-  "category": "Corporate",
+  "category": "Agency & Business",
   "live": "https://evad-me.com",
-  "img": "/images/projects/evad.webp"
+  "img": "/images/projects/evad.webp",
+  "added": "2026-05-31T23:53:00.000Z"
  },
  {
   "slug": "fitngrip",
@@ -69,7 +86,8 @@
   "platform": "WordPress",
   "category": "E-commerce",
   "live": null,
-  "img": "/images/projects/fitngrip.webp"
+  "img": "/images/projects/fitngrip.webp",
+  "added": "2026-05-31T23:52:00.000Z"
  },
  {
   "slug": "freakin-protein-oats",
@@ -77,119 +95,134 @@
   "platform": "Shopify",
   "category": "E-commerce",
   "live": null,
-  "img": "/images/projects/freakin-protein-oats.webp"
+  "img": "/images/projects/freakin-protein-oats.webp",
+  "added": "2026-05-31T23:51:00.000Z"
  },
  {
   "slug": "fynchconsulting",
   "title": "Fynchconsulting",
   "platform": "WordPress",
-  "category": "Services",
+  "category": "Agency & Business",
   "live": null,
-  "img": "/images/projects/fynchconsulting.webp"
+  "img": "/images/projects/fynchconsulting.webp",
+  "added": "2026-05-31T23:50:00.000Z"
  },
  {
   "slug": "galaxy-pharma",
   "title": "Galaxy Pharma",
   "platform": "WordPress",
-  "category": "Healthcare",
+  "category": "Healthcare & Dental",
   "live": null,
-  "img": "/images/projects/galaxy-pharma.webp"
+  "img": "/images/projects/galaxy-pharma.webp",
+  "added": "2026-05-31T23:49:00.000Z"
  },
  {
   "slug": "henryscheinmena",
   "title": "Henry Schein MENA",
   "platform": "WordPress",
-  "category": "Healthcare",
+  "category": "Healthcare & Dental",
   "live": null,
-  "img": "/images/projects/henryscheinmena.webp"
+  "img": "/images/projects/henryscheinmena.webp",
+  "added": "2026-05-31T23:48:00.000Z"
  },
  {
   "slug": "hepius",
   "title": "Hepius",
   "platform": "WordPress",
-  "category": "Healthcare",
+  "category": "Healthcare & Dental",
   "live": "https://hepius.ae",
-  "img": "/images/projects/hepius.webp"
+  "img": "/images/projects/hepius.webp",
+  "added": "2026-05-31T23:47:00.000Z"
  },
  {
   "slug": "kr-costruction",
   "title": "Kr-Costruction",
   "platform": "WordPress",
-  "category": "Real Estate",
+  "category": "Real Estate & Construction",
   "live": null,
-  "img": "/images/projects/kr-costruction.webp"
+  "img": "/images/projects/kr-costruction.webp",
+  "added": "2026-05-31T23:46:00.000Z"
  },
  {
   "slug": "lascolinas",
   "title": "Las Colinas",
   "platform": "WordPress",
-  "category": "Real Estate",
+  "category": "Real Estate & Construction",
   "live": null,
-  "img": "/images/projects/lascolinas.webp"
+  "img": "/images/projects/lascolinas.webp",
+  "added": "2026-05-31T23:45:00.000Z"
  },
  {
   "slug": "madinatap",
   "title": "Madinat AP",
   "platform": "WordPress",
-  "category": "Real Estate",
+  "category": "Real Estate & Construction",
   "live": null,
-  "img": "/images/projects/madinatap.webp"
+  "img": "/images/projects/madinatap.webp",
+  "added": "2026-05-31T23:44:00.000Z"
  },
  {
   "slug": "nashville-taiko",
   "title": "Nashville Taiko",
   "platform": "WordPress",
-  "category": "Education & Media",
+  "category": "Education & Publishing",
   "live": null,
-  "img": "/images/projects/nashville-taiko.webp"
+  "img": "/images/projects/nashville-taiko.webp",
+  "added": "2026-05-31T23:43:00.000Z"
  },
  {
   "slug": "numerix-solutions",
   "title": "Numerix Solutions",
   "platform": "Wix",
-  "category": "Finance",
+  "category": "Finance & Legal",
   "live": null,
-  "img": "/images/projects/numerix-solutions.webp"
+  "img": "/images/projects/numerix-solutions.webp",
+  "added": "2026-05-31T23:42:00.000Z"
  },
  {
   "slug": "opnato",
   "title": "Opnato",
   "platform": "Webflow",
-  "category": "Corporate",
+  "category": "Agency & Business",
   "live": null,
-  "img": "/images/projects/opnato.webp"
+  "img": "/images/projects/opnato.webp",
+  "added": "2026-05-31T23:41:00.000Z"
  },
  {
   "slug": "perfect10solutions",
   "title": "Perfect10 Solutions",
   "platform": "WordPress",
-  "category": "Services",
+  "category": "Agency & Business",
   "live": null,
-  "img": "/images/projects/perfect10solutions.webp"
+  "img": "/images/projects/perfect10solutions.webp",
+  "added": "2026-05-31T23:40:00.000Z"
  },
  {
   "slug": "prescott-uae",
   "title": "Prescott UAE",
   "platform": "WordPress",
-  "category": "Real Estate",
+  "category": "Real Estate & Construction",
   "live": "https://prescott.ae",
-  "img": "/images/projects/prescott-uae.webp"
+  "img": "/images/projects/prescott-uae.webp",
+  "added": "2026-05-31T23:39:00.000Z"
  },
  {
   "slug": "rapidmdnow",
   "title": "RapidMD Now",
   "platform": "WordPress",
-  "category": "Healthcare",
+  "category": "Healthcare & Dental",
   "live": null,
-  "img": "/images/projects/rapidmdnow.webp"
+  "img": "/images/projects/rapidmdnow.webp",
+  "added": "2026-05-31T23:38:00.000Z"
  },
  {
   "slug": "seoastronauts",
   "title": "SEO Astronauts",
   "platform": "WordPress",
-  "category": "Services",
+  "category": "Agency & Business",
   "live": null,
-  "img": "/images/projects/seoastronauts.webp"
+  "img": "/images/projects/seoastronauts.webp",
+  "added": "2026-05-31T23:37:00.000Z"
  },
  {
   "slug": "smartground-clay",
@@ -197,23 +230,26 @@
   "platform": "WordPress",
   "category": "E-commerce",
   "live": null,
-  "img": "/images/projects/smartground-clay.webp"
+  "img": "/images/projects/smartground-clay.webp",
+  "added": "2026-05-31T23:36:00.000Z"
  },
  {
   "slug": "smartturnaround",
   "title": "Smart Turnaround",
   "platform": "WordPress",
-  "category": "Services",
+  "category": "Agency & Business",
   "live": null,
-  "img": "/images/projects/smartturnaround.webp"
+  "img": "/images/projects/smartturnaround.webp",
+  "added": "2026-05-31T23:35:00.000Z"
  },
  {
   "slug": "stakzz-credit",
   "title": "Stakzz Credit",
   "platform": "WordPress",
-  "category": "Finance",
+  "category": "Finance & Legal",
   "live": null,
-  "img": "/images/projects/stakzz-credit.webp"
+  "img": "/images/projects/stakzz-credit.webp",
+  "added": "2026-05-31T23:34:00.000Z"
  },
  {
   "slug": "stone-gym-solutions",
@@ -221,15 +257,17 @@
   "platform": "Shopify",
   "category": "E-commerce",
   "live": null,
-  "img": "/images/projects/stone-gym-solutions.webp"
+  "img": "/images/projects/stone-gym-solutions.webp",
+  "added": "2026-05-31T23:33:00.000Z"
  },
  {
   "slug": "takada-asset-management",
   "title": "Takada Asset Management",
   "platform": "WordPress",
-  "category": "Finance",
+  "category": "Finance & Legal",
   "live": null,
-  "img": "/images/projects/takada-asset-management.webp"
+  "img": "/images/projects/takada-asset-management.webp",
+  "added": "2026-05-31T23:32:00.000Z"
  },
  {
   "slug": "tovlajr",
@@ -237,231 +275,260 @@
   "platform": "Shopify",
   "category": "E-commerce",
   "live": null,
-  "img": "/images/projects/tovlajr.webp"
+  "img": "/images/projects/tovlajr.webp",
+  "added": "2026-05-31T23:31:00.000Z"
  },
  {
   "slug": "websity-digital",
   "title": "Websity Digital",
   "platform": "WordPress",
-  "category": "Corporate",
+  "category": "Agency & Business",
   "live": null,
-  "img": "/images/projects/websity-digital.webp"
+  "img": "/images/projects/websity-digital.webp",
+  "added": "2026-05-31T23:30:00.000Z"
  },
  {
   "slug": "yarmouksteel",
   "title": "Yarmouk Steel",
   "platform": "WordPress",
-  "category": "Real Estate",
+  "category": "Real Estate & Construction",
   "live": null,
-  "img": "/images/projects/yarmouksteel.webp"
+  "img": "/images/projects/yarmouksteel.webp",
+  "added": "2026-05-31T23:29:00.000Z"
  },
  {
   "slug": "rsdb-partners",
   "title": "rsdb-partners",
   "platform": "WordPress",
-  "category": "Services",
+  "category": "Agency & Business",
   "live": null,
-  "img": "/images/projects/rsdb-partners.webp"
+  "img": "/images/projects/rsdb-partners.webp",
+  "added": "2026-05-31T23:28:00.000Z"
  },
  {
   "slug": "aamartists",
   "title": "AAM Artists",
   "platform": "WordPress",
-  "category": "Education & Media",
+  "category": "Agency & Business",
   "live": null,
-  "img": "/images/projects/aamartists.webp"
+  "img": "/images/projects/aamartists.webp",
+  "added": "2026-05-31T23:27:00.000Z"
  },
  {
   "slug": "abdullahgadit",
   "title": "Abdullah Gadit",
   "platform": "WordPress",
-  "category": "Corporate",
+  "category": "Agency & Business",
   "live": null,
-  "img": "/images/projects/abdullahgadit.webp"
+  "img": "/images/projects/abdullahgadit.webp",
+  "added": "2026-05-31T23:26:00.000Z"
  },
  {
   "slug": "advbizclan",
   "title": "AdvBizClan",
   "platform": "WordPress",
-  "category": "Services",
+  "category": "Agency & Business",
   "live": null,
-  "img": "/images/projects/advbizclan.webp"
+  "img": "/images/projects/advbizclan.webp",
+  "added": "2026-05-31T23:25:00.000Z"
  },
  {
   "slug": "amazonpublishingcentral",
   "title": "Amazon Publishing Central",
   "platform": "WordPress",
-  "category": "Education & Media",
+  "category": "Education & Publishing",
   "live": null,
-  "img": "/images/projects/amazonpublishingcentral.webp"
+  "img": "/images/projects/amazonpublishingcentral.webp",
+  "added": "2026-05-31T23:24:00.000Z"
  },
  {
   "slug": "avanasolutions",
   "title": "Avana Solutions",
   "platform": "WordPress",
-  "category": "Services",
+  "category": "Agency & Business",
   "live": null,
-  "img": "/images/projects/avanasolutions.webp"
+  "img": "/images/projects/avanasolutions.webp",
+  "added": "2026-05-31T23:23:00.000Z"
  },
  {
   "slug": "bame-studio",
   "title": "BAME Studio",
   "platform": "WordPress",
-  "category": "Services",
+  "category": "Agency & Business",
   "live": null,
-  "img": "/images/projects/bame-studio.webp"
+  "img": "/images/projects/bame-studio.webp",
+  "added": "2026-05-31T23:22:00.000Z"
  },
  {
   "slug": "bizhub",
   "title": "BizHub",
   "platform": "WordPress",
-  "category": "Corporate",
+  "category": "Agency & Business",
   "live": "https://bizhub.ae",
-  "img": "/images/projects/bizhub.webp"
+  "img": "/images/projects/bizhub.webp",
+  "added": "2026-05-31T23:21:00.000Z"
  },
  {
   "slug": "clatter",
   "title": "Clatter",
   "platform": "WordPress",
-  "category": "AI & Tech",
+  "category": "AI & Technology",
   "live": "https://clatter.ai",
-  "img": "/images/projects/clatter.webp"
+  "img": "/images/projects/clatter.webp",
+  "added": "2026-05-31T23:20:00.000Z"
  },
  {
   "slug": "collabsocial",
   "title": "CollabSocial",
   "platform": "WordPress",
-  "category": "Services",
+  "category": "AI & Technology",
   "live": "https://collabsocial.co",
-  "img": "/images/projects/collabsocial.webp"
+  "img": "/images/projects/collabsocial.webp",
+  "added": "2026-05-31T23:19:00.000Z"
  },
  {
   "slug": "cristalplastic",
   "title": "Cristal Plastic",
   "platform": "WordPress",
-  "category": "Corporate",
+  "category": "Agency & Business",
   "live": null,
-  "img": "/images/projects/cristalplastic.webp"
+  "img": "/images/projects/cristalplastic.webp",
+  "added": "2026-05-31T23:18:00.000Z"
  },
  {
   "slug": "datavanguard",
   "title": "Data Vanguard",
   "platform": "WordPress",
-  "category": "AI & Tech",
+  "category": "AI & Technology",
   "live": "https://datavanguard.ai",
-  "img": "/images/projects/datavanguard.webp"
+  "img": "/images/projects/datavanguard.webp",
+  "added": "2026-05-31T23:17:00.000Z"
  },
  {
   "slug": "epsilontechconsultants",
   "title": "Epsilon Tech Consultants",
   "platform": "WordPress",
-  "category": "AI & Tech",
+  "category": "AI & Technology",
   "live": null,
-  "img": "/images/projects/epsilontechconsultants.webp"
+  "img": "/images/projects/epsilontechconsultants.webp",
+  "added": "2026-05-31T23:16:00.000Z"
  },
  {
   "slug": "fknailpalace",
   "title": "FK Nail Palace",
   "platform": "WordPress",
-  "category": "Services",
+  "category": "Hospitality & Lifestyle",
   "live": null,
-  "img": "/images/projects/fknailpalace.webp"
+  "img": "/images/projects/fknailpalace.webp",
+  "added": "2026-05-31T23:15:00.000Z"
  },
  {
   "slug": "fromhighschooltouni",
   "title": "From High School to Uni",
   "platform": "WordPress",
-  "category": "Education & Media",
+  "category": "Education & Publishing",
   "live": null,
-  "img": "/images/projects/fromhighschooltouni.webp"
+  "img": "/images/projects/fromhighschooltouni.webp",
+  "added": "2026-05-31T23:14:00.000Z"
  },
  {
   "slug": "ftlubricants",
   "title": "FT Lubricants",
   "platform": "WordPress",
-  "category": "Services",
+  "category": "E-commerce",
   "live": null,
-  "img": "/images/projects/ftlubricants.webp"
+  "img": "/images/projects/ftlubricants.webp",
+  "added": "2026-05-31T23:13:00.000Z"
  },
  {
   "slug": "kiplingstationetobicoke",
   "title": "Kipling Station Etobicoke",
   "platform": "WordPress",
-  "category": "Real Estate",
+  "category": "Real Estate & Construction",
   "live": null,
-  "img": "/images/projects/kiplingstationetobicoke.webp"
+  "img": "/images/projects/kiplingstationetobicoke.webp",
+  "added": "2026-05-31T23:12:00.000Z"
  },
  {
   "slug": "krystalite",
   "title": "Krystalite",
   "platform": "WordPress",
-  "category": "Corporate",
+  "category": "Agency & Business",
   "live": "https://krystalite.pk",
-  "img": "/images/projects/krystalite.webp"
+  "img": "/images/projects/krystalite.webp",
+  "added": "2026-05-31T23:11:00.000Z"
  },
  {
   "slug": "krystosoft",
   "title": "Krystosoft",
   "platform": "WordPress",
-  "category": "Corporate",
+  "category": "AI & Technology",
   "live": null,
-  "img": "/images/projects/krystosoft.webp"
+  "img": "/images/projects/krystosoft.webp",
+  "added": "2026-05-31T23:10:00.000Z"
  },
  {
   "slug": "krystosoft-clients-stemtutoring",
   "title": "STEM Tutoring",
   "platform": "WordPress",
-  "category": "Education & Media",
+  "category": "Education & Publishing",
   "live": null,
-  "img": "/images/projects/krystosoft-clients-stemtutoring.webp"
+  "img": "/images/projects/krystosoft-clients-stemtutoring.webp",
+  "added": "2026-05-31T23:09:00.000Z"
  },
  {
   "slug": "krystosoft-templates-aquadentalconsultants",
   "title": "Krystosoft Templates Aquadentalconsultants",
   "platform": "WordPress",
-  "category": "Healthcare",
+  "category": "Healthcare & Dental",
   "live": null,
-  "img": "/images/projects/krystosoft-templates-aquadentalconsultants.webp"
+  "img": "/images/projects/krystosoft-templates-aquadentalconsultants.webp",
+  "added": "2026-05-31T23:08:00.000Z"
  },
  {
   "slug": "krystosoft-templates-dentalstreet",
   "title": "Krystosoft Templates Dentalstreet",
   "platform": "WordPress",
-  "category": "Healthcare",
+  "category": "Healthcare & Dental",
   "live": null,
-  "img": "/images/projects/krystosoft-templates-dentalstreet.webp"
+  "img": "/images/projects/krystosoft-templates-dentalstreet.webp",
+  "added": "2026-05-31T23:07:00.000Z"
  },
  {
   "slug": "krystosoft-templates-orthodontistheaven",
   "title": "Krystosoft Templates Orthodontistheaven",
   "platform": "WordPress",
-  "category": "Healthcare",
+  "category": "Healthcare & Dental",
   "live": null,
-  "img": "/images/projects/krystosoft-templates-orthodontistheaven.webp"
+  "img": "/images/projects/krystosoft-templates-orthodontistheaven.webp",
+  "added": "2026-05-31T23:06:00.000Z"
  },
  {
   "slug": "krystosoft-templates-pediatricdentistry",
   "title": "Krystosoft Templates Pediatricdentistry",
   "platform": "WordPress",
-  "category": "Healthcare",
+  "category": "Healthcare & Dental",
   "live": null,
-  "img": "/images/projects/krystosoft-templates-pediatricdentistry.webp"
+  "img": "/images/projects/krystosoft-templates-pediatricdentistry.webp",
+  "added": "2026-05-31T23:05:00.000Z"
  },
  {
   "slug": "krystosoft-templates-brighthourdentalconsultancy",
   "title": "Krystosoft Templates Brighthourdentalconsultancy",
   "platform": "WordPress",
-  "category": "Healthcare",
+  "category": "Healthcare & Dental",
   "live": null,
-  "img": "/images/projects/krystosoft-templates-brighthourdentalconsultancy.webp"
+  "img": "/images/projects/krystosoft-templates-brighthourdentalconsultancy.webp",
+  "added": "2026-05-31T23:04:00.000Z"
  },
  {
   "slug": "krystosoft-templates-clinicofdrharrison",
   "title": "Krystosoft Templates Clinicofdrharrison",
   "platform": "WordPress",
-  "category": "Healthcare",
+  "category": "Healthcare & Dental",
   "live": null,
-  "img": "/images/projects/krystosoft-templates-clinicofdrharrison.webp"
+  "img": "/images/projects/krystosoft-templates-clinicofdrharrison.webp",
+  "added": "2026-05-31T23:03:00.000Z"
  },
  {
   "slug": "krystosoft-templates-cosmetics",
@@ -469,262 +536,223 @@
   "platform": "WordPress",
   "category": "E-commerce",
   "live": null,
-  "img": "/images/projects/krystosoft-templates-cosmetics.webp"
+  "img": "/images/projects/krystosoft-templates-cosmetics.webp",
+  "added": "2026-05-31T23:02:00.000Z"
  },
  {
   "slug": "krystosoft-templates-delawaredentalclinic",
   "title": "Krystosoft Templates Delawaredentalclinic",
   "platform": "WordPress",
-  "category": "Healthcare",
+  "category": "Healthcare & Dental",
   "live": null,
-  "img": "/images/projects/krystosoft-templates-delawaredentalclinic.webp"
+  "img": "/images/projects/krystosoft-templates-delawaredentalclinic.webp",
+  "added": "2026-05-31T23:01:00.000Z"
  },
  {
   "slug": "krystosoft-templates-dentalclinicdrgeller",
   "title": "Krystosoft Templates Dentalclinicdrgeller",
   "platform": "WordPress",
-  "category": "Healthcare",
+  "category": "Healthcare & Dental",
   "live": null,
-  "img": "/images/projects/krystosoft-templates-dentalclinicdrgeller.webp"
+  "img": "/images/projects/krystosoft-templates-dentalclinicdrgeller.webp",
+  "added": "2026-05-31T23:00:00.000Z"
  },
  {
   "slug": "krystosoft-templates-dentique",
   "title": "Krystosoft Templates Dentique",
   "platform": "WordPress",
-  "category": "Healthcare",
+  "category": "Healthcare & Dental",
   "live": null,
-  "img": "/images/projects/krystosoft-templates-dentique.webp"
+  "img": "/images/projects/krystosoft-templates-dentique.webp",
+  "added": "2026-05-31T22:59:00.000Z"
  },
  {
   "slug": "krystosoft-templates-greendentalclinic",
   "title": "Krystosoft Templates Greendentalclinic",
   "platform": "WordPress",
-  "category": "Healthcare",
+  "category": "Healthcare & Dental",
   "live": null,
-  "img": "/images/projects/krystosoft-templates-greendentalclinic.webp"
+  "img": "/images/projects/krystosoft-templates-greendentalclinic.webp",
+  "added": "2026-05-31T22:58:00.000Z"
  },
  {
   "slug": "laundromate",
   "title": "Laundromate",
   "platform": "WordPress",
-  "category": "Services",
+  "category": "Hospitality & Lifestyle",
   "live": "https://laundromate.co",
-  "img": "/images/projects/laundromate.webp"
+  "img": "/images/projects/laundromate.webp",
+  "added": "2026-05-31T22:57:00.000Z"
  },
  {
   "slug": "londonnewwave",
   "title": "London New Wave",
   "platform": "WordPress",
-  "category": "Corporate",
+  "category": "Agency & Business",
   "live": null,
-  "img": "/images/projects/londonnewwave.webp"
+  "img": "/images/projects/londonnewwave.webp",
+  "added": "2026-05-31T22:56:00.000Z"
  },
  {
   "slug": "magnoliadentaltexas",
   "title": "Magnolia Dental Texas",
   "platform": "WordPress",
-  "category": "Healthcare",
+  "category": "Healthcare & Dental",
   "live": null,
-  "img": "/images/projects/magnoliadentaltexas.webp"
+  "img": "/images/projects/magnoliadentaltexas.webp",
+  "added": "2026-05-31T22:55:00.000Z"
  },
  {
   "slug": "mermaiddigitals-website-lp",
   "title": "Mermaid Digitals",
   "platform": "WordPress",
-  "category": "Services",
+  "category": "Agency & Business",
   "live": null,
-  "img": "/images/projects/mermaiddigitals-website-lp.webp"
+  "img": "/images/projects/mermaiddigitals-website-lp.webp",
+  "added": "2026-05-31T22:54:00.000Z"
  },
  {
   "slug": "mermaidpublishers",
   "title": "Mermaid Publishers",
   "platform": "WordPress",
-  "category": "Education & Media",
+  "category": "Education & Publishing",
   "live": null,
-  "img": "/images/projects/mermaidpublishers.webp"
+  "img": "/images/projects/mermaidpublishers.webp",
+  "added": "2026-05-31T22:53:00.000Z"
  },
  {
   "slug": "mnhyachts",
   "title": "MNH Yachts",
   "platform": "WordPress",
-  "category": "Services",
+  "category": "Hospitality & Lifestyle",
   "live": null,
-  "img": "/images/projects/mnhyachts.webp"
+  "img": "/images/projects/mnhyachts.webp",
+  "added": "2026-05-31T22:52:00.000Z"
  },
  {
   "slug": "myhealthjunction",
   "title": "My Health Junction",
   "platform": "WordPress",
-  "category": "Healthcare",
+  "category": "Healthcare & Dental",
   "live": null,
-  "img": "/images/projects/myhealthjunction.webp"
+  "img": "/images/projects/myhealthjunction.webp",
+  "added": "2026-05-31T22:51:00.000Z"
  },
  {
   "slug": "mystic-advertising",
   "title": "Mystic Advertising",
   "platform": "WordPress",
-  "category": "Services",
+  "category": "Agency & Business",
   "live": null,
-  "img": "/images/projects/mystic-advertising.webp"
+  "img": "/images/projects/mystic-advertising.webp",
+  "added": "2026-05-31T22:50:00.000Z"
  },
  {
   "slug": "mysticstudio",
   "title": "Mystic Studio",
   "platform": "WordPress",
-  "category": "Services",
+  "category": "Agency & Business",
   "live": "https://mysticstudio.ae",
-  "img": "/images/projects/mysticstudio.webp"
+  "img": "/images/projects/mysticstudio.webp",
+  "added": "2026-05-31T22:49:00.000Z"
  },
  {
   "slug": "nextacllc",
   "title": "Nextac LLC",
   "platform": "WordPress",
-  "category": "Corporate",
+  "category": "Agency & Business",
   "live": "https://nextacllc.co",
-  "img": "/images/projects/nextacllc.webp"
+  "img": "/images/projects/nextacllc.webp",
+  "added": "2026-05-31T22:48:00.000Z"
  },
  {
   "slug": "nialawfirm",
   "title": "NIA Law Firm",
   "platform": "WordPress",
-  "category": "Services",
+  "category": "Finance & Legal",
   "live": "https://nialawfirm.ae",
-  "img": "/images/projects/nialawfirm.webp"
+  "img": "/images/projects/nialawfirm.webp",
+  "added": "2026-05-31T22:47:00.000Z"
  },
  {
   "slug": "ocwomenssurrogacy",
   "title": "OC Women's Surrogacy",
   "platform": "WordPress",
-  "category": "Healthcare",
+  "category": "Healthcare & Dental",
   "live": null,
-  "img": "/images/projects/ocwomenssurrogacy.webp"
+  "img": "/images/projects/ocwomenssurrogacy.webp",
+  "added": "2026-05-31T22:46:00.000Z"
  },
  {
   "slug": "perimeterfzco",
   "title": "Perimeter FZCO",
   "platform": "WordPress",
-  "category": "Corporate",
+  "category": "Agency & Business",
   "live": null,
-  "img": "/images/projects/perimeterfzco.webp"
+  "img": "/images/projects/perimeterfzco.webp",
+  "added": "2026-05-31T22:45:00.000Z"
  },
  {
   "slug": "roach",
   "title": "Roach",
   "platform": "WordPress",
-  "category": "AI & Tech",
+  "category": "AI & Technology",
   "live": "https://roach.ai",
-  "img": "/images/projects/roach.webp"
+  "img": "/images/projects/roach.webp",
+  "added": "2026-05-31T22:44:00.000Z"
  },
  {
   "slug": "saraniweddings",
   "title": "Sarani Weddings",
   "platform": "WordPress",
-  "category": "Education & Media",
+  "category": "Hospitality & Lifestyle",
   "live": null,
-  "img": "/images/projects/saraniweddings.webp"
+  "img": "/images/projects/saraniweddings.webp",
+  "added": "2026-05-31T22:43:00.000Z"
  },
  {
   "slug": "shaistanasir",
   "title": "Shaista Nasir",
   "platform": "WordPress",
-  "category": "Corporate",
+  "category": "Agency & Business",
   "live": null,
-  "img": "/images/projects/shaistanasir.webp"
+  "img": "/images/projects/shaistanasir.webp",
+  "added": "2026-05-31T22:42:00.000Z"
  },
  {
   "slug": "steeline",
   "title": "Steeline",
   "platform": "WordPress",
-  "category": "Real Estate",
+  "category": "Real Estate & Construction",
   "live": "https://steeline.pk",
-  "img": "/images/projects/steeline.webp"
+  "img": "/images/projects/steeline.webp",
+  "added": "2026-05-31T22:41:00.000Z"
  },
  {
   "slug": "thenextac",
   "title": "The Nextac",
   "platform": "WordPress",
-  "category": "Corporate",
+  "category": "Agency & Business",
   "live": null,
-  "img": "/images/projects/thenextac.webp"
+  "img": "/images/projects/thenextac.webp",
+  "added": "2026-05-31T22:40:00.000Z"
  },
  {
   "slug": "wikicyclopedia",
   "title": "WikiCyclopedia",
   "platform": "WordPress",
-  "category": "Education & Media",
+  "category": "Education & Publishing",
   "live": null,
-  "img": "/images/projects/wikicyclopedia.webp"
+  "img": "/images/projects/wikicyclopedia.webp",
+  "added": "2026-05-31T22:39:00.000Z"
  },
  {
   "slug": "woodlandsqb",
   "title": "Woodlands QB",
   "platform": "WordPress",
-  "category": "Corporate",
+  "category": "Finance & Legal",
   "live": null,
-  "img": "/images/projects/woodlandsqb.webp"
- },
- {
-  "slug": "krystosoft-new",
-  "title": "Krystosoft New",
-  "platform": "WordPress",
-  "category": "Corporate",
-  "live": null,
-  "img": "/images/projects/krystosoft-new.webp"
- },
- {
-  "slug": "accessibilitypartners",
-  "title": "Accessibilitypartners",
-  "platform": "WordPress",
-  "category": "Services",
-  "live": "https://accessibilitypartners.ca",
-  "img": "/images/projects/accessibilitypartners.webp"
- },
- {
-  "slug": "drumerpainrelief",
-  "title": "Drumerpainrelief",
-  "platform": "WordPress",
-  "category": "Healthcare",
-  "live": "https://drumerpainrelief.pk",
-  "img": "/images/projects/drumerpainrelief.webp"
- },
- {
-  "slug": "mermaidpublishers-services",
-  "title": "Mermaidpublishers Services",
-  "platform": "WordPress",
-  "category": "Education & Media",
-  "live": null,
-  "img": "/images/projects/mermaidpublishers-services.webp"
- },
- {
-  "slug": "staging-fynchconsulting",
-  "title": "Staging Fynchconsulting",
-  "platform": "WordPress",
-  "category": "Services",
-  "live": null,
-  "img": "/images/projects/staging-fynchconsulting.webp"
- },
- {
-  "slug": "thenextac-portfolio",
-  "title": "Thenextac Portfolio",
-  "platform": "WordPress",
-  "category": "Corporate",
-  "live": null,
-  "img": "/images/projects/thenextac-portfolio.webp"
- },
- {
-  "slug": "wikicyclopedia-landing-page",
-  "title": "Wikicyclopedia Landing Page",
-  "platform": "WordPress",
-  "category": "Education & Media",
-  "live": null,
-  "img": "/images/projects/wikicyclopedia-landing-page.webp"
- },
- {
-  "slug": "alorasupports-com-wordpress",
-  "title": "alorasupports.com-Wordpress",
-  "platform": "WordPress",
-  "category": "Corporate",
-  "live": null,
-  "img": "/images/projects/alorasupports-com-wordpress.webp"
+  "img": "/images/projects/woodlandsqb.webp",
+  "added": "2026-05-31T22:38:00.000Z"
  }
 ]

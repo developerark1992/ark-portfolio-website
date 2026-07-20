@@ -3,7 +3,7 @@ import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import { siWhatsapp } from 'simple-icons';
 const WA = '923159429998';
-const { title = 'Abdul Rehman Khan — Software Engineer', description = 'Software engineer, full-stack & CMS developer, DevOps and automation specialist. 8+ years, based in Karachi, open to remote EU/UK work.', active = 'home' } = Astro.props;
+const { title = 'Abdul Rehman Khan — CMS Expert & Software Engineer', description = 'CMS expert & software engineer — WordPress, Shopify, Webflow, Wix, Squarespace, Framer + custom Astro/Next.js. DevOps & hosting (WHM/cPanel, AWS), graphic design and AI automation. 8+ years, Karachi, open to remote EU/UK work.', active = 'home' } = Astro.props;
 const links = [
   { href: '/',         name: 'Home',     key: 'home' },
   { href: '/about',    name: 'About',    key: 'about' },
@@ -190,9 +190,9 @@ const AV = '/images/avatar.webp';
         function setChips(list){chipsEl.innerHTML='';list.forEach(function(c){var b=document.createElement('button');b.className='ark-chip'+(c.send?' send':'')+(c.wa?' wa':'');b.textContent=c.label;b.onclick=function(){c.onClick?c.onClick():pick(c.val||c.label,c.label);};chipsEl.appendChild(b);});}
         var MENU=[{label:'About Abdul',val:'about'},{label:'His work',val:'work'},{label:'Services',val:'services'},{label:'Price estimate',val:'estimate'},{label:'Get a quote',val:'quote'},{label:'WhatsApp Abdul',val:'whatsapp',wa:true}];
         function answer(intent){
-          if(intent==='about')return bot("Abdul Rehman Khan is a <b>Software Engineer</b> with <b>8+ years</b> across full-stack, CMS and DevOps. He builds fast, accessible websites, e-commerce and web apps — and <b>automates</b> the busywork with n8n, Make &amp; Zapier. Based in Karachi, open to remote EU/UK work.",MENU.concat([{label:'Start an enquiry',val:'quote'}]));
-          if(intent==='work')return bot("He's shipped <b>50+ projects</b> — real estate (Prescott), health-tech &amp; pharma (Hepius, Galaxy Pharma), Shopify e-commerce, finance and services. Browse the <b>Projects</b> page to explore them all.",[{label:'Get a quote',val:'quote'},{label:'Services',val:'services'}]);
-          if(intent==='services')return bot("Abdul offers:<ul><li>Web development (WordPress / custom)</li><li>E-commerce (WooCommerce / Shopify)</li><li>Workflow &amp; AI automation</li><li>DevOps &amp; cloud (AWS, CI/CD)</li></ul>",[{label:'Price estimate',val:'estimate'},{label:'Get a quote',val:'quote'}]);
+          if(intent==='about')return bot("Abdul Rehman Khan is a <b>CMS expert &amp; software engineer</b> with <b>8+ years</b> in web engineering, DevOps and design. He builds on <b>any platform</b> — WordPress, Shopify, Webflow, Wix, Squarespace, Framer — plus custom Astro/Next.js, handles the <b>hosting &amp; DevOps</b> (WHM/cPanel, AWS, domains, migrations), designs the graphics, and <b>automates</b> the busywork with Claude, ChatGPT, n8n &amp; Zapier. Karachi-based, open to remote EU/UK work.",MENU.concat([{label:'Start an enquiry',val:'quote'}]));
+          if(intent==='work')return bot("He's shipped <b>90+ projects</b> — real estate (Prescott), health-tech &amp; pharma (Hepius, Galaxy Pharma), Shopify e-commerce, finance and agency sites across WordPress, Webflow, Wix &amp; custom stacks. Browse the <b>Projects</b> page — search or filter, and click any card for a full preview.",[{label:'Get a quote',val:'quote'},{label:'Services',val:'services'}]);
+          if(intent==='services')return bot("Abdul offers <b>full-service delivery</b>:<ul><li><b>CMS websites</b> on any platform (WordPress, Shopify, Webflow, Wix, Squarespace, Framer + custom)</li><li><b>E-commerce</b> (WooCommerce / Shopify)</li><li><b>DevOps &amp; hosting</b> — WHM/cPanel, AWS, domains, migrations</li><li><b>AI &amp; workflow automation</b> (Claude, ChatGPT, n8n, Zapier)</li><li><b>Graphic design</b> &amp; branding</li></ul>",[{label:'Price estimate',val:'estimate'},{label:'Get a quote',val:'quote'}]);
           if(intent==='estimate'){bot("Opening the instant cost calculator — build your project and see a live estimate. 👇",[]);setTimeout(function(){close();window.location.href='/estimate';},700);return;}
           if(intent==='pricing')return bot("Projects are quoted to scope. Use the <b>calculator</b> for an instant ballpark, or share details for an exact quote.",[{label:'Price estimate',val:'estimate'},{label:'Get a quote',val:'quote'}]);
           if(intent==='quote'){startEnquiry();return;}
@@ -237,19 +237,11 @@ const AV = '/images/avatar.webp';
         if(!window.__arkEsc){window.__arkEsc=true;document.addEventListener('keydown',function(e){if(e.key==='Escape'){var c=document.getElementById('arkChat');if(c&&!c.hidden){c.hidden=true;var l=document.getElementById('arkLaunch');if(l)l.hidden=false;}}});}
       }
 
-      function initFilters(){
-        var wrap=document.getElementById('filters');if(!wrap)return;
-        wrap.onclick=function(e){var b=e.target.closest('.filt');if(!b)return;
-          wrap.querySelectorAll('.filt').forEach(function(x){x.classList.toggle('active',x===b);});
-          var f=b.getAttribute('data-filter');
-          document.querySelectorAll('#allProjects .proj').forEach(function(c){var show=f==='all'||c.getAttribute('data-cat')===f;c.classList.toggle('hide',!show);});
-        };
-      }
       function initHero(){
         var rot=document.getElementById('rot');
         var REDUCE=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         if(rot && !REDUCE){
-          var roles=["Software Engineer","Full-Stack Developer","CMS Architect","Automation Specialist","DevOps & Cloud"];
+          var roles=["CMS Expert","WordPress Developer","Shopify & Webflow Builder","Full-Stack Engineer","DevOps & Hosting","AI Automation","Graphic Designer"];
           var i=0,ch=0,del=false;
           (function tick(){
             var w=roles[i]; ch+=del?-1:1; rot.textContent=w.slice(0,ch);
@@ -264,7 +256,7 @@ const AV = '/images/avatar.webp';
           hero.addEventListener('pointermove',function(e){var r=hero.getBoundingClientRect();root.style.setProperty('--mx',(e.clientX-r.left)+'px');root.style.setProperty('--my',(e.clientY-r.top)+'px');});
         }
       }
-      function initPage(){ setYear(); initReveal(); initMenu(); initFilters(); initHero(); initCalc(); initChat(); }
+      function initPage(){ setYear(); initReveal(); initMenu(); initHero(); initCalc(); initChat(); }
       document.addEventListener('astro:page-load', initPage);
     })();
   </script>

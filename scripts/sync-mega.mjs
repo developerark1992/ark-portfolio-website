@@ -27,18 +27,18 @@ const OVERRIDE = {
   'boatique staffing':'https://boatiquestaffing.com','evad':'https://evad-me.com',
 };
 const CATS = [
-  ['Healthcare',['pharma','clinic','pain','medical','health','hepius','dental','dentist','dentique','orthodont','pediatric','rapidmd','surrogacy','schein']],
-  ['E-commerce',['shop','store','shopify','ecommerce','protein','gym','oats','bluefish','fitngrip','clay','cosmetic']],
-  ['Real Estate',['real','estate','construction','costruction','steel','prescott','station']],
-  ['Finance',['asset','credit','capital','takada','stakzz','numerix']],
-  ['Services',['staffing','consulting','solutions','partners','agency','advertising','virtual','seo','turnaround','enterprises','fzco','lubricants','law','legal','yacht','laundry','nail','salon','spa','studio']],
-  ['Education & Media',['wedding','sarani','wiki','school','uni','publish','publisher','media','taiko','tutoring']],
-  ['AI & Tech',['ai','tech','data','clatter','roach','vanguard','epsilon']],
+  ['Healthcare & Dental',['pharma','clinic','pain','medical','health','hepius','dental','dentist','dentique','orthodont','pediatric','rapidmd','surrogacy','schein','physio','therapy','wellness']],
+  ['E-commerce',['shop','store','shopify','ecommerce','protein','oats','grip','clay','cosmetic','lubricant','merch','boutique']],
+  ['Real Estate & Construction',['real','estate','construction','costruction','steel','prescott','station','property','realty','colinas','madinat','builder']],
+  ['Finance & Legal',['asset','credit','capital','takada','stakzz','numerix','law','legal','attorney','accounting','bookkeep','tax','insurance']],
+  ['Education & Publishing',['wedding','wiki','school','uni','publish','publisher','media','taiko','tutoring','academy','learn','course','stem']],
+  ['AI & Technology',['\\bai\\b','tech','data','clatter','roach','vanguard','epsilon','krystosoft','saas','software','collab','platform']],
+  ['Hospitality & Lifestyle',['nail','salon','spa','laundry','laundromate','yacht','restaurant','cafe','hotel','travel','fitness','beauty','event']],
 ];
 const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 const titlecase = (s) => s.split(' ').map(w => w.toUpperCase()===w ? w : (w.charAt(0).toUpperCase()+w.slice(1))).join(' ');
-const category = (n) => { n=n.toLowerCase(); for (const [c,ks] of CATS) if (ks.some(k=>n.includes(k))) return c; return 'Corporate'; };
-const platform = (n) => { n=n.toLowerCase(); if(n.includes('shopify'))return 'Shopify'; if(n.includes('wix'))return 'Wix'; if(n.includes('webflow'))return 'Webflow'; return 'WordPress'; };
+const category = (n) => { n=n.toLowerCase(); for (const [c,ks] of CATS) if (ks.some(k=>new RegExp(k).test(n))) return c; return 'Agency & Business'; };
+const platform = (n) => { n=n.toLowerCase(); if(n.includes('shopify'))return 'Shopify'; if(n.includes('wix'))return 'Wix'; if(n.includes('webflow'))return 'Webflow'; if(n.includes('squarespace'))return 'Squarespace'; if(n.includes('framer'))return 'Framer'; return 'WordPress'; };
 
 function parse(fn){
   const raw = fn.replace(/\.(png|jpe?g|webp)$/i,'');
@@ -79,7 +79,7 @@ async function main(){
     // optimize
     const buf = await sharpResize(path.join(CACHE, fn));
     writeFileSync(path.join(OUT, slug+'.webp'), buf);
-    projects.push({ slug, title: meta.title, platform: meta.platform, category: meta.category, live: meta.live, img: '/images/projects/'+slug+'.webp' });
+    projects.push({ slug, title: meta.title, platform: meta.platform, category: meta.category, live: meta.live, img: '/images/projects/'+slug+'.webp', added: new Date().toISOString() });
     added++;
     console.log('  + '+meta.title+'  ['+meta.category+']');
   }

@@ -10,11 +10,10 @@ const experience = [
   { when:'2021 — 2022', role:'Software Developer', co:'Mystic Advertising', d:'WordPress & Shopify — theme customization, Elementor, e-commerce.' },
   { when:'2020 — 2021', role:'Frontend Web Developer', co:'Nisshinbo Holdings', d:'ASP.NET MVC & front-end components for production interfaces.' },
 ];
-const skills = [
-  { n:'01', t:'CMS & E-commerce', s:['WordPress','WooCommerce','Shopify','Webflow','Wix','OpenCart'] },
-  { n:'02', t:'Frontend', s:['HTML5/CSS3','JavaScript ES6+','React','Tailwind','SASS','Bootstrap'] },
-  { n:'03', t:'Backend & Data', s:['PHP','MySQL','C#/.NET','PostgreSQL','REST APIs','Firebase'] },
-  { n:'04', t:'DevOps, Cloud & Automation', s:['AWS EC2/Lightsail','Git & CI/CD','n8n','Make','Zapier','SSL/DNS'] },
+// Skills that don't have brand icons — surfaced as text so recruiters & search see them.
+const extras = [
+  { n:'06', t:'Design & Creative', s:['Figma','Adobe Photoshop','Illustrator','Adobe XD','Canva','Logo & brand identity','UI/UX'] },
+  { n:'07', t:'Hosting & Domains', s:['WHM','cPanel','Shared / VPS hosting','Domain registration','DNS & SSL','Email setup','Site migrations'] },
 ];
 ---
 <Base active="about" title="About — Abdul Rehman Khan" description="8+ years across web engineering, CMS, DevOps and automation. Based in Karachi, open to remote EU/UK roles.">
@@ -23,9 +22,9 @@ const skills = [
       <div class="about-photo reveal"><img src="/images/photo.webp" alt="Abdul Rehman Khan" width="620" height="740" /></div>
       <div class="reveal">
         <p class="eyebrow">About me</p>
-        <h1 class="sec-title" style="font-size:clamp(30px,4.6vw,48px);">Software engineer, CMS architect, and the person who handles the DevOps nobody wants to.</h1>
-        <p class="sec-lead" style="margin:18px 0 24px;">Based in Karachi, Pakistan — open to remote EU/UK roles and B2B contracts, with visa sponsorship. I've spent 8+ years across web engineering, design and IT operations, and the last 5+ focused entirely on CMS and full-stack development.</p>
-        <p class="sec-lead">I care about the parts of a project that outlast launch day: clean architecture, fast load times, accessible markup, and infrastructure that doesn't page anyone at 2am.</p>
+        <h1 class="sec-title" style="font-size:clamp(30px,4.6vw,48px);">A CMS expert who also designs it, hosts it, and automates it.</h1>
+        <p class="sec-lead" style="margin:18px 0 24px;">Based in Karachi, Pakistan — open to remote EU/UK roles and B2B contracts, with visa sponsorship. In 8+ years I've built on every major CMS — WordPress, Shopify, Webflow, Wix, Squarespace, Framer — plus custom Astro/Next.js, and I own the whole delivery: design, hosting (WHM/cPanel, AWS, domains), deployment, and AI-driven automation.</p>
+        <p class="sec-lead">Most clients hire a developer, a designer, a sysadmin and an automation specialist. I'm all four — which means fewer hand-offs, one point of accountability, and a site that's fast, accessible and still standing long after launch day.</p>
         <div class="hero-cta" style="margin-top:26px;">
           <a class="btn primary" href="/Abdul-Rehman-Khan-CV.pdf" download>Download résumé ↓</a>
           <a href="/contact" class="btn ghost">Get in touch</a>
@@ -53,6 +52,12 @@ const skills = [
           <div class="skill-card reveal">
             <span class="num">{g.n}</span><h3>{g.t}</h3>
             <div class="tech-row">{g.items.map((t) => <IconChip label={t.label} path={t.path} />)}</div>
+          </div>
+        ))}
+        {extras.map((g) => (
+          <div class="skill-card reveal">
+            <span class="num">{g.n}</span><h3>{g.t}</h3>
+            <ul>{g.s.map((s) => <li>{s}</li>)}</ul>
           </div>
         ))}
       </div>

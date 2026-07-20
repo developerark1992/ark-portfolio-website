@@ -1,31 +1,35 @@
 ---
 import Base from '../layouts/Base.astro';
 const ICONS = {
-  code:'<path d="m9 8-4 4 4 4M15 8l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>',
+  cms:'<rect x="3.5" y="4.5" width="17" height="15" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 9h17M7 6.4h.01M9.3 6.4h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
   cart:'<circle cx="9" cy="20" r="1.4" fill="currentColor"/><circle cx="17" cy="20" r="1.4" fill="currentColor"/><path d="M3 4h2l2.2 11h10.6L20 8H6.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>',
+  code:'<path d="m9 8-4 4 4 4M15 8l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>',
+  cloud:'<path d="M7 18a4 4 0 0 1-.6-7.96A5.5 5.5 0 0 1 17 9.5a4.5 4.5 0 0 1-.5 8.5H7Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>',
   bolt:'<path d="M13 3 4 14h6l-1 7 9-11h-6l1-7Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>',
-  cloud:'<path d="M7 18a4 4 0 0 1-.6-7.96A5.5 5.5 0 0 1 17 9.5a4.5 4.5 0 0 1-.5 8.5H7Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>'
+  pen:'<path d="M4 20l1-4L16 5l3 3L8 19l-4 1Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 7l3 3" stroke="currentColor" stroke-width="1.6"/>'
 };
 const services = [
-  { icon:'code', t:'Web Development', d:'Custom, fast, maintainable websites built to convert — not just to look good.', items:['WordPress & custom themes','Component-based front-ends','Technical SEO foundations','Performance tuning'] },
+  { icon:'cms', t:'CMS & Website Platforms', tag:'My specialty', d:'A CMS expert who builds on whatever platform fits your team — no lock-in, no “I only do WordPress”.', items:['WordPress & WooCommerce (my core)','Shopify, Webflow, Wix','Squarespace, Framer & more','Custom themes, ACF/CPT, page builders','Platform migrations between any of them'] },
   { icon:'cart', t:'E-commerce', d:'Stores that are easy for you to run and easy for customers to buy from.', items:['WooCommerce & Shopify builds','Catalog & checkout customization','Payment gateway integration','Inventory & order workflows'] },
-  { icon:'bolt', t:'Automation', d:'Remove the manual busywork from your business with connected workflows.', items:['n8n, Make & Zapier flows','CRM & lead-routing automation','AI-assisted content/support flows','Reporting & ops automation'] },
-  { icon:'cloud', t:'DevOps & Cloud', d:'Hosting, deployment and infrastructure that just quietly works.', items:['AWS EC2 / Lightsail setup','CI/CD pipelines','SSL, DNS & domain management','Backups, migrations & monitoring'] },
+  { icon:'code', t:'Custom Web & Apps', d:'When a CMS isn’t enough — fast, modern builds on a real engineering stack.', items:['Astro, Next.js & React','PHP / MySQL & REST APIs','Firebase & .NET backends','Web apps, portals & calculators'] },
+  { icon:'cloud', t:'DevOps, Hosting & Domains', d:'The infrastructure most freelancers hand off — I own it end to end.', items:['WHM / cPanel & shared-host management','AWS EC2 / Lightsail, Cloudflare','Domain registration & DNS/SSL','Site migrations, backups & monitoring','CI/CD & deployment pipelines'] },
+  { icon:'bolt', t:'AI & Workflow Automation', d:'I automate the repetitive work with AI so your team spends time where it counts.', items:['Claude & ChatGPT-powered workflows','n8n, Make & Zapier integrations','CRM, lead-routing & reporting automation','AI content, support & ops assistants','Connecting your tools end to end'] },
+  { icon:'pen', t:'Graphic Design & Branding', d:'Design and build under one roof — the visuals match the site because the same person made both.', items:['Logo & brand identity','Web & UI/UX design (Figma)','Social & marketing graphics','Design-to-code, pixel-accurate'] },
 ];
 ---
 <Base active="services" title="Services — Abdul Rehman Khan" description="Web development, e-commerce, automation and DevOps services by Abdul Rehman Khan.">
   <section style="padding-bottom:0;">
     <div class="wrap">
       <p class="eyebrow reveal">What I do</p>
-      <h1 class="reveal" style="font-size:clamp(32px,5.4vw,58px);margin-bottom:16px;">Services.</h1>
-      <p class="sec-lead reveal" style="margin-bottom:40px;">From a single landing page to a fully automated back office — scoped to what your project actually needs.</p>
+      <h1 class="reveal" style="font-size:clamp(32px,5.4vw,58px);margin-bottom:16px;">One person, the <em style="font-style:normal;color:var(--accent);">whole</em> build.</h1>
+      <p class="sec-lead reveal" style="margin-bottom:40px;">I'm a <b style="color:var(--ink);">CMS expert</b> first — but I also handle the hosting, the design and the automation. So instead of juggling a developer, a designer, a sysadmin and an automation guy, you brief one person and get a finished, live product.</p>
     </div>
   </section>
   <section style="padding-top:0;">
     <div class="wrap svc-grid">
       {services.map((s) => (
         <div class="svc-card reveal">
-          <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" set:html={ICONS[s.icon]}></svg></div>
+          <div class="svc-top"><div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" set:html={ICONS[s.icon]}></svg></div>{s.tag && <span class="svc-tag">{s.tag}</span>}</div>
           <h3>{s.t}</h3><p>{s.d}</p>
           <ul>{s.items.map((i)=> <li>{i}</li>)}</ul>
         </div>
