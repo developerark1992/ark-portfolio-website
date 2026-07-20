@@ -61,7 +61,11 @@ nav.topnav{position:fixed;top:0;left:0;right:0;z-index:80;background:var(--nav-b
   .navburger{display:block;}
 }
 main{padding-top:74px;}
-footer{border-top:1px solid var(--line);padding:34px 0;}
+footer{border-top:1px solid var(--line);padding:30px 0 34px;}
+.foot-social{display:flex;justify-content:center;gap:12px;margin-bottom:22px;}
+.foot-social a{width:40px;height:40px;border-radius:50%;border:1px solid var(--glass-line);display:inline-flex;align-items:center;justify-content:center;color:var(--ink-soft);background:var(--surface);transition:transform .2s,color .2s,border-color .2s,background .2s;}
+.foot-social a:hover{color:var(--on-accent);background:var(--accent);border-color:var(--accent);transform:translateY(-3px);}
+.foot-social svg{width:18px;height:18px;fill:currentColor;}
 .foot-in{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--ink-faint);}
 .foot-in a:hover{color:var(--accent);}
 
