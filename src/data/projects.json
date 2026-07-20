@@ -718,5 +718,13 @@
   "category": "Education & Media",
   "live": null,
   "img": "/images/projects/wikicyclopedia-landing-page.webp"
+ },
+ {
+  "slug": "alorasupports-com-wordpress",
+  "title": "alorasupports.com-Wordpress",
+  "platform": "WordPress",
+  "category": "Corporate",
+  "live": null,
+  "img": "/images/projects/alorasupports-com-wordpress.webp"
  }
 ]
