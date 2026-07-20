@@ -290,42 +290,43 @@ const AV = '/images/avatar.webp';
         }
       }
       function initLightbox(){
-        if(window.__arkLB) return; window.__arkLB=true; // bind once; survives view transitions
-        var lb=document.getElementById('lb'); if(!lb) return;
-        var lbImg=document.getElementById('lbImg'),lbTitle=document.getElementById('lbTitle'),
-            lbCat=document.getElementById('lbCat'),lbTags=document.getElementById('lbTags'),
-            lbActions=document.getElementById('lbActions'),lbClose=document.getElementById('lbClose'),
-            lbInner=document.getElementById('lbInner'),lbShot=document.getElementById('lbShot');
+        if(window.__arkLB) return; window.__arkLB=true; // bind delegated listeners once
+        // NOTE: elements are re-queried on each use — the ClientRouter swaps <body>
+        // on navigation, so cached references would go stale after a page transition.
         var lastFocus=null;
         function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
         function open(card){
+          var lb=document.getElementById('lb'); if(!lb) return;
+          var img=card.getAttribute('data-img'); if(!img) return;
           var title=card.getAttribute('data-title'),cat=card.getAttribute('data-cat'),
-              platform=card.getAttribute('data-platform'),img=card.getAttribute('data-img'),
-              live=card.getAttribute('data-live');
-          if(!img) return;
+              platform=card.getAttribute('data-platform'),live=card.getAttribute('data-live');
           lastFocus=document.activeElement;
+          var lbImg=document.getElementById('lbImg');
           lbImg.src=img; lbImg.alt=title+' — full screenshot';
-          lbTitle.textContent=title; lbCat.textContent=cat;
-          lbTags.innerHTML='<b>'+esc(platform)+'</b><b>'+esc(cat)+'</b>';
-          lbActions.innerHTML=live
+          document.getElementById('lbTitle').textContent=title;
+          document.getElementById('lbCat').textContent=cat;
+          document.getElementById('lbTags').innerHTML='<b>'+esc(platform)+'</b><b>'+esc(cat)+'</b>';
+          document.getElementById('lbActions').innerHTML=live
             ? '<a class="btn primary" href="'+esc(live)+'" target="_blank" rel="noopener">Open live site ↗</a>'
             : '<span class="lb-caseb">Private / case study — no public URL</span>';
           lb.hidden=false; lb.setAttribute('aria-hidden','false');
           document.body.style.overflow='hidden';
-          if(lbShot) lbShot.scrollTop=0;
-          lbClose.focus();
+          var shot=document.getElementById('lbShot'); if(shot) shot.scrollTop=0;
+          document.getElementById('lbClose').focus();
         }
-        function close(){ lb.hidden=true; lb.setAttribute('aria-hidden','true'); document.body.style.overflow=''; lbImg.src=''; if(lastFocus&&lastFocus.focus) lastFocus.focus(); }
+        function close(){ var lb=document.getElementById('lb'); if(!lb) return; lb.hidden=true; lb.setAttribute('aria-hidden','true'); document.body.style.overflow=''; var i=document.getElementById('lbImg'); if(i) i.src=''; if(lastFocus&&lastFocus.focus) lastFocus.focus(); }
         document.addEventListener('click',function(e){
           if(e.target.closest('[data-live-link]')) return; // let the live link open normally
+          if(e.target.closest('#lbClose')){ close(); return; }
           var card=e.target.closest('.proj[data-title]'); if(card){ open(card); return; }
-          if(e.target===lb||e.target===lbInner) close();
+          var inner=e.target.closest('#lbInner'); var lb=e.target.closest('#lb');
+          if(lb && !inner) close(); // click on backdrop outside the panel
         });
         document.addEventListener('keydown',function(e){
-          if(e.key==='Escape'&&!lb.hidden){ close(); return; }
+          var lb=document.getElementById('lb');
+          if(e.key==='Escape'&&lb&&!lb.hidden){ close(); return; }
           if((e.key==='Enter'||e.key===' ')){ var c=e.target.closest&&e.target.closest('.proj[data-title]'); if(c){ e.preventDefault(); open(c); } }
         });
-        lbClose.addEventListener('click',close);
       }
       function initPage(){ setYear(); initReveal(); initMenu(); initHero(); initCalc(); initChat(); initLightbox(); }
       document.addEventListener('astro:page-load', initPage);
