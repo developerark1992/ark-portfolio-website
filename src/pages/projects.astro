@@ -41,21 +41,6 @@ const cats = [['all', 'All', projects.length]].concat(
     </div>
   </section>
 
-  <!-- lightbox -->
-  <div class="lb" id="lb" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Project preview">
-    <button class="lb-x" id="lbClose" aria-label="Close preview">×</button>
-    <div class="lb-inner" id="lbInner">
-      <div class="lb-shot"><img id="lbImg" src="" alt="" /></div>
-      <aside class="lb-side">
-        <span class="lb-cat" id="lbCat"></span>
-        <h3 id="lbTitle"></h3>
-        <div class="lb-tags" id="lbTags"></div>
-        <div class="lb-actions" id="lbActions"></div>
-        <p class="lb-note mono">Full-page screenshot — scroll the preview to see the whole design.</p>
-      </aside>
-    </div>
-  </div>
-
   <script is:inline define:vars={{ PROJECTS: projects }}>
     document.addEventListener('astro:page-load', function () {
       var grid = document.getElementById('allProjects');
@@ -83,9 +68,12 @@ const cats = [['all', 'All', projects.length]].concat(
 
       function cardHTML(p, i) {
         var live = p.live
-          ? '<a class="live" href="' + esc(p.live) + '" target="_blank" rel="noopener" data-live>Live demo ↗</a>'
+          ? '<a class="live" href="' + esc(p.live) + '" target="_blank" rel="noopener" data-live-link>Live demo ↗</a>'
           : '<span class="case">Case study</span>';
-        return '<article class="proj proj-appear" data-idx="' + i + '" tabindex="0" role="button" aria-label="Preview ' + esc(p.title) + '" style="animation-delay:' + ((i % BATCH) * 0.05) + 's">' +
+        return '<article class="proj proj-appear" data-idx="' + i + '"' +
+          ' data-title="' + esc(p.title) + '" data-cat="' + esc(p.category) + '" data-platform="' + esc(p.platform) + '"' +
+          ' data-img="' + esc(p.img) + '" data-live="' + esc(p.live || '') + '"' +
+          ' tabindex="0" role="button" aria-label="Preview ' + esc(p.title) + '" style="animation-delay:' + ((i % BATCH) * 0.05) + 's">' +
           '<div class="proj-shot"><span class="proj-cat">' + esc(p.category) + '</span>' +
           '<img src="' + esc(p.img) + '" alt="' + esc(p.title) + ' — screenshot" loading="lazy" decoding="async" />' +
           '<span class="proj-view">View ↗</span></div>' +
@@ -144,50 +132,7 @@ const cats = [['all', 'All', projects.length]].concat(
         reset();
       });
 
-      // ---- lightbox ----
-      var lb = document.getElementById('lb'), lbImg = document.getElementById('lbImg'),
-          lbTitle = document.getElementById('lbTitle'), lbCat = document.getElementById('lbCat'),
-          lbTags = document.getElementById('lbTags'), lbActions = document.getElementById('lbActions'),
-          lbClose = document.getElementById('lbClose'), lbInner = document.getElementById('lbInner'),
-          lbShot = lb.querySelector('.lb-shot');
-      var lastFocus = null;
-
-      function openLB(p) {
-        lastFocus = document.activeElement;
-        lbImg.src = p.img; lbImg.alt = p.title + ' — full screenshot';
-        lbTitle.textContent = p.title; lbCat.textContent = p.category;
-        lbTags.innerHTML = '<b>' + esc(p.platform) + '</b><b>' + esc(p.category) + '</b>';
-        lbActions.innerHTML = p.live
-          ? '<a class="btn primary" href="' + esc(p.live) + '" target="_blank" rel="noopener">Open live site ↗</a>'
-          : '<span class="lb-caseb">Private / case study — no public URL</span>';
-        lb.hidden = false; lb.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
-        if (lbShot) lbShot.scrollTop = 0;
-        lbClose.focus();
-      }
-      function closeLB() {
-        lb.hidden = true; lb.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
-        lbImg.src = '';
-        if (lastFocus && lastFocus.focus) lastFocus.focus();
-      }
-
-      grid.addEventListener('click', function (e) {
-        if (e.target.closest('[data-live]')) return; // let live link work
-        var card = e.target.closest('.proj'); if (!card) return;
-        var p = state.list[+card.getAttribute('data-idx')];
-        if (p) openLB(p);
-      });
-      grid.addEventListener('keydown', function (e) {
-        if (e.key !== 'Enter' && e.key !== ' ') return;
-        var card = e.target.closest('.proj'); if (!card) return;
-        e.preventDefault();
-        var p = state.list[+card.getAttribute('data-idx')];
-        if (p) openLB(p);
-      });
-      lbClose.addEventListener('click', closeLB);
-      lb.addEventListener('click', function (e) { if (e.target === lb || e.target === lbInner) closeLB(); });
-      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !lb.hidden) closeLB(); });
+      // clicking a card opens the global lightbox (handled in Base.astro via data-* attributes)
 
       reset();
     });

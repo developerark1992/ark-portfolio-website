@@ -1,12 +1,12 @@
 ---
 const { p } = Astro.props;
 const tags = [p.platform, p.category];
-const desc = `${p.platform} build — ${p.category.toLowerCase()} project, delivered production-ready.`;
 ---
-<article class="proj reveal" data-cat={p.category}>
+<article class="proj reveal" data-cat={p.category} data-title={p.title} data-platform={p.platform} data-img={p.img} data-live={p.live || ''} tabindex="0" role="button" aria-label={`Preview ${p.title}`}>
   <div class="proj-shot">
     <span class="proj-cat">{p.category}</span>
     <img src={p.img} alt={`${p.title} — screenshot`} loading="lazy" decoding="async" />
+    <span class="proj-view">View ↗</span>
   </div>
   <div class="proj-body">
     <h3>{p.title}</h3>
@@ -14,7 +14,7 @@ const desc = `${p.platform} build — ${p.category.toLowerCase()} project, deliv
     <div class="tags">{tags.map((t) => <b>{t}</b>)}</div>
     <div class="proj-actions">
       {p.live
-        ? <a class="live" href={p.live} target="_blank" rel="noopener">Live demo ↗</a>
+        ? <a class="live" href={p.live} target="_blank" rel="noopener" data-live-link>Live demo ↗</a>
         : <span class="case">Case study</span>}
     </div>
   </div>

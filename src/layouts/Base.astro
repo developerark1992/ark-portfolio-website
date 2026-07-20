@@ -32,7 +32,7 @@ const AV = '/images/avatar.webp';
         {links.map((l) => (
           <a href={l.href} class={active === l.key ? 'active' : ''}>{l.name}</a>
         ))}
-        <a href="/contact" class={`cta ${active === 'contact' ? 'active' : ''}`}>Contact</a>
+        <a href="/contact" class={`cta ${active === 'contact' ? 'active' : ''}`}>Book a call</a>
       </div>
     </div>
   </nav>
@@ -46,6 +46,26 @@ const AV = '/images/avatar.webp';
     <span>Software Engineer · Full-Stack · DevOps · Automation</span>
     <a href="/contact">Let's talk →</a>
   </div></footer>
+
+  <!-- floating WhatsApp (independent of the chatbot) -->
+  <a class="wa-float" href={`https://wa.me/${WA}`} target="_blank" rel="noopener" aria-label="Chat on WhatsApp" title="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d={siWhatsapp.path} /></svg>
+  </a>
+
+  <!-- global project lightbox -->
+  <div class="lb" id="lb" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Project preview">
+    <button class="lb-x" id="lbClose" aria-label="Close preview">×</button>
+    <div class="lb-inner" id="lbInner">
+      <div class="lb-shot" id="lbShot"><img id="lbImg" src="" alt="" /></div>
+      <aside class="lb-side">
+        <span class="lb-cat" id="lbCat"></span>
+        <h3 id="lbTitle"></h3>
+        <div class="lb-tags" id="lbTags"></div>
+        <div class="lb-actions" id="lbActions"></div>
+        <p class="lb-note mono">Full-page screenshot — scroll the preview to see the whole design.</p>
+      </aside>
+    </div>
+  </div>
 
   <!-- chatbot -->
   <button class="ark-launch" id="arkLaunch" aria-label="Open chat assistant">
@@ -90,14 +110,12 @@ const AV = '/images/avatar.webp';
       /* ---------- calculator ---------- */
       function initCalc(){
         if(!document.getElementById('estMin'))return;
-        // Base prices in PKR (Pakistani-market rates); converted to other currencies below.
-        var TYPES={landing:{base:[20000,50000],incl:1,label:"Landing page"},website:{base:[50000,150000],incl:5,label:"Multi-page site"},ecommerce:{base:[120000,400000],incl:8,label:"E-commerce"},webapp:{base:[250000,800000],incl:6,label:"Web app"},automation:{base:[40000,200000],incl:1,label:"Automation"}};
-        var PER_PAGE=[8000,18000];
-        var PLATFORM={wp:1,shopify:1,custom:1.2,nosure:1,_label:{wp:"WordPress",shopify:"Shopify",custom:"Custom build",nosure:"Not sure"}};
-        var DESIGN={template:1,custom:1.25,premium:1.55,_label:{template:"Template",custom:"Custom design",premium:"Premium bespoke"}};
-        var FEAT={cms:[15000,40000],payments:[40000,120000],multilang:[25000,70000],booking:[20000,60000],seo:[15000,45000],anim:[20000,60000],a11y:[20000,70000],automation:[30000,150000]};
-        var FEAT_LABEL={cms:"CMS / blog",payments:"Payments / cart",multilang:"Multilingual",booking:"Booking",seo:"SEO setup",anim:"Animations",a11y:"Accessibility",automation:"Automations",maint:"Maintenance"};
-        var MAINT_MONTH=[8000,20000];
+        // Base prices in PKR (solo-freelancer rates, min ~100k); converted to other currencies below.
+        var TYPES={website:{base:[100000,300000],incl:5,label:"Website"},webapp:{base:[400000,1200000],incl:6,label:"Web app"},ecommerce:{base:[250000,700000],incl:8,label:"E-commerce"},saas:{base:[900000,2500000],incl:6,label:"SaaS platform"},mvp:{base:[400000,1000000],incl:5,label:"MVP / prototype"}};
+        var PER_PAGE=[10000,25000];
+        var COMPLEXITY={simple:1,medium:1.35,complex:1.8,enterprise:2.5,_label:{simple:"Simple",medium:"Medium",complex:"Complex",enterprise:"Enterprise"}};
+        var FEAT={auth:[50000,90000],payments:[90000,180000],api:[70000,140000],dashboard:[110000,240000],analytics:[60000,120000],cms:[70000,150000],responsive:[30000,60000],seo:[40000,90000],multilang:[80000,160000],realtime:[110000,240000]};
+        var FEAT_LABEL={auth:"User authentication",payments:"Payment integration",api:"Third-party API",dashboard:"Admin dashboard",analytics:"Analytics & reporting",cms:"CMS",responsive:"Mobile responsive",seo:"SEO optimization",multilang:"Multi-language",realtime:"Real-time features"};
         // Prices are in PKR; m = value_in_currency per 1 PKR (market FX). step = rounding.
         var CUR={
           PKR:{m:1,s:"₨",step:2000}, USD:{m:1/281,s:"$",step:10}, EUR:{m:1/305,s:"€",step:10},
@@ -116,7 +134,7 @@ const AV = '/images/avatar.webp';
           }catch(e){}
           return 'PKR';
         }
-        var state={type:"landing",pages:5,platform:"wp",design:"custom",features:{},timeline:"standard",currency:autoCurrency()};
+        var state={type:"website",pages:5,complexity:"simple",features:{},timeline:"standard",currency:autoCurrency()};
         var $=function(id){return document.getElementById(id);};
         function roundTo(n,s){return Math.round(n/s)*s;}
         function fmtVal(v){var c=CUR[state.currency]||CUR.USD;return c.s+roundTo(v*c.m,c.step||50).toLocaleString('en-US');}
@@ -125,13 +143,13 @@ const AV = '/images/avatar.webp';
           min+=extra*PER_PAGE[0];max+=extra*PER_PAGE[1];
           var bd=[{l:t.label+" · base",v:fmtVal(t.base[0])+"+"}];
           if(extra>0)bd.push({l:extra+" extra page"+(extra>1?"s":""),v:"+"+fmtVal(extra*PER_PAGE[0])});
-          var monthly=0;
-          Object.keys(state.features).forEach(function(k){if(!state.features[k])return;if(k==="maint"){monthly=MAINT_MONTH;return;}if(k==="payments"&&state.type==="ecommerce")return;var r=FEAT[k];if(r){min+=r[0];max+=r[1];bd.push({l:FEAT_LABEL[k],v:"+"+fmtVal(r[0])});}});
-          var pm=PLATFORM[state.platform],dm=DESIGN[state.design];min*=pm*dm;max*=pm*dm;
-          if(state.platform==="custom")bd.push({l:"Custom platform",v:"+20%"});
-          if(state.design!=="template")bd.push({l:DESIGN._label[state.design],v:"+"+Math.round((dm-1)*100)+"%"});
-          if(state.timeline==="rush"){min*=1.25;max*=1.25;bd.push({l:"Rush timeline",v:"+25%"});}
-          return {min:min,max:max,monthly:monthly,scope:Math.max(0,Math.min(1,(max-20000)/(2000000-20000))),breakdown:bd};
+          Object.keys(state.features).forEach(function(k){if(!state.features[k])return;var r=FEAT[k];if(r){min+=r[0];max+=r[1];bd.push({l:FEAT_LABEL[k],v:"+"+fmtVal(r[0])});}});
+          var cm=COMPLEXITY[state.complexity];min*=cm;max*=cm;
+          if(state.complexity!=="simple")bd.push({l:COMPLEXITY._label[state.complexity]+" complexity",v:"×"+cm});
+          if(state.timeline==="rush"){min*=1.5;max*=1.5;bd.push({l:"Rush timeline",v:"+50%"});}
+          else if(state.timeline==="flexible"){min*=0.9;max*=0.9;bd.push({l:"Flexible timeline",v:"−10%"});}
+          min=Math.max(100000,min);max=Math.max(min,max); // floor: PKR 100k minimum
+          return {min:min,max:max,monthly:0,scope:Math.max(0,Math.min(1,(max-100000)/(6000000-100000))),breakdown:bd};
         }
         var REDUCE=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         function animateNum(el,to){
@@ -155,15 +173,15 @@ const AV = '/images/avatar.webp';
           var b=e.target.closest('button[data-val]');if(!b)return;
           var group=b.parentElement.getAttribute('data-group');
           if(group==='features'){var v=b.getAttribute('data-val');state.features[v]=!state.features[v];b.classList.toggle('active',state.features[v]);}
-          else if(group){b.parentElement.querySelectorAll('button').forEach(function(x){x.classList.toggle('active',x===b);});var val=b.getAttribute('data-val');if(group==='type')state.type=val;else if(group==='platform')state.platform=val;else if(group==='design')state.design=val;else if(group==='timeline')state.timeline=val;else if(group==='currency')state.currency=val;}
+          else if(group){b.parentElement.querySelectorAll('button').forEach(function(x){x.classList.toggle('active',x===b);});var val=b.getAttribute('data-val');if(group==='type')state.type=val;else if(group==='complexity')state.complexity=val;else if(group==='timeline')state.timeline=val;else if(group==='currency')state.currency=val;}
           render();
         });
-        $('pageRange').addEventListener('input',function(){state.pages=+this.value;$('pageVal').textContent=this.value>=30?"30+":this.value;render();});
+        $('pageRange').addEventListener('input',function(){state.pages=+this.value;$('pageVal').textContent=this.value>=50?"50+":this.value;render();});
         $('calcQuote').addEventListener('click',function(e){
           e.preventDefault();var r=compute();
           var feats=Object.keys(state.features).filter(function(k){return state.features[k];}).map(function(k){return FEAT_LABEL[k];}).join(", ")||"none";
           var subject="Website quote request — "+TYPES[state.type].label;
-          var body="Hi Abdul, I used your calculator — here's my project:\n\nProject type: "+TYPES[state.type].label+"\nPages: "+state.pages+"\nPlatform: "+PLATFORM._label[state.platform]+"\nDesign: "+DESIGN._label[state.design]+"\nFeatures: "+feats+"\nTimeline: "+state.timeline+"\n\nEstimated range shown: "+fmtVal(r.min)+" – "+fmtVal(r.max)+(r.monthly?(" (+ "+fmtVal(r.monthly[0])+"–"+fmtVal(r.monthly[1])+"/mo maintenance)"):"")+"\n\nPlease send me an exact quote.";
+          var body="Hi Abdul, I used your calculator — here's my project:\n\nProject type: "+TYPES[state.type].label+"\nComplexity: "+COMPLEXITY._label[state.complexity]+"\nPages / screens: "+state.pages+"\nFeatures: "+feats+"\nTimeline: "+state.timeline+"\n\nEstimated range shown: "+fmtVal(r.min)+" – "+fmtVal(r.max)+"\n\nPlease send me an exact quote.";
           window.location.href="mailto:"+EMAIL+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
         });
         $('calcChat').addEventListener('click',function(){if(window.arkOpenChat)window.arkOpenChat();});
@@ -226,8 +244,23 @@ const AV = '/images/avatar.webp';
         function sendMail(){var subj="Project enquiry — "+(data.name||'')+" ("+(data.project||'')+")";window.location.href="mailto:"+EMAIL+"?subject="+encodeURIComponent(subj)+"&body="+encodeURIComponent(body());bot("Opening your email app with everything filled in — just hit <b>send</b>. 🚀",[{label:'Copy details',onClick:copyDetails}]);}
         function copyDetails(){var txt="To: "+EMAIL+"\n\n"+body();if(navigator.clipboard){navigator.clipboard.writeText(txt).then(function(){bot("Copied! Paste it into an email to "+EMAIL+". 📋");},function(){bot("Here it is:<br><br>"+esc(txt).replace(/\n/g,'<br>'));});}else bot("Here it is:<br><br>"+esc(txt).replace(/\n/g,'<br>'));}
         function pick(val,label){me(label);if(mode==='enquiry')record(val);else answer(val);}
-        function guess(t){var s=t.toLowerCase();if(/whatsapp|wa\b/.test(s))return 'whatsapp';if(/hire|quote|enquir|inquir|start|contact/.test(s))return 'quote';if(/price|cost|estimate|calculat|budget/.test(s))return 'estimate';if(/service|do you|help|skill/.test(s))return 'services';if(/work|project|portfolio/.test(s))return 'work';if(/who|about|abdul|experience|year/.test(s))return 'about';return null;}
-        form.onsubmit=function(e){e.preventDefault();var t=input.value.trim();if(!t)return;input.value='';me(t);if(mode==='enquiry')record(t);else if(mode==='wa')waRecord(t);else answer(guess(t)||'menu');};
+        function guess(t){var s=t.toLowerCase();if(/whatsapp|wa\b/.test(s))return 'whatsapp';if(/^\s*(hire|get a quote|start an enquiry)\b/.test(s))return 'quote';if(/book.*(call|strategy)|strategy call|schedule/.test(s))return 'quote';return null;}
+        // free-typed questions go to the Gemini proxy; scripted flows (quote/whatsapp) still win
+        var aiHist=[];
+        function botNow(html,chips){untype();var r=document.createElement('div');r.className='ark-row bot';r.innerHTML='<img src="'+AV+'" alt=""><div class="ark-bub">'+html+'</div>';msgs.appendChild(r);setChips(chips||[]);scroll();}
+        function fmtAI(t){return esc(t).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>');}
+        function askAI(t){
+          aiHist.push({role:'user',text:t});
+          typing();
+          fetch('/api/chat',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({message:t,history:aiHist})})
+            .then(function(r){return r.json();})
+            .then(function(d){
+              if(d&&d.ok&&d.reply){ aiHist.push({role:'model',text:d.reply}); botNow(fmtAI(d.reply), MENU); }
+              else { untype(); answer('menu'); } // no key / error → scripted help
+            })
+            .catch(function(){ untype(); answer('menu'); });
+        }
+        form.onsubmit=function(e){e.preventDefault();var t=input.value.trim();if(!t)return;input.value='';me(t);if(mode==='enquiry')record(t);else if(mode==='wa')waRecord(t);else{var g=guess(t);if(g)answer(g);else askAI(t);}};
         function open(){chat.hidden=false;launch.hidden=true;if(!started){started=true;bot("👋 Hi! I'm <b>Abdul's assistant</b>. Ask about his work, get an instant price estimate, or send him a project enquiry.",MENU,260);}setTimeout(function(){input.focus();},300);}
         function close(){chat.hidden=true;launch.hidden=false;}
         window.arkOpenChat=open;
@@ -256,7 +289,45 @@ const AV = '/images/avatar.webp';
           hero.addEventListener('pointermove',function(e){var r=hero.getBoundingClientRect();root.style.setProperty('--mx',(e.clientX-r.left)+'px');root.style.setProperty('--my',(e.clientY-r.top)+'px');});
         }
       }
-      function initPage(){ setYear(); initReveal(); initMenu(); initHero(); initCalc(); initChat(); }
+      function initLightbox(){
+        if(window.__arkLB) return; window.__arkLB=true; // bind once; survives view transitions
+        var lb=document.getElementById('lb'); if(!lb) return;
+        var lbImg=document.getElementById('lbImg'),lbTitle=document.getElementById('lbTitle'),
+            lbCat=document.getElementById('lbCat'),lbTags=document.getElementById('lbTags'),
+            lbActions=document.getElementById('lbActions'),lbClose=document.getElementById('lbClose'),
+            lbInner=document.getElementById('lbInner'),lbShot=document.getElementById('lbShot');
+        var lastFocus=null;
+        function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+        function open(card){
+          var title=card.getAttribute('data-title'),cat=card.getAttribute('data-cat'),
+              platform=card.getAttribute('data-platform'),img=card.getAttribute('data-img'),
+              live=card.getAttribute('data-live');
+          if(!img) return;
+          lastFocus=document.activeElement;
+          lbImg.src=img; lbImg.alt=title+' — full screenshot';
+          lbTitle.textContent=title; lbCat.textContent=cat;
+          lbTags.innerHTML='<b>'+esc(platform)+'</b><b>'+esc(cat)+'</b>';
+          lbActions.innerHTML=live
+            ? '<a class="btn primary" href="'+esc(live)+'" target="_blank" rel="noopener">Open live site ↗</a>'
+            : '<span class="lb-caseb">Private / case study — no public URL</span>';
+          lb.hidden=false; lb.setAttribute('aria-hidden','false');
+          document.body.style.overflow='hidden';
+          if(lbShot) lbShot.scrollTop=0;
+          lbClose.focus();
+        }
+        function close(){ lb.hidden=true; lb.setAttribute('aria-hidden','true'); document.body.style.overflow=''; lbImg.src=''; if(lastFocus&&lastFocus.focus) lastFocus.focus(); }
+        document.addEventListener('click',function(e){
+          if(e.target.closest('[data-live-link]')) return; // let the live link open normally
+          var card=e.target.closest('.proj[data-title]'); if(card){ open(card); return; }
+          if(e.target===lb||e.target===lbInner) close();
+        });
+        document.addEventListener('keydown',function(e){
+          if(e.key==='Escape'&&!lb.hidden){ close(); return; }
+          if((e.key==='Enter'||e.key===' ')){ var c=e.target.closest&&e.target.closest('.proj[data-title]'); if(c){ e.preventDefault(); open(c); } }
+        });
+        lbClose.addEventListener('click',close);
+      }
+      function initPage(){ setYear(); initReveal(); initMenu(); initHero(); initCalc(); initChat(); initLightbox(); }
       document.addEventListener('astro:page-load', initPage);
     })();
   </script>

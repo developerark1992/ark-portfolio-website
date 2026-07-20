@@ -1,65 +1,110 @@
 ---
 import Base from '../layouts/Base.astro';
 import { siWhatsapp } from 'simple-icons';
+const WA = '923159429998';
+const EMAIL = 'ark.educationalist@gmail.com';
+const CALENDLY = 'https://calendly.com/ark-educationalist/30min';
+const channels = [
+  { k:'wa',   h:'WhatsApp',  s:'Fastest reply — usually under an hour', v:'+92 315 9429998', href:`https://wa.me/${WA}`, cta:'Start WhatsApp chat' },
+  { k:'call', h:'Call / voice note', s:'Prefer to talk it through?', v:'+92 315 9429998', href:`tel:+${WA}`, cta:'Call now' },
+  { k:'mail', h:'Email', s:'Send a brief and any references', v:EMAIL, href:`mailto:${EMAIL}`, cta:'Email me' },
+];
+const trust = [
+  ['8+','Years experience'],['90+','Projects delivered'],['3','Countries served'],['~1 day','Typical reply time'],
+];
 ---
-<Base active="contact" title="Contact — Abdul Rehman Khan" description="Get in touch with Abdul Rehman Khan for web development, e-commerce, automation and cloud projects.">
-  <section>
+<Base active="contact" title="Book a Free Strategy Call — Abdul Rehman Khan" description="Book a free 30-minute strategy call with Abdul Rehman Khan, or send a project brief. CMS, custom web, e-commerce, DevOps, design and automation — replies within a day.">
+  <section style="padding-bottom:0;">
     <div class="wrap">
-      <p class="eyebrow reveal">Get in touch</p>
-      <h1 class="reveal" style="font-size:clamp(32px,5.4vw,58px);margin-bottom:16px;">Let's build something.</h1>
-      <p class="sec-lead reveal" style="margin-bottom:48px;">Tell me a little about your project — I read every message and reply personally, usually within a day.</p>
-      <div class="contact-grid">
-        <form class="reveal" id="contactForm">
-          <div class="field"><label for="cf-name">Name</label><input id="cf-name" required placeholder="Your name" /></div>
-          <div class="field"><label for="cf-email">Email</label><input id="cf-email" type="email" required placeholder="you@company.com" /></div>
-          <div class="field"><label for="cf-type">Project type</label>
-            <select id="cf-type"><option>New website</option><option>Redesign</option><option>E-commerce store</option><option>Web app</option><option>Automation / workflow</option><option>Other</option></select>
+      <p class="eyebrow reveal">Let's talk</p>
+      <h1 class="reveal" style="font-size:clamp(32px,5.4vw,58px);margin-bottom:14px;">Start a conversation.</h1>
+      <p class="sec-lead reveal" style="margin-bottom:36px;">A great build starts with a clear brief and a fast reply. Book a free 30-minute strategy call, or send the details below — I read every message personally and get back to you, usually within a day.</p>
+
+      <div class="channels reveal">
+        {channels.map((c) => (
+          <a class="channel" href={c.href} target={c.k==='wa'?'_blank':null} rel={c.k==='wa'?'noopener':null}>
+            <span class={`ch-ic ch-${c.k}`}>
+              {c.k==='wa' && <svg viewBox="0 0 24 24" aria-hidden="true"><path d={siWhatsapp.path}/></svg>}
+              {c.k==='call' && <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.5 4h3l1.5 4-2 1.5a12 12 0 0 0 5 5l1.5-2 4 1.5v3a2 2 0 0 1-2.2 2A16 16 0 0 1 4.5 6.2 2 2 0 0 1 6.5 4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>}
+              {c.k==='mail' && <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16v12H4z" stroke="currentColor" stroke-width="1.6"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.6"/></svg>}
+            </span>
+            <div class="ch-body"><h3>{c.h}</h3><p>{c.s}</p><span class="ch-v">{c.v}</span><span class="ch-cta">{c.cta} →</span></div>
+          </a>
+        ))}
+      </div>
+
+      <div class="trust-strip reveal">
+        {trust.map(([v,l]) => <div class="ts"><b>{v}</b><span>{l}</span></div>)}
+        <div class="ts wide"><b>Solo, senior &amp; accountable</b><span>You work directly with me — no account managers, no hand-offs</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:48px;">
+    <div class="wrap contact-grid">
+      <div class="reveal">
+        <h2 class="sec-title" style="font-size:clamp(24px,3.4vw,34px);">Send a project brief</h2>
+        <p class="sec-lead" style="margin:8px 0 24px;">Scoped proposal back within 1 business day.</p>
+        <form id="contactForm">
+          <div class="field-row">
+            <div class="field"><label for="cf-name">Name *</label><input id="cf-name" required placeholder="Your name" /></div>
+            <div class="field"><label for="cf-email">Email *</label><input id="cf-email" type="email" required placeholder="you@company.com" /></div>
           </div>
-          <div class="field"><label for="cf-msg">Message</label><textarea id="cf-msg" required placeholder="What are you looking to build?"></textarea></div>
-          <div class="hero-cta" style="gap:10px;">
-            <button type="submit" class="btn primary">Send via email →</button>
-            <button type="button" id="waBtn" class="btn wa"><svg viewBox="0 0 24 24" width="16" height="16" style="fill:currentColor" aria-hidden="true"><path d={siWhatsapp.path} /></svg> WhatsApp</button>
+          <div class="field-row">
+            <div class="field"><label for="cf-phone">Phone / WhatsApp</label><input id="cf-phone" placeholder="Optional" /></div>
+            <div class="field"><label for="cf-company">Company / brand</label><input id="cf-company" placeholder="Optional" /></div>
           </div>
-          <p class="form-note">Email opens your mail app · WhatsApp opens a chat — both pre-filled with your name &amp; message.</p>
-        </form>
-        <div class="contact-info reveal">
-          <div class="info-row"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16v12H4z" stroke="currentColor" stroke-width="1.7"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.7"/></svg></span>
-            <div><h4>Email</h4><a href="mailto:ark.educationalist@gmail.com">ark.educationalist@gmail.com</a></div></div>
-          <div class="info-row"><span class="ic"><svg viewBox="0 0 24 24" style="fill:currentColor" aria-hidden="true"><path d={siWhatsapp.path} /></svg></span>
-            <div><h4>WhatsApp</h4><a href="https://wa.me/923159429998" target="_blank" rel="noopener">+92 315 9429998</a></div></div>
-          <div class="info-row"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.1 7-11.5a7 7 0 1 0-14 0C5 14.9 12 21 12 21Z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="9.5" r="2.4" stroke="currentColor" stroke-width="1.7"/></svg></span>
-            <div><h4>Location</h4><p>Karachi, Pakistan · Open to EU / UK remote</p></div></div>
-          <div class="info-row"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M8 12h8M12 8v8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/></svg></span>
-            <div><h4>Availability</h4><p>Freelance · B2B contract · Full-time</p></div></div>
-          <div>
-            <h4 class="mono" style="font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);margin-bottom:12px;">Elsewhere</h4>
-            <div class="social-row">
-              <a href="https://www.linkedin.com/in/developerark/" target="_blank" rel="noopener">LinkedIn ↗</a>
-              <a href="https://arkdesigningbureau.com" target="_blank" rel="noopener">Portfolio ↗</a>
+          <div class="field-row">
+            <div class="field"><label for="cf-type">Project type</label>
+              <select id="cf-type"><option>New website</option><option>Redesign</option><option>E-commerce store</option><option>Web app / SaaS</option><option>MVP / prototype</option><option>Automation / workflow</option><option>Hosting / migration / DevOps</option><option>Graphic design / branding</option><option>Other</option></select>
+            </div>
+            <div class="field"><label for="cf-budget">Budget (PKR)</label>
+              <select id="cf-budget"><option>PKR 100k – 250k</option><option>PKR 250k – 500k</option><option>PKR 500k – 1M</option><option>PKR 1M – 2.5M</option><option>PKR 2.5M+</option><option>Not sure yet</option></select>
             </div>
           </div>
+          <div class="field"><label for="cf-timeline">Timeline</label>
+            <select id="cf-timeline"><option>ASAP / rush</option><option>2–4 weeks</option><option>1–3 months</option><option>Flexible</option></select>
+          </div>
+          <div class="field"><label for="cf-msg">Project brief *</label><textarea id="cf-msg" required placeholder="What are you looking to build? Goals, pages/features, any reference sites…"></textarea></div>
+          <div class="hero-cta" style="gap:10px;">
+            <button type="submit" class="btn primary">Send brief via email →</button>
+            <button type="button" id="waBtn" class="btn wa"><svg viewBox="0 0 24 24" width="16" height="16" style="fill:currentColor" aria-hidden="true"><path d={siWhatsapp.path} /></svg> Send on WhatsApp</button>
+          </div>
+          <p class="form-note">Both options open pre-filled with everything above — just hit send.</p>
+        </form>
+      </div>
+
+      <div class="reveal" id="book">
+        <h2 class="sec-title" style="font-size:clamp(24px,3.4vw,34px);">Book a free strategy call</h2>
+        <p class="sec-lead" style="margin:8px 0 20px;">Pick a 30-minute slot — we'll talk through your goals, scope and the best platform for the job. No obligation.</p>
+        <div class="calendly-wrap">
+          <div class="calendly-inline-widget" data-url={`${CALENDLY}?hide_gdpr_banner=1&background_color=0b0f18&text_color=eaf0f7&primary_color=34e2c5`} style="min-width:300px;height:660px;"></div>
+          <noscript><a class="btn primary" href={CALENDLY} target="_blank" rel="noopener">Open my calendar ↗</a></noscript>
         </div>
       </div>
     </div>
   </section>
-  <script is:inline>
+
+  <script is:inline define:vars={{ WA, EMAIL, CALENDLY }}>
     document.addEventListener('astro:page-load', function(){
-      var f=document.getElementById('contactForm'); if(!f) return;
-      function vals(){return {n:document.getElementById('cf-name').value.trim(),em:document.getElementById('cf-email').value.trim(),t:document.getElementById('cf-type').value,m:document.getElementById('cf-msg').value.trim()};}
-      f.onsubmit=function(e){
-        e.preventDefault();var v=vals();
-        var subject='Project enquiry — '+v.n+' ('+v.t+')';
-        var body='Name: '+v.n+'\nEmail: '+v.em+'\nProject type: '+v.t+'\n\nMessage:\n'+v.m;
-        window.location.href='mailto:ark.educationalist@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
-      };
-      var wa=document.getElementById('waBtn');
-      if(wa) wa.onclick=function(){
-        var v=vals();
-        if(!v.n){document.getElementById('cf-name').focus();return;}
-        if(!v.m){document.getElementById('cf-msg').focus();return;}
-        var text="Hi Abdul, I'm "+v.n+"."+(v.t?" ("+v.t+")":"")+" "+v.m;
-        window.open('https://wa.me/923159429998?text='+encodeURIComponent(text),'_blank','noopener');
-      };
+      // ---- form ----
+      var f=document.getElementById('contactForm');
+      if(f){
+        var g=function(id){var el=document.getElementById(id);return el?el.value.trim():'';};
+        var brief=function(){return 'Name: '+g('cf-name')+'\nEmail: '+g('cf-email')+'\nPhone: '+(g('cf-phone')||'-')+'\nCompany: '+(g('cf-company')||'-')+'\nProject type: '+g('cf-type')+'\nBudget: '+g('cf-budget')+'\nTimeline: '+g('cf-timeline')+'\n\nBrief:\n'+g('cf-msg');};
+        f.onsubmit=function(e){e.preventDefault();var subject='Project brief — '+g('cf-name')+' ('+g('cf-type')+')';window.location.href='mailto:'+EMAIL+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(brief());};
+        var wa=document.getElementById('waBtn');
+        if(wa)wa.onclick=function(){var n=document.getElementById('cf-name'),m=document.getElementById('cf-msg');if(!n.value.trim()){n.focus();return;}if(!m.value.trim()){m.focus();return;}var text="Hi Abdul, I'd like a quote.\n\n"+brief();window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(text),'_blank','noopener');};
+      }
+      // ---- Calendly inline widget (load once, re-init after view transitions) ----
+      var wrap=document.querySelector('.calendly-inline-widget');
+      if(wrap){
+        function initCal(){ if(window.Calendly&&Calendly.initInlineWidget){ wrap.innerHTML=''; Calendly.initInlineWidget({url:wrap.getAttribute('data-url'),parentElement:wrap}); } }
+        if(window.Calendly){ initCal(); }
+        else if(!document.getElementById('calendly-js')){
+          var s=document.createElement('script');s.id='calendly-js';s.src='https://assets.calendly.com/assets/external/widget.js';s.async=true;s.onload=initCal;document.body.appendChild(s);
+        } else { initCal(); }
+      }
     });
   </script>
 </Base>

@@ -15,54 +15,49 @@ import Base from '../layouts/Base.astro';
         <div class="calc-block reveal">
           <div class="calc-label"><span class="calc-num">01</span> Project type</div>
           <div class="seg" data-group="type">
-            <button class="seg-btn active" data-val="landing">Landing page</button>
-            <button class="seg-btn" data-val="website">Multi-page site</button>
-            <button class="seg-btn" data-val="ecommerce">E-commerce</button>
+            <button class="seg-btn active" data-val="website">Website</button>
             <button class="seg-btn" data-val="webapp">Web app</button>
-            <button class="seg-btn" data-val="automation">Automation</button>
+            <button class="seg-btn" data-val="ecommerce">E-commerce</button>
+            <button class="seg-btn" data-val="saas">SaaS platform</button>
+            <button class="seg-btn" data-val="mvp">MVP / prototype</button>
           </div>
         </div>
         <div class="calc-block reveal">
-          <div class="calc-label"><span class="calc-num">02</span> Number of pages <b id="pageVal">5</b></div>
-          <input type="range" id="pageRange" min="1" max="30" value="5" class="calc-range" />
-          <div class="calc-scale"><span>1</span><span>15</span><span>30+</span></div>
-        </div>
-        <div class="calc-block reveal">
-          <div class="calc-label"><span class="calc-num">03</span> Platform</div>
-          <div class="chips" data-group="platform">
-            <button class="chip-b active" data-val="wp">WordPress</button>
-            <button class="chip-b" data-val="shopify">Shopify</button>
-            <button class="chip-b" data-val="custom">Custom build</button>
-            <button class="chip-b" data-val="nosure">Not sure</button>
+          <div class="calc-label"><span class="calc-num">02</span> Complexity</div>
+          <div class="chips" data-group="complexity">
+            <button class="chip-b active" data-val="simple">Simple</button>
+            <button class="chip-b" data-val="medium">Medium</button>
+            <button class="chip-b" data-val="complex">Complex</button>
+            <button class="chip-b" data-val="enterprise">Enterprise</button>
           </div>
         </div>
         <div class="calc-block reveal">
-          <div class="calc-label"><span class="calc-num">04</span> Design level</div>
-          <div class="chips" data-group="design">
-            <button class="chip-b" data-val="template">Template-based</button>
-            <button class="chip-b active" data-val="custom">Custom design</button>
-            <button class="chip-b" data-val="premium">Premium bespoke</button>
-          </div>
+          <div class="calc-label"><span class="calc-num">03</span> Pages / screens <b id="pageVal">5</b></div>
+          <input type="range" id="pageRange" min="1" max="50" value="5" class="calc-range" />
+          <div class="calc-scale"><span>1</span><span>25</span><span>50+</span></div>
         </div>
         <div class="calc-block reveal">
-          <div class="calc-label"><span class="calc-num">05</span> Features &amp; add-ons</div>
+          <div class="calc-label"><span class="calc-num">04</span> Features</div>
           <div class="chips multi" data-group="features">
-            <button class="chip-b" data-val="cms">CMS / blog</button>
-            <button class="chip-b" data-val="payments">Payments / cart</button>
-            <button class="chip-b" data-val="multilang">Multilingual</button>
-            <button class="chip-b" data-val="booking">Booking / appointments</button>
-            <button class="chip-b" data-val="seo">SEO setup</button>
-            <button class="chip-b" data-val="anim">Rich animations</button>
-            <button class="chip-b" data-val="a11y">Accessibility (EAA)</button>
-            <button class="chip-b" data-val="automation">Automations / integrations</button>
-            <button class="chip-b" data-val="maint">Maintenance plan</button>
+            <button class="chip-b" data-val="auth">User authentication</button>
+            <button class="chip-b" data-val="payments">Payment integration</button>
+            <button class="chip-b" data-val="api">Third-party API</button>
+            <button class="chip-b" data-val="dashboard">Admin dashboard</button>
+            <button class="chip-b" data-val="analytics">Analytics &amp; reporting</button>
+            <button class="chip-b" data-val="cms">CMS</button>
+            <button class="chip-b" data-val="responsive">Mobile responsive</button>
+            <button class="chip-b" data-val="seo">SEO optimization</button>
+            <button class="chip-b" data-val="multilang">Multi-language</button>
+            <button class="chip-b" data-val="realtime">Real-time features</button>
           </div>
         </div>
         <div class="calc-block reveal">
-          <div class="calc-label"><span class="calc-num">06</span> Timeline</div>
+          <div class="calc-label"><span class="calc-num">05</span> Timeline</div>
           <div class="chips" data-group="timeline">
-            <button class="chip-b active" data-val="standard">Standard</button>
-            <button class="chip-b" data-val="rush">Rush (+priority)</button>
+            <button class="chip-b" data-val="rush">Rush (1–2 wks)</button>
+            <button class="chip-b" data-val="fast">Fast (2–4 wks)</button>
+            <button class="chip-b active" data-val="standard">Standard (1–2 mo)</button>
+            <button class="chip-b" data-val="flexible">Flexible (2–4 mo)</button>
           </div>
         </div>
       </div>

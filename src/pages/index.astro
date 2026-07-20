@@ -5,9 +5,8 @@ import IconChip from '../components/IconChip.astro';
 import projects from '../data/projects.json';
 import { groups, allTech } from '../data/tech.mjs';
 
-const featuredSlugs = ['prescott-uae','hepius','galaxy-pharma','stone-gym-solutions','accessibility-partners','takada-asset-management'];
-let featured = featuredSlugs.map((s) => projects.find((p) => p.slug === s)).filter(Boolean);
-if (featured.length < 6) featured = featured.concat(projects.filter((p) => !featured.includes(p))).slice(0, 6);
+// newest first — most recently synced projects lead
+const featured = [...projects].sort((a, b) => new Date(b.added || 0) - new Date(a.added || 0)).slice(0, 6);
 const marquee = allTech.concat(allTech);
 ---
 <Base active="home">
