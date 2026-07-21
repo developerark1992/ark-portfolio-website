@@ -754,5 +754,68 @@
   "live": null,
   "img": "/images/projects/woodlandsqb.webp",
   "added": "2026-05-31T22:38:00.000Z"
+ },
+ {
+  "slug": "gerda-com-wordpress",
+  "title": "Gerda.com-wordpress",
+  "platform": "WordPress",
+  "category": "Agency & Business",
+  "live": null,
+  "img": "/images/projects/gerda-com-wordpress.webp",
+  "added": "2026-07-21T00:01:24.009Z"
+ },
+ {
+  "slug": "b2b-gerda-com-portal-wordpress",
+  "title": "b2b.gerda.com-portal-wordpress",
+  "platform": "WordPress",
+  "category": "Agency & Business",
+  "live": null,
+  "img": "/images/projects/b2b-gerda-com-portal-wordpress.webp",
+  "added": "2026-07-21T00:01:24.120Z"
+ },
+ {
+  "slug": "cloudjunction-cloud-wordpress",
+  "title": "cloudjunction.cloud-wordpress",
+  "platform": "WordPress",
+  "category": "Agency & Business",
+  "live": null,
+  "img": "/images/projects/cloudjunction-cloud-wordpress.webp",
+  "added": "2026-07-21T00:01:24.668Z"
+ },
+ {
+  "slug": "connectjunction-ai-wordpress",
+  "title": "connectjunction.ai-wordpress",
+  "platform": "WordPress",
+  "category": "AI & Technology",
+  "live": null,
+  "img": "/images/projects/connectjunction-ai-wordpress.webp",
+  "added": "2026-07-21T00:01:25.443Z"
+ },
+ {
+  "slug": "hmaliving-com-wordpress",
+  "title": "hmaliving.com-wordpress",
+  "platform": "WordPress",
+  "category": "Agency & Business",
+  "live": null,
+  "img": "/images/projects/hmaliving-com-wordpress.webp",
+  "added": "2026-07-21T00:01:26.309Z"
+ },
+ {
+  "slug": "lnsdigital-net-wordpress",
+  "title": "lnsdigital.net-wordpress",
+  "platform": "WordPress",
+  "category": "Agency & Business",
+  "live": null,
+  "img": "/images/projects/lnsdigital-net-wordpress.webp",
+  "added": "2026-07-21T00:01:27.162Z"
+ },
+ {
+  "slug": "lunayogabydana-com-wordpress",
+  "title": "lunayogabydana.com-Wordpress",
+  "platform": "WordPress",
+  "category": "Agency & Business",
+  "live": null,
+  "img": "/images/projects/lunayogabydana-com-wordpress.webp",
+  "added": "2026-07-21T00:01:28.043Z"
  }
 ]
