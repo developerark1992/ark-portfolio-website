@@ -817,5 +817,50 @@
   "live": null,
   "img": "/images/projects/lunayogabydana-com-wordpress.webp",
   "added": "2026-07-21T00:01:28.043Z"
+ },
+ {
+  "slug": "falconhunt-ai-framer",
+  "title": "falconhunt.ai-Framer",
+  "platform": "Framer",
+  "category": "AI & Technology",
+  "live": null,
+  "img": "/images/projects/falconhunt-ai-framer.webp",
+  "added": "2026-07-21T13:55:44.100Z"
+ },
+ {
+  "slug": "keyautismservices-com",
+  "title": "keyautismservices.com",
+  "platform": "Webflow",
+  "category": "Agency & Business",
+  "live": null,
+  "img": "/images/projects/keyautismservices-com.webp",
+  "added": "2026-07-21T13:55:44.889Z"
+ },
+ {
+  "slug": "myhealthjunction-com-shopfiy",
+  "title": "myhealthjunction.com-Shopfiy",
+  "platform": "WordPress",
+  "category": "Healthcare & Dental",
+  "live": null,
+  "img": "/images/projects/myhealthjunction-com-shopfiy.webp",
+  "added": "2026-07-21T13:55:45.649Z"
+ },
+ {
+  "slug": "simpleaccountinghub-com-wordpress",
+  "title": "simpleaccountinghub.com-Wordpress",
+  "platform": "WordPress",
+  "category": "Finance & Legal",
+  "live": null,
+  "img": "/images/projects/simpleaccountinghub-com-wordpress.webp",
+  "added": "2026-07-21T13:55:46.374Z"
+ },
+ {
+  "slug": "sumanshafi-com-wordpress",
+  "title": "sumanshafi.com-wordpress",
+  "platform": "WordPress",
+  "category": "Agency & Business",
+  "live": null,
+  "img": "/images/projects/sumanshafi-com-wordpress.webp",
+  "added": "2026-07-21T13:55:46.947Z"
  }
 ]
