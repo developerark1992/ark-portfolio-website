@@ -491,8 +491,60 @@
   .partner-mark{background:#f1f5f9;}
 }
 
-.geo-gain{list-style:none;margin:0;padding:0;display:grid;gap:22px;}
-.geo-gain h3{font-size:22px;margin:0 0 8px;}
-.geo-gain p{margin:0;color:var(--ink-soft);line-height:1.55;}
-.llm-answer{color:var(--ink);}
+.llm-answer{color:var(--ci-ink);}
 .ci-section:not(:first-of-type){content-visibility:auto;contain-intrinsic-size:1px 720px;}
+
+.proof-grid{
+  list-style:none;margin:2.75rem 0 0;padding:0;
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:22px;
+}
+.proof-card{
+  position:relative;display:flex;flex-direction:column;gap:0;
+  min-height:100%;padding:28px 26px 26px;
+  background:var(--ci-card);border:1px solid var(--ci-rule);
+  border-radius:var(--ci-radius-svc);
+  box-shadow:var(--ci-shadow-plate);
+  overflow:hidden;
+  transition:transform .4s var(--ci-ease),border-color .3s,box-shadow .4s;
+}
+.proof-card::before{
+  content:"";position:absolute;inset:0 auto auto 0;width:100%;height:3px;
+  background:linear-gradient(90deg,var(--ci-accent),var(--ci-accent-2));
+}
+.proof-card:hover{
+  transform:translateY(-6px);
+  border-color:color-mix(in srgb,var(--ci-accent) 35%,var(--ci-rule));
+  box-shadow:var(--ci-shadow-lift);
+}
+.proof-num{
+  margin:6px 0 0;font-size:clamp(3.25rem,6vw,4.25rem);font-weight:800;
+  letter-spacing:-.06em;line-height:.9;
+  background:linear-gradient(135deg,#0891b2,#7c3aed);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.proof-num span{font-size:.42em;font-weight:700;letter-spacing:-.03em;opacity:.72;}
+.proof-kicker{
+  margin:18px 0 0;font-family:var(--mono);font-size:11px;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--ci-accent);
+}
+.proof-card h3{
+  margin:8px 0 0;font-size:clamp(1.2rem,1.6vw,1.4rem);font-weight:700;
+  letter-spacing:-.025em;line-height:1.2;color:var(--ci-ink);
+}
+.proof-card .llm-answer{
+  margin:12px 0 0;font-size:.9375rem;line-height:1.65;color:var(--ci-ink-2);
+}
+.proof-pills{
+  display:flex;flex-wrap:wrap;gap:7px;margin:22px 0 0;padding:18px 0 0;
+  list-style:none;border-top:1px solid var(--ci-rule-soft);
+}
+.proof-pills li{
+  font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.02em;
+  color:var(--ci-ink-2);padding:5px 10px;border-radius:999px;
+  background:var(--ci-accent-wash);border:1px solid color-mix(in srgb,var(--ci-accent) 18%,var(--ci-rule));
+}
+@media (max-width:980px){
+  .proof-grid{grid-template-columns:1fr;}
+  .proof-card{padding:24px 22px;}
+}
