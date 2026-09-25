@@ -33,7 +33,7 @@
   color:var(--ci-ink);
 }
 
-.site-ci .wrap{max-width:82rem;}
+.site-ci .wrap{max-width:var(--maxw);}
 
 .ci-section{padding:50px 0;background:var(--ci-paper);}
 .ci-section-alt{background:var(--ci-paper-2);border-top:1px solid var(--ci-rule-soft);}
@@ -306,7 +306,6 @@
   object-fit:cover;object-position:top center;
   transform:translateY(0);
   transition:top 5.5s cubic-bezier(.25,.1,.25,1),transform 5.5s cubic-bezier(.25,.1,.25,1);
-  will-change:top,transform;
 }
 .wkb-item:hover .wkb-shot{
   border-color:color-mix(in srgb,var(--ci-accent-bright) 35%,var(--ci-night-rule));

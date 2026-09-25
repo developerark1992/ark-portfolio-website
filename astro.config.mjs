@@ -8,5 +8,16 @@ export default defineConfig({
   site: 'https://arkdesigningbureau.com',
   output: 'static',
   adapter: vercel(),
+  compressHTML: true,
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: 'viewport',
+  },
   build: { inlineStylesheets: 'auto' },
+  vite: {
+    build: {
+      cssMinify: true,
+      minify: true,
+    },
+  },
 });

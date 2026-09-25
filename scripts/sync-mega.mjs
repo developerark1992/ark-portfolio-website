@@ -94,14 +94,13 @@ async function main(){
 async function sharpResize(file){
   const img = sharp(file).rotate();
   const md = await img.metadata();
-  const W = 1440;                       // hi-res so the full-screen lightbox stays crisp
-  const MAXH = 5200;                     // cap absurdly tall full-page grabs
-  // never upscale beyond the source width
+  const W = 1100;
+  const MAXH = 3600;
   const targetW = Math.min(W, md.width || W);
   let pipeline = sharp(file).resize({ width: targetW });
   const scaledH = Math.round((md.height||1) * (targetW/(md.width||targetW)));
   if (scaledH > MAXH) pipeline = sharp(file).resize({ width: targetW }).extract({ left:0, top:0, width:targetW, height:MAXH });
-  return pipeline.webp({ quality:80 }).toBuffer();
+  return pipeline.webp({ quality:68, effort:6 }).toBuffer();
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });

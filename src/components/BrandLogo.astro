@@ -2,11 +2,11 @@
 const { class: className = '', light = false, size = 'md' } = Astro.props;
 ---
 <span class:list={['hlogo', light && 'hlogo-light', size === 'lg' && 'hlogo-lg', className]}>
-  <img class="hlogo-icon" src="/images/logo-icon.png?v=7" alt="" width="44" height="44" decoding="async" />
+  <img class="hlogo-icon" src="/images/logo-icon.webp" alt="" width="44" height="44" decoding="async" />
   <span class="hlogo-sig-wrap" aria-hidden="true">
     <img
       class="hlogo-sig hlogo-sig-on-light"
-      src="/images/signature-modern-dark.png?v=6"
+      src="/images/signature-modern-dark.webp"
       alt=""
       width="280"
       height="48"
@@ -14,7 +14,7 @@ const { class: className = '', light = false, size = 'md' } = Astro.props;
     />
     <img
       class="hlogo-sig hlogo-sig-on-dark"
-      src="/images/signature-modern.png?v=6"
+      src="/images/signature-modern.webp"
       alt=""
       width="280"
       height="48"

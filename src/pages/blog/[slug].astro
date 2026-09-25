@@ -32,7 +32,7 @@ const seoDesc = post.meta_description || post.description;
       <h1 class="reveal">{post.title}</h1>
       <p class="post-lede reveal">{post.description}</p>
       <div class="post-meta reveal">By Abdul Rehman Khan · {fmt(post.created_at)} · {readMin} min read</div>
-      {post.cover && <img class="post-cover reveal" src={post.cover} alt={post.title} />}
+      {post.cover && <img class="post-cover reveal" src={post.cover} alt={post.title} loading="lazy" decoding="async" />}
       <div class="post-body reveal" set:html={html}></div>
       <div class="post-cta reveal">
         <div><b>Have a project like this?</b><span>Let's talk about what you're building.</span></div>
