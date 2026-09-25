@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 800" fill="none" role="img" aria-labelledby="rocketTitle">
+  <title id="rocketTitle">Technical launch - systems, cloud, and delivery</title>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b1220"/>
+      <stop offset="55%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="body" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e2e8f0"/>
+      <stop offset="45%" stop-color="#94a3b8"/>
+      <stop offset="100%" stop-color="#64748b"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#0891b2"/>
+    </linearGradient>
+    <linearGradient id="violet" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#a78bfa"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="flame" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#67e8f9" stop-opacity=".95"/>
+      <stop offset="40%" stop-color="#22d3ee" stop-opacity=".75"/>
+      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#22d3ee" stop-opacity=".28"/>
+      <stop offset="55%" stop-color="#7c3aed" stop-opacity=".1"/>
+      <stop offset="100%" stop-color="#0b1220" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="640" height="800" rx="28" fill="url(#sky)"/>
+  <rect width="640" height="800" rx="28" fill="url(#glow)"/>
+
+  <g stroke="#22d3ee" stroke-opacity=".07" stroke-width="1">
+    <path d="M40 80 H600 M40 160 H600 M40 240 H600 M40 320 H600 M40 400 H600 M40 480 H600 M40 560 H600 M40 640 H600 M40 720 H600"/>
+    <path d="M80 40 V760 M160 40 V760 M240 40 V760 M320 40 V760 M400 40 V760 M480 40 V760 M560 40 V760"/>
+  </g>
+
+  <ellipse cx="320" cy="300" rx="210" ry="78" stroke="url(#violet)" stroke-opacity=".35" stroke-width="1.5" stroke-dasharray="6 10"/>
+  <ellipse cx="320" cy="300" rx="160" ry="52" stroke="#22d3ee" stroke-opacity=".25" stroke-width="1.2" stroke-dasharray="4 8"/>
+
+  <g filter="url(#soft)">
+    <circle cx="140" cy="250" r="5" fill="#22d3ee"/>
+    <circle cx="500" cy="270" r="4" fill="#a78bfa"/>
+    <circle cx="180" cy="360" r="3.5" fill="#67e8f9"/>
+    <circle cx="460" cy="340" r="3.5" fill="#c4b5fd"/>
+  </g>
+  <path d="M140 250 L220 290 M500 270 L420 300 M180 360 L260 330 M460 340 L380 320" stroke="#22d3ee" stroke-opacity=".25" stroke-width="1.2"/>
+
+  <g transform="translate(320 290)">
+    <path d="M-22 168 C-18 210 -10 250 0 290 C10 250 18 210 22 168 Z" fill="url(#flame)" opacity=".9"/>
+    <path d="M-10 168 C-8 200 -4 230 0 262 C4 230 8 200 10 168 Z" fill="#e0f2fe" opacity=".55"/>
+
+    <path d="M-38 95 L-78 155 L-38 145 Z" fill="url(#violet)"/>
+    <path d="M38 95 L78 155 L38 145 Z" fill="url(#violet)"/>
+    <path d="M-38 95 L-58 130 L-38 128 Z" fill="#22d3ee" opacity=".45"/>
+    <path d="M38 95 L58 130 L38 128 Z" fill="#22d3ee" opacity=".45"/>
+
+    <path d="M0 -150 C48 -150 58 -40 52 40 L48 130 C46 148 28 158 0 158 C-28 158 -46 148 -48 130 L-52 40 C-58 -40 -48 -150 0 -150 Z" fill="url(#body)"/>
+    <path d="M0 -150 C28 -150 38 -50 34 30 L30 120 C18 132 8 136 0 136 V-150 Z" fill="#f8fafc" opacity=".35"/>
+
+    <path d="M0 -198 C22 -170 34 -150 36 -128 L0 -128 L-36 -128 C-34 -150 -22 -170 0 -198 Z" fill="url(#accent)"/>
+    <path d="M0 -198 C12 -175 18 -155 20 -128 L0 -128 V-198 Z" fill="#a5f3fc" opacity=".45"/>
+
+    <circle cy="-55" r="28" fill="#0b1220" stroke="#22d3ee" stroke-width="3"/>
+    <circle cy="-55" r="18" fill="url(#violet)" opacity=".85"/>
+    <circle cx="-6" cy="-62" r="6" fill="#e0f2fe" opacity=".5"/>
+
+    <rect x="-46" y="20" width="92" height="10" rx="2" fill="#0f172a" opacity=".55"/>
+    <rect x="-40" y="23" width="24" height="4" rx="1" fill="#22d3ee"/>
+    <rect x="-10" y="23" width="16" height="4" rx="1" fill="#a78bfa"/>
+    <rect x="12" y="23" width="22" height="4" rx="1" fill="#67e8f9" opacity=".7"/>
+
+    <rect x="-46" y="55" width="92" height="8" rx="2" fill="#0f172a" opacity=".4"/>
+    <g fill="#22d3ee" opacity=".8">
+      <rect x="-34" y="57" width="6" height="4" rx="1"/>
+      <rect x="-22" y="57" width="6" height="4" rx="1"/>
+      <rect x="-10" y="57" width="6" height="4" rx="1"/>
+      <rect x="2" y="57" width="6" height="4" rx="1"/>
+      <rect x="14" y="57" width="6" height="4" rx="1"/>
+      <rect x="26" y="57" width="6" height="4" rx="1"/>
+    </g>
+
+    <path d="M-40 150 C-36 168 -20 178 0 178 C20 178 36 168 40 150 L48 130 C28 142 -28 142 -48 130 Z" fill="#1e293b" stroke="#22d3ee" stroke-opacity=".5"/>
+  </g>
+
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" letter-spacing=".06em">
+    <rect x="48" y="96" width="118" height="34" rx="10" fill="#0b1220" stroke="#22d3ee" stroke-opacity=".35"/>
+    <text x="64" y="117" fill="#67e8f9">SYS / READY</text>
+
+    <rect x="470" y="120" width="122" height="34" rx="10" fill="#0b1220" stroke="#a78bfa" stroke-opacity=".4"/>
+    <text x="486" y="141" fill="#c4b5fd">CLOUD / AWS</text>
+
+    <rect x="56" y="680" width="140" height="34" rx="10" fill="#0b1220" stroke="#22d3ee" stroke-opacity=".3"/>
+    <text x="72" y="701" fill="#94a3b8">CI / CD / LIVE</text>
+
+    <rect x="444" y="660" width="140" height="34" rx="10" fill="#0b1220" stroke="#a78bfa" stroke-opacity=".35"/>
+    <text x="460" y="681" fill="#94a3b8">LAUNCH / 01</text>
+  </g>
+</svg>
