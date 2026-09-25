@@ -118,8 +118,47 @@ const AV = '/images/logo-icon.png?v=7';
   </div>
   <script is:inline>
     (function () {
+      var KEY = 'ark_pre_ok';
+
+      function killPreloader(el) {
+        el = el || document.getElementById('preloader');
+        if (!el) return;
+        el.dataset.done = '1';
+        el.setAttribute('aria-busy', 'false');
+        el.classList.add('done');
+        if (el.parentNode) el.parentNode.removeChild(el);
+      }
+
+      function alreadyOk() {
+        try { return sessionStorage.getItem(KEY) === '1'; } catch (e) { return false; }
+      }
+
+      function markOk() {
+        try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
+      }
+
+      // ClientRouter reinjects #preloader on soft navs, but this script may not re-run.
+      // Clear it immediately after every swap once the first visit finished.
+      if (!window.__arkPreNavBound) {
+        window.__arkPreNavBound = true;
+        document.addEventListener('astro:after-swap', function () {
+          killPreloader();
+          markOk();
+        });
+        document.addEventListener('astro:page-load', function () {
+          if (alreadyOk()) killPreloader();
+        });
+      }
+
       var pre = document.getElementById('preloader');
-      if (!pre || pre.dataset.boot) return;
+      if (!pre) return;
+
+      // Soft navigation / return visit: never block the page again.
+      if (alreadyOk() || pre.dataset.boot) {
+        killPreloader(pre);
+        return;
+      }
+
       pre.dataset.boot = '1';
       var fill = document.getElementById('preFill');
       var pctEl = document.getElementById('prePct');
@@ -145,6 +184,7 @@ const AV = '/images/logo-icon.png?v=7';
         if (finished || pre.dataset.done) return;
         finished = true;
         setProgress(100);
+        markOk();
         pre.dataset.done = '1';
         pre.setAttribute('aria-busy', 'false');
         pre.classList.add('done');
@@ -529,18 +569,25 @@ const AV = '/images/logo-icon.png?v=7';
       }
       function initPreloader(){
         // Progress bar boots from the early inline script next to #preloader.
-        // Keep a fallback if that script was blocked.
+        // Soft navigations reinject #preloader — clear leftovers here too.
         var pre=document.getElementById('preloader');
-        if(!pre||pre.dataset.done) return;
-        if(!pre.dataset.boot && typeof window.__arkPreDone==='function') return;
+        if(!pre) return;
+        try {
+          if(sessionStorage.getItem('ark_pre_ok')==='1'){
+            pre.remove();
+            return;
+          }
+        } catch(e){}
+        if(pre.dataset.done) return;
         if(pre.dataset.boot) return;
-        if(typeof window.__arkPreDone==='function'){
-          if(document.readyState==='complete') setTimeout(window.__arkPreDone, 200);
+        if(typeof window.__arkPreDone==='function' && document.readyState==='complete'){
+          setTimeout(window.__arkPreDone, 200);
         }
       }
-      function initPage(){ setYear(); initReveal(); initMenu(); initHero(); initCalc(); initChat(); initLightbox(); }
-      // Start progress bar immediately; rest of UI on Astro page-load.
-      initPreloader();
+      function initPage(){
+        initPreloader();
+        setYear(); initReveal(); initMenu(); initHero(); initCalc(); initChat(); initLightbox();
+      }
       document.addEventListener('astro:page-load', initPage);
     })();
   </script>
