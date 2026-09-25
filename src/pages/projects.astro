@@ -32,26 +32,44 @@ const cats = [['all', 'All', projects.length]].concat(
     </div>
   </section>
 
+  <style is:global>
+    .proj-foot{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;margin:56px 0 24px;gap:16px;text-align:center;}
+    .proj-pager{display:flex;justify-content:center;width:100%;}
+    .proj-pager[hidden]{display:none!important;}
+    .pager-bar{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:10px 18px;border-radius:999px;background:#fff;border:1px solid #e8edf5;box-shadow:0 10px 40px -18px rgba(15,23,42,.28),0 2px 8px -4px rgba(15,23,42,.08);}
+    .pager-btn.pager-nav{height:36px;padding:0 6px;border:0;background:transparent;color:#64748b;font:500 14px var(--sans);display:inline-flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap;}
+    .pager-btn.pager-nav:hover:not(:disabled){color:var(--accent);}
+    .pager-btn.pager-nav:disabled{opacity:.35;cursor:not-allowed;}
+    .pager-num{width:34px;height:34px;padding:0;border:0;border-radius:50%;background:#e8f2f8;color:#0f172a;font:600 14px var(--sans);display:inline-grid;place-items:center;cursor:pointer;}
+    .pager-num:hover:not(.is-active){background:#d5ebf3;color:var(--accent);}
+    .pager-num.is-active{background:#0f172a;color:#fff;}
+    .pager-gap{color:#94a3b8;font-size:14px;padding:0 2px;}
+    .proj-count{text-align:center;width:100%;}
+    @media (max-width:640px){.pager-bar{flex-wrap:wrap;gap:6px;padding:8px 12px;}}
+  </style>
   <section class="page-body">
     <div class="wrap">
-      <div class="proj-grid" id="allProjects"></div>
+      <div class="proj-grid" id="allProjects" aria-live="polite"></div>
       <p class="proj-empty" id="projEmpty" hidden>No projects match — try a different search.</p>
-      <div class="proj-sentinel" id="projSentinel" aria-hidden="true"></div>
-      <p class="proj-count mono" id="projShowing"></p>
+      <div class="proj-foot">
+        <nav class="proj-pager" id="projPager" aria-label="Project pages" hidden></nav>
+        <p class="proj-count mono" id="projShowing"></p>
+      </div>
     </div>
   </section>
 
   <script is:inline define:vars={{ PROJECTS: projects }}>
     document.addEventListener('astro:page-load', function () {
       var grid = document.getElementById('allProjects');
-      if (!grid) return; // not the projects page
+      if (!grid || grid.dataset.pagerReady === 'capsule-v3') return;
+      grid.dataset.pagerReady = 'capsule-v3';
 
-      var BATCH = 6;
-      var state = { q: '', cat: 'all', shown: 0, list: [] };
+      var PAGE = 9;
+      var state = { q: '', cat: 'all', page: 1, list: [] };
       var search = document.getElementById('projSearch');
       var clearBtn = document.getElementById('projSearchClear');
       var filters = document.getElementById('projFilters');
-      var sentinel = document.getElementById('projSentinel');
+      var pager = document.getElementById('projPager');
       var empty = document.getElementById('projEmpty');
       var showing = document.getElementById('projShowing');
 
@@ -66,6 +84,10 @@ const cats = [['all', 'All', projects.length]].concat(
         });
       }
 
+      function pages() {
+        return Math.max(1, Math.ceil(state.list.length / PAGE));
+      }
+
       function cardHTML(p, i) {
         var live = p.live
           ? '<a class="live" href="' + esc(p.live) + '" target="_blank" rel="noopener" data-live-link>Live demo ↗</a>'
@@ -73,7 +95,7 @@ const cats = [['all', 'All', projects.length]].concat(
         return '<article class="proj proj-appear" data-idx="' + i + '"' +
           ' data-title="' + esc(p.title) + '" data-cat="' + esc(p.category) + '" data-platform="' + esc(p.platform) + '"' +
           ' data-img="' + esc(p.img) + '" data-live="' + esc(p.live || '') + '"' +
-          ' tabindex="0" role="button" aria-label="Preview ' + esc(p.title) + '" style="animation-delay:' + ((i % BATCH) * 0.05) + 's">' +
+          ' tabindex="0" role="button" aria-label="Preview ' + esc(p.title) + '" style="animation-delay:' + ((i % PAGE) * 0.04) + 's">' +
           '<div class="proj-shot"><span class="proj-cat">' + esc(p.category) + '</span>' +
           '<img src="' + esc(p.img) + '" alt="' + esc(p.title) + ' — screenshot" loading="lazy" decoding="async" width="640" height="420" sizes="(max-width: 640px) 100vw, (max-width: 980px) 50vw, 33vw" />' +
           '<span class="proj-view">View ↗</span></div>' +
@@ -83,38 +105,78 @@ const cats = [['all', 'All', projects.length]].concat(
           '<div class="proj-actions">' + live + '</div></div></article>';
       }
 
-      function renderNext() {
-        var next = state.list.slice(state.shown, state.shown + BATCH);
-        if (!next.length) return;
-        var html = '';
-        for (var k = 0; k < next.length; k++) html += cardHTML(next[k], state.shown + k);
-        grid.insertAdjacentHTML('beforeend', html);
-        state.shown += next.length;
-        updateCount();
+      function pagerHTML() {
+        var total = pages();
+        if (state.list.length <= PAGE) return '';
+        var html = '<button type="button" class="pager-btn pager-nav" data-page="prev" ' + (state.page <= 1 ? 'disabled' : '') + ' aria-label="Previous page"><span aria-hidden="true">‹</span> Back</button>';
+        var windowSize = 3;
+        var start = Math.max(1, state.page - 1);
+        var end = Math.min(total, start + windowSize - 1);
+        start = Math.max(1, end - windowSize + 1);
+        if (start > 1) {
+          html += '<button type="button" class="pager-num' + (state.page === 1 ? ' is-active' : '') + '" data-page="1">1</button>';
+          if (start > 2) html += '<span class="pager-gap" aria-hidden="true">…</span>';
+        }
+        for (var n = start; n <= end; n++) {
+          html += '<button type="button" class="pager-num' + (n === state.page ? ' is-active' : '') + '" data-page="' + n + '" aria-label="Page ' + n + '"' + (n === state.page ? ' aria-current="page"' : '') + '>' + n + '</button>';
+        }
+        if (end < total) {
+          if (end < total - 1) html += '<span class="pager-gap" aria-hidden="true">…</span>';
+          html += '<button type="button" class="pager-num' + (state.page === total ? ' is-active' : '') + '" data-page="' + total + '">' + total + '</button>';
+        }
+        html += '<button type="button" class="pager-btn pager-nav" data-page="next" ' + (state.page >= total ? 'disabled' : '') + ' aria-label="Next page">Next <span aria-hidden="true">›</span></button>';
+        return '<div class="pager-bar">' + html + '</div>';
       }
 
-      function updateCount() {
+      function renderPage(scrollToGrid) {
+        var total = pages();
+        if (state.page > total) state.page = total;
+        if (state.page < 1) state.page = 1;
+        var start = (state.page - 1) * PAGE;
+        var slice = state.list.slice(start, start + PAGE);
+        var html = '';
+        for (var k = 0; k < slice.length; k++) html += cardHTML(slice[k], start + k);
+        grid.innerHTML = html;
+        empty.hidden = state.list.length > 0;
+        pager.hidden = state.list.length <= PAGE;
+        pager.innerHTML = pagerHTML();
+        var from = state.list.length ? start + 1 : 0;
+        var to = Math.min(start + slice.length, state.list.length);
         showing.textContent = state.list.length
-          ? 'Showing ' + Math.min(state.shown, state.list.length) + ' of ' + state.list.length + (state.cat === 'all' && !state.q ? ' projects' : ' matching')
+          ? 'Showing ' + from + '–' + to + ' of ' + state.list.length + (state.cat === 'all' && !state.q ? ' projects' : ' matching')
           : '';
+        if (scrollToGrid) {
+          var top = grid.getBoundingClientRect().top + window.scrollY - 110;
+          window.scrollTo({ top: Math.max(0, top), behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+        }
       }
 
       function reset() {
         state.list = filtered();
-        state.shown = 0;
-        grid.innerHTML = '';
-        empty.hidden = state.list.length > 0;
-        renderNext();
-        updateCount();
+        state.page = 1;
+        renderPage(false);
       }
 
-      // infinite scroll
-      var io = new IntersectionObserver(function (es) {
-        es.forEach(function (e) { if (e.isIntersecting && state.shown < state.list.length) renderNext(); });
-      }, { rootMargin: '400px 0px' });
-      io.observe(sentinel);
+      function goTo(next) {
+        var total = pages();
+        var page = next;
+        if (next === 'prev') page = state.page - 1;
+        if (next === 'next') page = state.page + 1;
+        page = parseInt(page, 10);
+        if (!page || page === state.page || page < 1 || page > total) return;
+        state.page = page;
+        renderPage(true);
+      }
 
-      // search
+      if (pager && !pager.dataset.bound) {
+        pager.dataset.bound = '1';
+        pager.addEventListener('click', function (e) {
+          var b = e.target.closest('[data-page]');
+          if (!b || b.disabled) return;
+          goTo(b.getAttribute('data-page'));
+        });
+      }
+
       var t;
       search.addEventListener('input', function () {
         clearBtn.hidden = !this.value;
@@ -124,15 +186,12 @@ const cats = [['all', 'All', projects.length]].concat(
       });
       clearBtn.addEventListener('click', function () { search.value = ''; clearBtn.hidden = true; state.q = ''; reset(); search.focus(); });
 
-      // category filter
       filters.addEventListener('click', function (e) {
         var b = e.target.closest('.filt'); if (!b) return;
         filters.querySelectorAll('.filt').forEach(function (x) { x.classList.toggle('active', x === b); });
         state.cat = b.getAttribute('data-filter');
         reset();
       });
-
-      // clicking a card opens the global lightbox (handled in Base.astro via data-* attributes)
 
       reset();
     });
