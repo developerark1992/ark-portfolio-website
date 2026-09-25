@@ -6,31 +6,48 @@ import Pricing from '../components/Pricing.astro';
 import projects from '../data/projects.json';
 import { groups, allTech } from '../data/tech.mjs';
 
-// newest first — most recently synced projects lead
-const featured = [...projects].sort((a, b) => new Date(b.added || 0) - new Date(a.added || 0)).slice(0, 6);
+const filenameLike = (title) => /\.(com|ai|pk|ca|io)|wordpress|shopify|shopfiy|webflow|framer|wix/i.test(title);
+const clean = projects.filter((p) => p.img && p.title && !filenameLike(p.title) && p.live);
+const pool = clean.length >= 8 ? clean : projects.filter((p) => p.img);
+const featured = pool.slice(0, 6);
+const reel = [...pool.slice(0, 8), ...pool.slice(0, 8)];
 const marquee = allTech.concat(allTech);
+const roles = [
+  { when: '2026 — now', title: 'Senior CMS Developer', org: 'Chameleon Ideas', note: 'Production WordPress, WooCommerce, hosting and release' },
+  { when: '2024 — 2026', title: 'Senior Software Developer', org: 'Websity Digital', note: 'WordPress, WooCommerce, Webflow, Shopify, AWS Lightsail' },
+  { when: '2022 — 2024', title: 'Senior CMS & Web Developer', org: 'Krystosoft', note: 'International CMS builds, migrations, mentoring' },
+  { when: '2021 — 2022', title: 'Software Developer', org: 'Mystic Advertising', note: 'WordPress and Shopify storefronts' },
+  { when: '2020 — 2021', title: 'Frontend Web Developer', org: 'Nisshinbo Holdings', note: 'ASP.NET MVC, responsive frontend' },
+];
 ---
 <Base active="home">
   <header class="hero">
-    <div class="aurora"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
-    <div class="grid-ov"></div>
-    <div class="spot" id="heroSpot"></div>
-    <div class="wrap hero-grid">
-      <div>
-        <p class="eyebrow reveal">CMS Expert · Software Engineer · Karachi, PK</p>
-        <h1 class="reveal">Abdul&nbsp;Rehman<br><em>Khan.</em></h1>
-        <p class="hero-kicker mono reveal">&gt; <span class="rot" id="rot">CMS Expert</span></p>
-        <p class="sub reveal">I'm a <b>CMS expert</b> who builds on <b>any platform</b> — WordPress, Shopify, Webflow, Wix, Squarespace, Framer, or custom Astro/Next.js — then handles the <b>hosting, DevOps, design and AI automation</b> so you get one person for the whole build. 8+ years, 90+ sites shipped.</p>
-        <div class="hero-cta reveal">
-          <a href="/projects" class="btn primary">View my work</a>
-          <a href="/estimate" class="btn ghost">Get an estimate</a>
-          <span class="avail"><span class="pulse"></span>Available for new work</span>
-        </div>
+    <div class="wrap">
+      <div class="sheet-top">
+        <p class="meta">ARK / 001 — Karachi, Pakistan</p>
+        <p class="meta"><span class="pulse"></span> Open to remote roles and contracts</p>
       </div>
-      <div class="hero-portrait reveal">
-        <img src="/images/photo.webp" alt="Abdul Rehman Khan" width="620" height="740" />
-        <span class="badge">Est. 2018</span>
-        <span class="tag">◆ CMS · DevOps · Design · Automation</span>
+      <h1 class="reveal">Abdul Rehman <em>Khan</em></h1>
+      <p class="lede reveal">Senior CMS developer. WordPress and WooCommerce first, then Shopify, Webflow, and the hosting that keeps them up.</p>
+      <dl class="spec reveal">
+        <div><dt>Core</dt><dd>WordPress · WooCommerce · Shopify</dd></div>
+        <div><dt>Also ships</dt><dd>Webflow · Next.js · Astro · PHP</dd></div>
+        <div><dt>Record</dt><dd>8+ years · 90+ production sites</dd></div>
+      </dl>
+      <div class="hero-cta reveal">
+        <a href="/projects" class="btn primary">Selected work</a>
+        <a href="/about" class="btn ghost">Experience</a>
+        <a href="https://www.linkedin.com/in/developerark/" class="btn ghost">LinkedIn</a>
+      </div>
+    </div>
+    <div class="reel" aria-label="Recent production sites">
+      <div class="reel-track">
+        {reel.map((p) => (
+          <a href={p.live || '/projects'} target={p.live ? '_blank' : undefined} rel={p.live ? 'noopener' : undefined}>
+            <img src={p.img} alt="" />
+            <span>{p.title} · {p.platform}</span>
+          </a>
+        ))}
       </div>
     </div>
   </header>
@@ -43,7 +60,7 @@ const marquee = allTech.concat(allTech);
     <div class="wrap about-blurb">
       <div class="reveal">
         <p class="eyebrow">About</p>
-        <p class="big">I'm a <em>CMS specialist</em> who bridges <em>engineering</em>, <em>design</em> and <em>automation</em> — building on whichever platform fits, then owning the hosting, graphics and workflow automation so you don't have to hire four people.</p>
+        <p class="big">I take a site from the design file to a live server: theme or storefront, custom fields, DNS, SSL, and the release. Most of the work is WordPress and WooCommerce for clinics, agencies, and shops in Pakistan, the UAE, and Canada.</p>
         <div class="hero-cta" style="margin-top:28px;"><a href="/about" class="btn ghost">More about me →</a></div>
       </div>
       <div class="stat-row reveal">
@@ -83,13 +100,15 @@ const marquee = allTech.concat(allTech);
 
   <section>
     <div class="wrap">
-      <div class="reveal" style="margin-bottom:36px;"><p class="eyebrow">Track record</p><h2 class="sec-title">Achievements</h2>
-      <p class="sec-lead">Testimonials are being collected from recent clients — the numbers speak for the range meanwhile.</p></div>
-      <div class="ach-grid reveal">
-        <div class="ach"><div class="v"><b>8</b>+ yrs</div><div class="l">Professional experience</div></div>
-        <div class="ach"><div class="v"><b>90</b>+</div><div class="l">Projects delivered</div></div>
-        <div class="ach"><div class="v"><b>7</b></div><div class="l">Industries served</div></div>
-        <div class="ach"><div class="v"><b>3</b></div><div class="l">Countries — PK · UAE · CA</div></div>
+      <div class="reveal" style="margin-bottom:28px;"><p class="eyebrow">Employment</p><h2 class="sec-title">Where the work happened</h2></div>
+      <div class="role-list reveal">
+        {roles.map((r) => (
+          <article class="role">
+            <time>{r.when}</time>
+            <div><strong>{r.title}</strong><span>{r.note}</span></div>
+            <em>{r.org}</em>
+          </article>
+        ))}
       </div>
     </div>
   </section>
