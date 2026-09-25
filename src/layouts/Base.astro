@@ -15,15 +15,16 @@ const socials = [
   { n: 'X',         href: 'https://x.com/official_ark92',                 path: siX.path },
 ];
 const {
-  title = 'Abdul Rehman Khan — CMS Expert & Software Engineer',
-  description = 'CMS expert & software engineer — WordPress, Shopify, Webflow, Wix, Squarespace, Framer + custom Astro/Next.js. DevOps & hosting (WHM/cPanel, AWS), graphic design and AI automation. 8+ years, Karachi, open to remote EU/UK work.',
+  title = 'Abdul Rehman Khan — Senior CMS Expert & Software Engineer',
+  description = 'Hire Abdul Rehman Khan — senior CMS expert and software engineer for WordPress, Shopify, DevOps and automation. Remote for the USA, Canada, UAE, UK and worldwide.',
   active = 'home',
   keywords,
   ogImage = '/images/photo.webp',
   ogType = 'website',
   publishedTime,
+  faqItems = [],
 } = Astro.props;
-const SITE_URL = Astro.site || 'https://arkdesigningbureau.com';
+const SITE_URL = String(Astro.site || 'https://arkdesigningbureau.com').replace(/\/$/, '');
 const canonical = new URL(Astro.url.pathname, SITE_URL).href;
 const ogImageUrl = new URL(ogImage, SITE_URL).href;
 const links = [
@@ -47,37 +48,135 @@ const AV = '/images/logo-icon.webp';
   {keywords && <meta name="keywords" content={keywords} />}
   <meta name="author" content="Abdul Rehman Khan" />
   <link rel="canonical" href={canonical} />
+  <link rel="alternate" hreflang="en" href={canonical} />
+  <link rel="alternate" hreflang="en-US" href={canonical} />
+  <link rel="alternate" hreflang="en-CA" href={canonical} />
+  <link rel="alternate" hreflang="en-AE" href={canonical} />
+  <link rel="alternate" hreflang="en-GB" href={canonical} />
+  <link rel="alternate" hreflang="x-default" href={canonical} />
   <meta property="og:type" content={ogType} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:url" content={canonical} />
   <meta property="og:image" content={ogImageUrl} />
   <meta property="og:site_name" content="Abdul Rehman Khan" />
+  <meta property="og:locale" content="en_US" />
+  <meta name="theme-color" content="#f7f8fb" />
   {publishedTime && <meta property="article:published_time" content={publishedTime} />}
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={title} />
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={ogImageUrl} />
-  <link rel="preload" as="image" href="/images/logo-icon.webp" />
-  {active === 'home' && <link rel="preload" as="image" href="/images/photo.webp?v=8" />}
+  {active === 'home' && <link rel="preload" as="image" href="/images/photo-400.webp" />}
   <link rel="icon" href="/images/favicon.png" type="image/png" />
   <link rel="apple-touch-icon" href="/images/logo-icon-192.png" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM source" />
   <style is:inline>
     html,body{margin:0;padding:0;width:100%;overflow-x:clip;}
     #preloader{position:fixed;inset:0;width:100%;height:100%;min-height:100dvh;z-index:200;background:#07080c;}
+    #preloader.done{opacity:0;visibility:hidden;pointer-events:none;}
   </style>
-  {ogType === 'article' && (
-    <script type="application/ld+json" set:html={JSON.stringify({
-      '@context': 'https://schema.org', '@type': 'BlogPosting',
-      headline: title, description, image: ogImageUrl, url: canonical,
-      datePublished: publishedTime, author: { '@type': 'Person', name: 'Abdul Rehman Khan', url: SITE_URL },
-      publisher: { '@type': 'Person', name: 'Abdul Rehman Khan' },
-    })} />
-  )}
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Person',
+        '@id': `${SITE_URL}/#abdul`,
+        name: 'Abdul Rehman Khan',
+        givenName: 'Abdul Rehman',
+        familyName: 'Khan',
+        alternateName: ['ARK Khan', 'developerark'],
+        url: SITE_URL,
+        image: ogImageUrl,
+        jobTitle: 'Senior CMS Expert & Software Engineer',
+        hasOccupation: {
+          '@type': 'Occupation',
+          name: 'Senior CMS Expert & Software Engineer',
+          occupationalCategory: '15-1254.00',
+        },
+        description: 'Abdul Rehman Khan is a senior CMS expert and software engineer. He designs, builds, hosts and automates production websites for clients in the USA, Canada, UAE, UK and worldwide.',
+        email: 'ark.educationalist@gmail.com',
+        telephone: '+923159429998',
+        address: { '@type': 'PostalAddress', addressLocality: 'Karachi', addressRegion: 'Sindh', addressCountry: 'PK' },
+        areaServed: [
+          { '@type': 'Country', name: 'United States' },
+          { '@type': 'Country', name: 'Canada' },
+          { '@type': 'Country', name: 'United Arab Emirates' },
+          { '@type': 'Country', name: 'United Kingdom' },
+          { '@type': 'AdministrativeArea', name: 'Worldwide' },
+        ],
+        knowsLanguage: ['en'],
+        knowsAbout: ['WordPress', 'Shopify', 'Webflow', 'DevOps', 'AWS', 'n8n', 'AI automation', 'WooCommerce'],
+        sameAs: socials.map((s) => s.href),
+        worksFor: { '@id': `${SITE_URL}/#org` },
+      },
+      {
+        '@type': ['ProfessionalService', 'Organization'],
+        '@id': `${SITE_URL}/#org`,
+        name: 'ARK Designing Bureau',
+        legalName: 'ARK Designing Bureau',
+        url: SITE_URL,
+        logo: new URL('/images/logo-icon.webp', SITE_URL).href,
+        image: ogImageUrl,
+        founder: { '@id': `${SITE_URL}/#abdul`, name: 'Abdul Rehman Khan' },
+        employee: { '@id': `${SITE_URL}/#abdul`, name: 'Abdul Rehman Khan' },
+        email: 'ark.educationalist@gmail.com',
+        telephone: '+923159429998',
+        priceRange: '$$',
+        currenciesAccepted: 'USD, CAD, AED, GBP, EUR, PKR',
+        availableLanguage: ['English'],
+        areaServed: [
+          { '@type': 'Country', name: 'United States' },
+          { '@type': 'Country', name: 'Canada' },
+          { '@type': 'Country', name: 'United Arab Emirates' },
+          { '@type': 'Country', name: 'United Kingdom' },
+          { '@type': 'Place', name: 'Worldwide' },
+        ],
+        serviceType: ['CMS website development', 'E-commerce', 'DevOps and hosting', 'Workflow automation', 'Brand design'],
+        address: { '@type': 'PostalAddress', addressLocality: 'Karachi', addressCountry: 'PK' },
+        sameAs: socials.map((s) => s.href),
+      },
+      {
+        '@type': 'WebSite',
+        '@id': `${SITE_URL}/#website`,
+        url: SITE_URL,
+        name: 'Abdul Rehman Khan',
+        alternateName: 'ARK Designing Bureau',
+        publisher: { '@id': `${SITE_URL}/#abdul` },
+        author: { '@id': `${SITE_URL}/#abdul` },
+        inLanguage: 'en',
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+          ...(active !== 'home' ? [{ '@type': 'ListItem', position: 2, name: title, item: canonical }] : []),
+        ],
+      },
+      ...(faqItems.length ? [{
+        '@type': 'FAQPage',
+        '@id': `${canonical}#faq`,
+        mainEntity: faqItems.map((f) => ({
+          '@type': 'Question',
+          name: f.q,
+          acceptedAnswer: { '@type': 'Answer', text: f.a },
+        })),
+        speakable: { '@type': 'SpeakableSpecification', cssSelector: ['#faq h2', '#faq h3', '.llm-answer'] },
+      }] : []),
+      ...(ogType === 'article' ? [{
+        '@type': 'BlogPosting',
+        headline: title, description, image: ogImageUrl, url: canonical,
+        datePublished: publishedTime,
+        author: { '@id': `${SITE_URL}/#abdul` },
+        publisher: { '@id': `${SITE_URL}/#org` },
+      }] : []),
+    ],
+  })} />
   <ClientRouter />
 </head>
 <body data-av={AV} data-wa={WA}>
-  <div id="preloader" class="preloader" transition:persist="ark-preloader" aria-busy="true" aria-live="polite">
+  <div id="preloader" class="preloader done" transition:persist="ark-preloader" aria-busy="false" aria-live="polite" data-done="1">
     <div class="pre-sky" aria-hidden="true">
       <svg class="pre-stars" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
         <defs>
@@ -112,10 +211,10 @@ const AV = '/images/logo-icon.webp';
           <circle class="pre-ring-bg" cx="60" cy="60" r="52"/>
           <circle class="pre-ring-fill" id="preFill" cx="60" cy="60" r="52"/>
         </svg>
-        <img class="pre-icon" src="/images/logo-icon.webp" alt="" width="88" height="88" decoding="async" fetchpriority="high" />
+        <img class="pre-icon" src="/images/logo-icon.webp" alt="" width="88" height="88" decoding="async" loading="lazy" />
         <span class="pre-ring-pct" id="prePct">0</span>
       </div>
-      <img class="pre-caption" src="/images/signature-modern.webp" alt="Abdul Rehman Khan" width="520" height="110" decoding="async" />
+      <img class="pre-caption" src="/images/signature-modern.webp" alt="Abdul Rehman Khan" width="520" height="110" decoding="async" loading="lazy" />
       <p class="pre-sub">Design × Software</p>
     </div>
   </div>
@@ -215,16 +314,7 @@ const AV = '/images/logo-icon.webp';
         });
       }
 
-      var pre = preEl();
-      if (pre && pre.dataset.showing !== '1' && pre.dataset.done !== '1') {
-        show();
-        if (document.readyState === 'interactive' || document.readyState === 'complete') {
-          hide();
-        } else {
-          document.addEventListener('DOMContentLoaded', hide);
-        }
-        setTimeout(hide, MAX_MS);
-      }
+      // First paint stays clear for LCP. The overlay only appears on in-app navigations.
     })();
   </script>
 
@@ -240,7 +330,7 @@ const AV = '/images/logo-icon.webp';
       <div class="navlinks" id="navlinks" role="navigation" aria-label="Primary">
         <div class="nav-drawer-top">
           <a href="/" class="nav-drawer-brand" aria-label="Abdul Rehman Khan — home">
-            <BrandLogo />
+            <BrandLogo lazy />
           </a>
           <button class="nav-close" id="navClose" type="button" aria-label="Close menu">
             <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
@@ -261,7 +351,7 @@ const AV = '/images/logo-icon.webp';
   <footer>
     <div class="wrap foot-top">
       <a href="/" class="foot-brand" aria-label="Abdul Rehman Khan — home">
-        <BrandLogo light />
+        <BrandLogo light lazy />
       </a>
       <div class="foot-social">
         {socials.map((s) => (
@@ -273,7 +363,7 @@ const AV = '/images/logo-icon.webp';
     </div>
     <div class="wrap foot-in">
       <span>© <span id="yr"></span> Abdul Rehman Khan</span>
-      <span>CMS Expert · Full-Stack · DevOps · Design · Automation</span>
+      <span>Senior CMS Expert · Software Engineer · DevOps · Automation</span>
       <a href="/contact">Let's talk →</a>
     </div>
   </footer>
@@ -305,7 +395,7 @@ const AV = '/images/logo-icon.webp';
   </button>
   <section class="ark-chat" id="arkChat" role="dialog" aria-label="ARK Assistant chat" hidden>
     <div class="ark-head">
-      <img src={AV} alt="" width="36" height="36" decoding="async" />
+      <img src={AV} alt="" width="36" height="36" decoding="async" loading="lazy" />
       <div class="who"><b>ARK Assistant</b><span><i></i> Ask about Abdul · or hire him</span></div>
       <button class="ark-wa-btn" id="arkWa" aria-label="Message on WhatsApp" title="Message on WhatsApp">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d={siWhatsapp.path} /></svg>

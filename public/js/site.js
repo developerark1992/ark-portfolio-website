@@ -44,6 +44,8 @@
       /* ---------- calculator ---------- */
       function initCalc(){
         if(!document.getElementById('estPrice'))return;
+        if(document.getElementById('estPrice').dataset.ready==='1')return;
+        document.getElementById('estPrice').dataset.ready='1';
         // Single-price model in PKR (solo-freelancer rates, min 100k); converted to other currencies below.
         var TYPES={website:{base:100000,incl:5,label:"Website"},webapp:{base:400000,incl:6,label:"Web app"},ecommerce:{base:250000,incl:8,label:"E-commerce"},saas:{base:900000,incl:6,label:"SaaS platform"},mvp:{base:350000,incl:5,label:"MVP / prototype"}};
         var PER_PAGE=15000;
@@ -136,6 +138,8 @@
             form=document.getElementById('arkForm'),input=document.getElementById('arkInput'),
             closeBtn=document.getElementById('arkClose');
         if(!launch||!chat)return;
+        if(launch.dataset.ready==='1')return;
+        launch.dataset.ready='1';
         var started=false,mode='menu',step=0,data={},waStep=0,waData={};
         function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
         function scroll(){msgs.scrollTop=msgs.scrollHeight;}
@@ -146,7 +150,7 @@
         function setChips(list){chipsEl.innerHTML='';list.forEach(function(c){var b=document.createElement('button');b.className='ark-chip'+(c.send?' send':'')+(c.wa?' wa':'');b.textContent=c.label;b.onclick=function(){c.onClick?c.onClick():pick(c.val||c.label,c.label);};chipsEl.appendChild(b);});}
         var MENU=[{label:'About Abdul',val:'about'},{label:'His work',val:'work'},{label:'Services',val:'services'},{label:'Price estimate',val:'estimate'},{label:'Get a quote',val:'quote'},{label:'WhatsApp Abdul',val:'whatsapp',wa:true}];
         function answer(intent){
-          if(intent==='about')return bot("Abdul Rehman Khan is a <b>CMS expert &amp; software engineer</b> with <b>8+ years</b> in web engineering, DevOps and design. He builds on <b>any platform</b> — WordPress, Shopify, Webflow, Wix, Squarespace, Framer — plus custom Astro/Next.js, handles the <b>hosting &amp; DevOps</b> (WHM/cPanel, AWS, domains, migrations), designs the graphics, and <b>automates</b> the busywork with Claude, ChatGPT, n8n &amp; Zapier. Karachi-based, open to remote EU/UK work.",MENU.concat([{label:'Start an enquiry',val:'quote'}]));
+          if(intent==='about')return bot("<b>Abdul Rehman Khan</b> is a <b>senior CMS expert and software engineer</b> with <b>8+ years</b> in web engineering, DevOps and design. He builds on <b>any platform</b> — WordPress, Shopify, Webflow, Wix, Squarespace, Framer — plus custom Astro/Next.js, handles the <b>hosting &amp; DevOps</b> (WHM/cPanel, AWS, domains, migrations), designs the graphics, and <b>automates</b> the busywork with Claude, ChatGPT, n8n &amp; Zapier. Remote-first for the <b>USA, Canada, UAE, UK</b> and every other country.",MENU.concat([{label:'Start an enquiry',val:'quote'}]));
           if(intent==='work')return bot("He's shipped <b>90+ projects</b> — real estate (Prescott), health-tech &amp; pharma (Hepius, Galaxy Pharma), Shopify e-commerce, finance and agency sites across WordPress, Webflow, Wix &amp; custom stacks. Browse the <b>Projects</b> page — search or filter, and click any card for a full preview.",[{label:'Get a quote',val:'quote'},{label:'Services',val:'services'}]);
           if(intent==='services')return bot("Abdul offers <b>full-service delivery</b>:<ul><li><b>CMS websites</b> on any platform (WordPress, Shopify, Webflow, Wix, Squarespace, Framer + custom)</li><li><b>E-commerce</b> (WooCommerce / Shopify)</li><li><b>DevOps &amp; hosting</b> — WHM/cPanel, AWS, domains, migrations</li><li><b>AI &amp; workflow automation</b> (Claude, ChatGPT, n8n, Zapier)</li><li><b>Graphic design</b> &amp; branding</li></ul>",[{label:'Price estimate',val:'estimate'},{label:'Get a quote',val:'quote'}]);
           if(intent==='estimate'){bot("Opening the instant cost calculator — build your project and see a live estimate. 👇",[]);setTimeout(function(){close();window.location.href='/estimate';},700);return;}
@@ -208,25 +212,6 @@
         if(!window.__arkEsc){window.__arkEsc=true;document.addEventListener('keydown',function(e){if(e.key==='Escape'){var c=document.getElementById('arkChat');if(c&&!c.hidden){c.hidden=true;var l=document.getElementById('arkLaunch');if(l)l.hidden=false;}}});}
       }
 
-      function initHero(){
-        var rot=document.getElementById('rot');
-        var REDUCE=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if(rot && !REDUCE){
-          var roles=["CMS Expert","WordPress Developer","Shopify & Webflow Builder","Full-Stack Engineer","DevOps & Hosting","AI Automation","Graphic Designer"];
-          var i=0,ch=0,del=false;
-          (function tick(){
-            var w=roles[i]; ch+=del?-1:1; rot.textContent=w.slice(0,ch);
-            var d=del?45:95;
-            if(!del&&ch===w.length){del=true;d=1400;}
-            else if(del&&ch===0){del=false;i=(i+1)%roles.length;d=350;}
-            rot._t=setTimeout(tick,d);
-          })();
-        } else if(rot){ rot.textContent="Software Engineer"; }
-        var spot=document.getElementById('heroSpot'),hero=document.querySelector('.hero'),root=document.documentElement;
-        if(spot&&hero&&!REDUCE&&!window.matchMedia('(pointer: coarse)').matches){
-          hero.addEventListener('pointermove',function(e){var r=hero.getBoundingClientRect();root.style.setProperty('--mx',(e.clientX-r.left)+'px');root.style.setProperty('--my',(e.clientY-r.top)+'px');});
-        }
-      }
       function initLightbox(){
         if(window.__arkLB) return; window.__arkLB=true; // bind delegated listeners once
         // NOTE: elements are re-queried on each use — the ClientRouter swaps <body>
@@ -306,8 +291,18 @@
       }
       function initPage(){
         initPreloader();
-        setYear(); initReveal(); initMenu(); initHero(); initCalc(); initChat(); initLightbox();
-        initStackCards();
+        setYear(); initReveal(); initMenu(); initLightbox();
+        var later=function(){ initCalc(); initChat(); initStackCards(); };
+        if('requestIdleCallback' in window) requestIdleCallback(later,{timeout:1800});
+        else setTimeout(later,1);
+        var launch=document.getElementById('arkLaunch');
+        if(launch && !launch.dataset.idle){
+          launch.dataset.idle='1';
+          launch.addEventListener('click', function(){
+            later();
+            if(window.arkOpenChat) window.arkOpenChat();
+          }, {once:true});
+        }
       }
       if (!window.__arkSiteBound) {
         window.__arkSiteBound = true;

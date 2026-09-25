@@ -1031,3 +1031,10 @@ section.page-body{padding-top:20px;}
 @media (prefers-reduced-motion:reduce){
   .fx-caret,.fx-dot,.fx-flow-wire{animation:none;}
 }
+
+.llm-clip{padding:48px 0 72px;max-width:820px;}
+.llm-clip h2{margin:0 0 12px;}
+.llm-clip h3{margin:22px 0 8px;font-size:20px;}
+.llm-clip p{margin:0 0 12px;color:var(--ink-soft);line-height:1.6;}
+.llm-answer{color:var(--ink);}
+footer{content-visibility:auto;contain-intrinsic-size:1px 280px;}

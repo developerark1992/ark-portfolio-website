@@ -1,4 +1,4 @@
-import { readdirSync, writeFileSync, statSync } from 'node:fs';
+import { readdirSync, writeFileSync, statSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
 import sharp from 'sharp';
 
@@ -23,12 +23,19 @@ let saved = 0;
 
 console.log('Compressing project screenshots…');
 const shots = readdirSync(PROJECTS).filter((f) => /\.webp$/i.test(f));
+const THUMBS = path.join(PROJECTS, 'thumbs');
+mkdirSync(THUMBS, { recursive: true });
 for (const f of shots) {
   const file = path.join(PROJECTS, f);
   saved += await rewrite(
     file,
     sharp(file).resize({ width: 1100, withoutEnlargement: true }).webp({ quality: 68, effort: 6 }),
   );
+  await sharp(file)
+    .resize({ width: 640, height: 420, fit: 'cover', position: 'top' })
+    .webp({ quality: 62, effort: 6 })
+    .toFile(path.join(THUMBS, f));
+  console.log('  thumb', f);
 }
 
 console.log('Optimizing brand assets…');
@@ -51,5 +58,10 @@ saved += await rewrite(
   path.join(IMAGES, 'photo.webp'),
   sharp(path.join(IMAGES, 'photo.webp')).resize({ width: 720, withoutEnlargement: true }).webp({ quality: 78, effort: 6 }),
 );
+
+await sharp(path.join(IMAGES, 'photo.webp'))
+  .resize({ width: 400, withoutEnlargement: true })
+  .webp({ quality: 72, effort: 6 })
+  .toFile(path.join(IMAGES, 'photo-400.webp'));
 
 console.log('Saved', kb(saved), 'from project shots. Brand webps written.');

@@ -10,8 +10,8 @@ export default defineConfig({
   adapter: vercel(),
   compressHTML: true,
   prefetch: {
-    prefetchAll: true,
-    defaultStrategy: 'viewport',
+    prefetchAll: false,
+    defaultStrategy: 'hover',
   },
   build: { inlineStylesheets: 'auto' },
   vite: {

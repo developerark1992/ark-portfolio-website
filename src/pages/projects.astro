@@ -16,7 +16,7 @@ const cats = [['all', 'All', projects.length]].concat(
     <div class="wrap">
       <p class="eyebrow reveal">Portfolio</p>
       <h1 class="reveal page-h1">All projects.</h1>
-      <p class="sec-lead reveal" style="margin-bottom:32px;">{projects.length} production builds across healthcare, real estate, e-commerce, finance, agencies and more — Pakistan, the UAE, Canada and beyond. Search by name or platform, or filter by category.</p>
+      <p class="sec-lead reveal" style="margin-bottom:32px;">{projects.length} production builds across healthcare, real estate, e-commerce, finance, agencies and more — delivered remotely for the USA, Canada, UAE, UK and worldwide. Search by name or platform, or filter by category.</p>
 
       <div class="proj-search reveal">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="m20 20-3.2-3.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
@@ -97,7 +97,7 @@ const cats = [['all', 'All', projects.length]].concat(
           ' data-img="' + esc(p.img) + '" data-live="' + esc(p.live || '') + '"' +
           ' tabindex="0" role="button" aria-label="Preview ' + esc(p.title) + '" style="animation-delay:' + ((i % PAGE) * 0.04) + 's">' +
           '<div class="proj-shot"><span class="proj-cat">' + esc(p.category) + '</span>' +
-          '<img src="' + esc(p.img) + '" alt="' + esc(p.title) + ' — screenshot" loading="lazy" decoding="async" width="640" height="420" sizes="(max-width: 640px) 100vw, (max-width: 980px) 50vw, 33vw" />' +
+          '<img src="' + esc(String(p.img||'').replace('/images/projects/','/images/projects/thumbs/')) + '" alt="' + esc(p.title) + ' — screenshot" loading="lazy" decoding="async" width="640" height="420" sizes="(max-width: 640px) 100vw, (max-width: 980px) 50vw, 33vw" />' +
           '<span class="proj-view">View ↗</span></div>' +
           '<div class="proj-body"><h3>' + esc(p.title) + '</h3>' +
           '<div class="loc">' + esc(p.platform) + '</div>' +

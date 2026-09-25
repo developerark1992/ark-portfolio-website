@@ -490,3 +490,9 @@
   }
   .partner-mark{background:#f1f5f9;}
 }
+
+.geo-gain{list-style:none;margin:0;padding:0;display:grid;gap:22px;}
+.geo-gain h3{font-size:22px;margin:0 0 8px;}
+.geo-gain p{margin:0;color:var(--ink-soft);line-height:1.55;}
+.llm-answer{color:var(--ink);}
+.ci-section:not(:first-of-type){content-visibility:auto;contain-intrinsic-size:1px 720px;}

@@ -1,5 +1,7 @@
 ---
+import { projectThumb } from '../lib/media.mjs';
 const { p, index = 0 } = Astro.props;
+const thumb = projectThumb(p.img);
 const n = String(index + 1).padStart(2, '0');
 const host = (() => {
   try { return p.live ? new URL(p.live).hostname.replace(/^www\./, '') : ''; }
@@ -30,7 +32,7 @@ const tags = [
   aria-label={`${p.title}${host ? `: open ${host}` : ''}`}
 >
   <div class="wkb-shot">
-    <img src={p.img} alt="" loading="lazy" decoding="async" width="900" height="620" sizes="(max-width: 720px) 100vw, (max-width: 1200px) 70vw, 900px" draggable="false" />
+    <img src={thumb} alt="" loading="lazy" decoding="async" width="640" height="420" sizes="(max-width: 720px) 100vw, (max-width: 1200px) 70vw, 640px" draggable="false" />
   </div>
   <div class="wkb-body">
     <span class="wkb-index ci-label">{n}</span>

@@ -1,8 +1,9 @@
 ---
-const { class: className = '', light = false, size = 'md' } = Astro.props;
+const { class: className = '', light = false, size = 'md', lazy = false } = Astro.props;
+const loading = lazy ? 'lazy' : undefined;
 ---
 <span class:list={['hlogo', light && 'hlogo-light', size === 'lg' && 'hlogo-lg', className]}>
-  <img class="hlogo-icon" src="/images/logo-icon.webp" alt="" width="44" height="44" decoding="async" />
+  <img class="hlogo-icon" src="/images/logo-icon.webp" alt="" width="44" height="44" decoding="async" loading={loading} />
   <span class="hlogo-sig-wrap" aria-hidden="true">
     <img
       class="hlogo-sig hlogo-sig-on-light"
@@ -11,6 +12,7 @@ const { class: className = '', light = false, size = 'md' } = Astro.props;
       width="280"
       height="48"
       decoding="async"
+      loading={loading}
     />
     <img
       class="hlogo-sig hlogo-sig-on-dark"
@@ -19,6 +21,7 @@ const { class: className = '', light = false, size = 'md' } = Astro.props;
       width="280"
       height="48"
       decoding="async"
+      loading={loading}
     />
   </span>
   <span class="visually-hidden">Abdul Rehman Khan</span>

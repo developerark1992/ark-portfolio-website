@@ -19,7 +19,12 @@ const faqs = [
   ['What do you need to start?', 'A short brief and, ideally, a quick call. Book a free 30-minute strategy call and I will recommend the right package and scope.'],
 ];
 ---
-<Base active="pricing" title="Pricing & Packages — Abdul Rehman Khan" description="Transparent website pricing: Economy, Standard and Custom packages, plus add-ons and a live cost calculator. WordPress, Shopify, Webflow, custom builds and more.">
+<Base
+  active="pricing"
+  title="Website Pricing — Abdul Rehman Khan"
+  description="Transparent WordPress, Shopify and custom website pricing from PKR 100,000. Live calculator in USD, EUR, GBP and AED."
+  faqItems={faqs.map(([q, a]) => ({ q, a }))}
+>
   <section class="page-hero">
     <div class="wrap">
       <p class="eyebrow reveal">Pricing</p>
