@@ -12,10 +12,10 @@ const cats = [['all', 'All', projects.length]].concat(
 );
 ---
 <Base active="projects" title="Projects — Abdul Rehman Khan" description="90+ web, e-commerce and app builds by Abdul Rehman Khan across WordPress, Shopify, Webflow, Wix, Squarespace, Framer and custom stacks.">
-  <section style="padding-bottom:0;">
+  <section class="page-hero">
     <div class="wrap">
       <p class="eyebrow reveal">Portfolio</p>
-      <h1 class="reveal" style="font-size:clamp(32px,5.4vw,58px);margin-bottom:16px;">All projects.</h1>
+      <h1 class="reveal page-h1">All projects.</h1>
       <p class="sec-lead reveal" style="margin-bottom:32px;">{projects.length} production builds across healthcare, real estate, e-commerce, finance, agencies and more — Pakistan, the UAE, Canada and beyond. Search by name or platform, or filter by category.</p>
 
       <div class="proj-search reveal">
@@ -32,7 +32,7 @@ const cats = [['all', 'All', projects.length]].concat(
     </div>
   </section>
 
-  <section style="padding-top:50px;">
+  <section class="page-body">
     <div class="wrap">
       <div class="proj-grid" id="allProjects"></div>
       <p class="proj-empty" id="projEmpty" hidden>No projects match — try a different search.</p>

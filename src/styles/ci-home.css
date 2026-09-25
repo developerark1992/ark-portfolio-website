@@ -109,14 +109,14 @@
 .ci-sticky .ci-arrow{display:inline-flex;margin-top:1.75rem;}
 
 /* About skills — light pills cards in the sticky deck */
-.skill-deck .svc-slot{height:min(70vh,26rem);}
+.skill-deck .svc-slot{height:min(56vh,22rem);}
 .skill-stack-card{
   --accent:var(--ci-accent-bright);
   position:relative;
-  top:calc(7rem + var(--i,0) * 1.15rem);
+  top:calc(5rem + var(--i,0) * 1rem);
   width:100%;
   border-radius:18px;
-  padding:clamp(1.35rem,2.6vw,1.85rem);
+  padding:clamp(1.25rem,2.4vw,1.65rem);
   background:
     radial-gradient(120% 90% at 0% 0%,color-mix(in srgb,var(--accent) 16%,transparent) 0%,transparent 58%),
     var(--surface,#fff);
@@ -142,14 +142,14 @@
 .svc-deck{list-style:none;margin:0;padding:0;}
 .svc-slot{
   position:sticky;top:0;
-  height:min(86vh,44rem);
+  height:min(72vh,34rem);
   display:flex;align-items:flex-start;justify-content:center;
   z-index:calc(1 + var(--i,0));
 }
 .svc-card{
   --accent:var(--ci-accent-bright);
   position:relative;
-  top:calc(7rem + var(--i,0) * 1.5rem);
+  top:calc(5rem + var(--i,0) * 1.15rem);
   width:100%;
   border-radius:18px;
   isolation:isolate;
@@ -179,7 +179,7 @@
   position:relative;z-index:1;
   display:flex;flex-direction:column;gap:1.25rem;height:100%;
   padding:clamp(1.5rem,2.8vw,2rem) clamp(1.5rem,3vw,2.15rem);
-  border-radius:inherit;min-height:min(62vh,30rem);
+  border-radius:inherit;min-height:min(48vh,24rem);
   color:#eef3f8;text-decoration:none;
 }
 .svc-card-link:focus-visible{outline:2px solid var(--accent);outline-offset:-6px;}
@@ -440,10 +440,11 @@
 .ci-faq-body p{margin:0;max-width:42rem;font-size:.9375rem;line-height:1.65;color:var(--ci-ink-2);}
 
 @media (max-width:980px){
-  .ci-split,.ci-book{grid-template-columns:1fr;gap:2rem;}
+  .ci-section{padding:40px 0;}
+  .ci-split,.ci-book{grid-template-columns:1fr;gap:1.5rem;}
   .ci-sticky,.ci-plate-sticky{position:static;}
   .svc-slot{height:auto;position:relative;}
-  .svc-card,.skill-stack-card{top:0 !important;margin-bottom:1rem;}
+  .svc-card,.skill-stack-card{top:0 !important;margin-bottom:.85rem;}
   .svc-card-link{min-height:0;}
   .svc-card-body{grid-template-columns:1fr;gap:1.25rem;}
   .svc-card-meta{padding-top:1rem;}
@@ -461,6 +462,7 @@
 }
 
 @media (max-width:720px){
+  .ci-section{padding:36px 0;}
   .partner-grid{grid-template-columns:1fr;}
   .ci-book-meta{grid-template-columns:1fr;}
   .ci-faq-body{padding-left:0;}
