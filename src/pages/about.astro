@@ -2,6 +2,13 @@
 import Base from '../layouts/Base.astro';
 import IconChip from '../components/IconChip.astro';
 import { groups } from '../data/tech.mjs';
+import '../styles/ci-home.css';
+
+const skillAccents = {
+  cyan: '#22d3ee',
+  violet: '#a78bfa',
+};
+
 const experience = [
   { when:'2026 — Present', role:'Senior CMS Developer / DevOps Specialist', co:'Chameleon Ideas Inc.', d:'Production websites, deployments, hosting and client delivery.' },
   { when:'2024 — 2026', role:'Senior Software Developer / Team Lead', co:'Websity Digital', d:'Led CMS & web delivery — WordPress, WooCommerce, Webflow, Shopify, AWS.' },
@@ -9,11 +16,6 @@ const experience = [
   { when:'2022 — 2022', role:'Full-Stack & CMS Developer', co:'Novatex / Nextac / Logicose', d:'Full-stack & CMS delivery — WordPress, PHP, MySQL, responsive builds.' },
   { when:'2021 — 2022', role:'Software Developer', co:'Mystic Advertising', d:'WordPress & Shopify — theme customization, Elementor, e-commerce.' },
   { when:'2020 — 2021', role:'Frontend Web Developer', co:'Nisshinbo Holdings', d:'ASP.NET MVC & front-end components for production interfaces.' },
-];
-// Skills that don't have brand icons — surfaced as text so recruiters & search see them.
-const extras = [
-  { n:'06', t:'Design & Creative', s:['Figma','Adobe Photoshop','Illustrator','Adobe XD','Canva','Logo & brand identity','UI/UX'] },
-  { n:'07', t:'Hosting & Domains', s:['WHM','cPanel','Shared / VPS hosting','Domain registration','DNS & SSL','Email setup','Site migrations'] },
 ];
 ---
 <Base active="about" title="About — Abdul Rehman Khan" description="8+ years across web engineering, CMS, DevOps and automation. Based in Karachi, open to remote EU/UK roles.">
@@ -44,28 +46,44 @@ const extras = [
     </div>
   </section>
 
-  <section>
-    <div class="wrap">
-      <div class="reveal" style="margin-bottom:44px;"><p class="eyebrow">Expertise</p><h2 class="sec-title">Skills &amp; tools</h2></div>
-      <div class="skill-grid">
-        {groups.map((g) => (
-          <div class="skill-card reveal">
-            <span class="num">{g.n}</span><h3>{g.t}</h3>
-            <div class="skill-pills">{g.items.map((t) => <IconChip label={t.label} path={t.path} tone={g.tone} />)}</div>
+  <section class="ci-section" id="skills">
+    <div class="wrap ci-split is-half">
+      <div class="ci-sticky reveal">
+        <div class="ci-head">
+          <div class="ci-label-row">
+            <span class="ci-label">Expertise</span>
+            <span class="ci-label-rule" aria-hidden="true"></span>
+            <span class="ci-label ci-label-accent">Skills</span>
           </div>
-        ))}
-        {extras.map((g) => (
-          <div class="skill-card reveal">
-            <span class="num">{g.n}</span><h3>{g.t}</h3>
-            <ul>{g.s.map((s) => <li>{s}</li>)}</ul>
-          </div>
-        ))}
+          <h2>Skills &amp; <em>tools</em></h2>
+          <p class="ci-lead">Every layer I ship with — CMS, frontend, cloud, automation, design, and hosting — stacked so you can scroll through one craft at a time.</p>
+        </div>
       </div>
+
+      <ol class="svc-deck skill-deck" data-stack data-stack-noshrink>
+        {groups.map((g, i) => (
+          <li class="svc-slot" style={`--i:${i}`}>
+            <article
+              class="skill-stack-card"
+              data-stack-card
+              style={`--accent:${skillAccents[g.tone] || skillAccents.cyan}; --i:${i}`}
+            >
+              <span class="num">{g.n}</span>
+              <h3>{g.t}</h3>
+              <div class="skill-pills">
+                {g.items.map((t) => (
+                  <IconChip label={t.label} path={t.path} tone={g.tone} />
+                ))}
+              </div>
+            </article>
+          </li>
+        ))}
+      </ol>
     </div>
   </section>
 
   <section>
-    <div class="wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+    <div class="wrap about-edu">
       <div class="reveal edu-card">
         <p class="eyebrow" style="margin-bottom:16px;">Education</p>
         <h3>Bachelor of Software Engineering</h3>

@@ -104,8 +104,40 @@
 
 /* —— Skills / services deck (two-column sticky stack) —— */
 .ci-split{display:grid;grid-template-columns:minmax(260px,1fr) minmax(0,2fr);gap:clamp(2.5rem,5vw,4rem);align-items:start;}
+.ci-split.is-half{grid-template-columns:minmax(0,1fr) minmax(0,1fr);}
 .ci-sticky{position:sticky;top:8rem;}
 .ci-sticky .ci-arrow{display:inline-flex;margin-top:1.75rem;}
+
+/* About skills — light pills cards in the sticky deck */
+.skill-deck .svc-slot{height:min(70vh,26rem);}
+.skill-stack-card{
+  --accent:var(--ci-accent-bright);
+  position:relative;
+  top:calc(7rem + var(--i,0) * 1.15rem);
+  width:100%;
+  border-radius:18px;
+  padding:clamp(1.35rem,2.6vw,1.85rem);
+  background:
+    radial-gradient(120% 90% at 0% 0%,color-mix(in srgb,var(--accent) 16%,transparent) 0%,transparent 58%),
+    var(--surface,#fff);
+  border:1px solid color-mix(in srgb,var(--accent) 28%,var(--glass-line,#dde3ee));
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.9),
+    0 1px 2px rgba(15,23,42,.05),
+    0 16px 36px -22px rgba(15,23,42,.28),
+    0 0 40px -22px color-mix(in srgb,var(--accent) 35%,transparent);
+  transform:none !important;
+  transform-origin:center top;
+}
+.skill-stack-card .num{
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+  color:var(--accent);font-weight:600;
+}
+.skill-stack-card h3{
+  margin:10px 0 14px;font-size:clamp(1.15rem,2vw,1.45rem);
+  font-weight:700;letter-spacing:-.02em;color:var(--ink,#0f172a);
+}
+.skill-stack-card .skill-pills{display:flex;flex-wrap:wrap;gap:8px;margin:0;}
 
 .svc-deck{list-style:none;margin:0;padding:0;}
 .svc-slot{
@@ -411,10 +443,11 @@
   .ci-split,.ci-book{grid-template-columns:1fr;gap:2rem;}
   .ci-sticky,.ci-plate-sticky{position:static;}
   .svc-slot{height:auto;position:relative;}
-  .svc-card{top:0 !important;margin-bottom:1rem;}
+  .svc-card,.skill-stack-card{top:0 !important;margin-bottom:1rem;}
   .svc-card-link{min-height:0;}
   .svc-card-body{grid-template-columns:1fr;gap:1.25rem;}
   .svc-card-meta{padding-top:1rem;}
+  .skill-deck .svc-slot{height:auto;}
   .partner-grid{grid-template-columns:1fr 1fr;gap:.75rem;}
   .wkb-item,
   .wkb-item:nth-child(even){
