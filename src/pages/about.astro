@@ -19,7 +19,7 @@ const extras = [
 <Base active="about" title="About — Abdul Rehman Khan" description="8+ years across web engineering, CMS, DevOps and automation. Based in Karachi, open to remote EU/UK roles.">
   <section>
     <div class="wrap about-hero">
-      <div class="about-photo reveal"><img src="/images/photo.webp" alt="Abdul Rehman Khan" width="620" height="740" /></div>
+      <div class="about-photo reveal"><img src="/images/photo.webp?v=8" alt="Abdul Rehman Khan" width="620" height="740" /></div>
       <div class="reveal">
         <p class="eyebrow">About me</p>
         <h1 class="sec-title" style="font-size:clamp(30px,4.6vw,48px);">A CMS expert who also designs it, hosts it, and automates it.</h1>
@@ -51,7 +51,7 @@ const extras = [
         {groups.map((g) => (
           <div class="skill-card reveal">
             <span class="num">{g.n}</span><h3>{g.t}</h3>
-            <div class="tech-row">{g.items.map((t) => <IconChip label={t.label} path={t.path} />)}</div>
+            <div class="skill-pills">{g.items.map((t) => <IconChip label={t.label} path={t.path} tone={g.tone} />)}</div>
           </div>
         ))}
         {extras.map((g) => (

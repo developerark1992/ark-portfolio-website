@@ -1,137 +1,554 @@
 ---
 import Base from '../layouts/Base.astro';
 import ProjectCard from '../components/ProjectCard.astro';
-import IconChip from '../components/IconChip.astro';
-import Pricing from '../components/Pricing.astro';
 import projects from '../data/projects.json';
-import { groups, allTech } from '../data/tech.mjs';
+import { groups, marqueeTech } from '../data/tech.mjs';
+import '../styles/ci-home.css';
 
 const filenameLike = (title) => /\.(com|ai|pk|ca|io)|wordpress|shopify|shopfiy|webflow|framer|wix/i.test(title);
 const clean = projects.filter((p) => p.img && p.title && !filenameLike(p.title) && p.live);
 const pool = clean.length >= 8 ? clean : projects.filter((p) => p.img);
 const featured = pool.slice(0, 6);
-const reel = [...pool.slice(0, 8), ...pool.slice(0, 8)];
-const marquee = allTech.concat(allTech);
+const stack = marqueeTech;
+
+const titles = [
+  'Senior CMS Developer',
+  'DevOps Specialist',
+  'Automation Engineer',
+  'Full-Stack Engineer',
+];
+
 const roles = [
-  { when: '2026 — now', title: 'Senior CMS Developer', org: 'Chameleon Ideas', note: 'Production WordPress, WooCommerce, hosting and release' },
-  { when: '2024 — 2026', title: 'Senior Software Developer', org: 'Websity Digital', note: 'WordPress, WooCommerce, Webflow, Shopify, AWS Lightsail' },
-  { when: '2022 — 2024', title: 'Senior CMS & Web Developer', org: 'Krystosoft', note: 'International CMS builds, migrations, mentoring' },
-  { when: '2021 — 2022', title: 'Software Developer', org: 'Mystic Advertising', note: 'WordPress and Shopify storefronts' },
-  { when: '2020 — 2021', title: 'Frontend Web Developer', org: 'Nisshinbo Holdings', note: 'ASP.NET MVC, responsive frontend' },
+  {
+    when: '2026 — Present',
+    title: 'Senior CMS Developer / DevOps Specialist',
+    org: 'Chameleon Ideas Inc.',
+    note: 'Built scalable content structures, owned AWS cloud infrastructure, handled zero-downtime migrations, and provided senior technical ownership.',
+  },
+  {
+    when: '2024 — 2026',
+    title: 'Senior Software Developer / Team Lead',
+    org: 'Websity Digital',
+    note: 'Led technical delivery for agency projects, architected custom ACF/CPT models, optimized assets, and managed AWS Lightsail environments.',
+  },
+  {
+    when: '2022 — 2024',
+    title: 'Senior CMS & Web Developer',
+    org: 'Krystosoft',
+    note: 'Maintained web infrastructure for international clients and mentored junior developers.',
+  },
+  {
+    when: '2022',
+    title: 'Full-Stack & CMS Developer',
+    org: 'Logicose / Nextac / Novatex',
+    note: 'Developed custom WordPress themes and responsive builds from Figma/XD files.',
+  },
+  {
+    when: '2020 — 2022',
+    title: 'Software & Frontend Developer',
+    org: 'Mystic Advertising & Nisshinbo Holdings',
+    note: 'Focused on e-commerce setups, ASP.NET MVC components, and performance optimizations.',
+  },
+];
+
+const skillAccents = ['#22d3ee', '#a78bfa', '#67e8f9', '#c4b5fd', '#06b6d4'];
+
+const skillCopy = {
+  '01': {
+    short: 'WordPress to Shopify — platforms that fit the team, not the other way around.',
+    copy: 'I start with your goals and editorial workflow, then build custom themes, storefronts, and content models that stay editable after launch.',
+    points: ['Custom themes & ACF', 'WooCommerce / Shopify', 'Editor-friendly builds', 'Migrations & care', 'Design system handoff'],
+  },
+  '02': {
+    short: 'Interfaces that feel fast, readable, and intentional across every device.',
+    copy: 'From design systems to interaction polish — frontend work that supports conversion without fighting the CMS underneath.',
+    points: ['HTML / CSS / JS', 'React & Tailwind', 'Design systems', 'Performance polish', 'Responsive layouts'],
+  },
+  '03': {
+    short: 'APIs, data, and server logic that stay maintainable after launch.',
+    copy: 'Clean auth, reliable endpoints, and data structures that don’t collapse the first time requirements change.',
+    points: ['PHP & .NET', 'MySQL / Postgres', 'REST auth layers', 'Firebase where it fits', 'Integrations'],
+  },
+  '04': {
+    short: 'Cloud architecture, DNS, SSL, and releases that don’t wake anyone up.',
+    copy: 'AWS environments, CI/CD, and monitoring set up so shipping is routine — not a weekend emergency.',
+    points: ['AWS Lightsail / EC2', 'CI/CD pipelines', 'Route 53 & SSL', 'Zero-downtime deploys', 'Backups & monitoring'],
+  },
+  '05': {
+    short: 'Workflows that remove busywork — triggers, APIs, and reliable handoffs.',
+    copy: 'n8n, Make, and Zapier wired to real business events: lead capture, notifications, sync jobs, and ops that run without babysitting.',
+    points: ['n8n / Make / Zapier', 'Webhook automation', 'Lead capture flows', 'Ops integrations', 'API orchestration'],
+  },
+};
+
+const platforms = [
+  { label: 'WordPress', note: 'Custom themes & headless builds', brand: '#21759B', badge: 'Primary stack', path: groups[0].items[0].path },
+  { label: 'Shopify', note: 'Storefronts & commerce ops', brand: '#4A7A2B', badge: 'Commerce', path: groups[0].items[2].path },
+  { label: 'Webflow', note: 'Design-led marketing sites', brand: '#4353FF', path: groups[0].items[3].path },
+  { label: 'AWS', note: 'Lightsail, EC2, DNS & SSL', brand: '#FF9900', badge: 'Cloud', path: 'M6.8 19.5A4.8 4.8 0 0 1 6 10a6.2 6.2 0 0 1 12-1.1 4.9 4.9 0 0 1-.6 9.6H6.8Z' },
+  { label: 'React', note: 'Component UIs & dashboards', brand: '#0891b2', path: groups[1].items[4].path },
+  { label: 'n8n', note: 'Automation & workflow engines', brand: '#7c3aed', badge: 'Ops', path: groups[4].items[0].path },
+];
+
+const faqs = [
+  {
+    q: 'What does your build process look like?',
+    a: 'Discovery first — goals, audience, and what “done” means — then information architecture, design/engineering in parallel where it helps, staging reviews, and a calm launch with DNS, SSL, and handoff docs.',
+  },
+  {
+    q: 'Which platforms do you build on?',
+    a: 'Primarily WordPress and Shopify, plus Webflow, Wix, and custom stacks when they fit. Recommendation follows your team and goals, not a default template.',
+  },
+  {
+    q: 'Do you handle DevOps and automation too?',
+    a: 'Yes. AWS environments, CI/CD, DNS/SSL, and workflow automation (n8n / Make / Zapier) are part of how I ship — not bolted on after the fact.',
+  },
+  {
+    q: 'How long does a project usually take?',
+    a: 'Most marketing sites land in four to eight weeks depending on page count, content readiness, and revision rounds. Scope and timeline stay transparent before build starts.',
+  },
+  {
+    q: 'Can you take over an existing site?',
+    a: 'Often. I audit performance, structure, and risk, then stabilize or rebuild the pieces that are holding you back — without rewriting what already works.',
+  },
 ];
 ---
-<Base active="home">
-  <header class="hero">
-    <div class="wrap">
-      <div class="sheet-top">
-        <p class="meta">ARK / 001 — Karachi, Pakistan</p>
-        <p class="meta"><span class="pulse"></span> Open to remote roles and contracts</p>
-      </div>
-      <h1 class="reveal">Abdul Rehman <em>Khan</em></h1>
-      <p class="lede reveal">Senior CMS developer. WordPress and WooCommerce first, then Shopify, Webflow, and the hosting that keeps them up.</p>
-      <dl class="spec reveal">
-        <div><dt>Core</dt><dd>WordPress · WooCommerce · Shopify</dd></div>
-        <div><dt>Also ships</dt><dd>Webflow · Next.js · Astro · PHP</dd></div>
-        <div><dt>Record</dt><dd>8+ years · 90+ production sites</dd></div>
-      </dl>
-      <div class="hero-cta reveal">
-        <a href="/projects" class="btn primary">Selected work</a>
-        <a href="/about" class="btn ghost">Experience</a>
-        <a href="https://www.linkedin.com/in/developerark/" class="btn ghost">LinkedIn</a>
-      </div>
-    </div>
-    <div class="reel" aria-label="Recent production sites">
-      <div class="reel-track">
-        {reel.map((p) => (
-          <a href={p.live || '/projects'} target={p.live ? '_blank' : undefined} rel={p.live ? 'noopener' : undefined}>
-            <img src={p.img} alt="" />
-            <span>{p.title} · {p.platform}</span>
-          </a>
-        ))}
-      </div>
-    </div>
-  </header>
+<Base active="home" title="Abdul Rehman Khan — CMS · DevOps · Automation">
+  <section class="fx-hero" id="top" data-fx-hero>
+    <div class="fx-grid-bg" aria-hidden="true"></div>
+    <div class="fx-orb fx-orb-a" aria-hidden="true"></div>
+    <div class="fx-orb fx-orb-b" aria-hidden="true"></div>
 
-  <div class="wrap"><div class="marquee reveal"><div class="track">
-    {marquee.map((t) => <span class="techchip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={t.path} /></svg><em>{t.label}</em></span>)}
-  </div></div></div>
+    <div class="wrap fx-hero-grid">
+      <div class="fx-hero-copy">
+        <p class="fx-telemetry">
+          <span class="fx-dot"></span>
+          <span>Available for remote · Karachi</span>
+        </p>
 
-  <section>
-    <div class="wrap about-blurb">
-      <div class="reveal">
-        <p class="eyebrow">About</p>
-        <p class="big">I take a site from the design file to a live server: theme or storefront, custom fields, DNS, SSL, and the release. Most of the work is WordPress and WooCommerce for clinics, agencies, and shops in Pakistan, the UAE, and Canada.</p>
-        <div class="hero-cta" style="margin-top:28px;"><a href="/about" class="btn ghost">More about me →</a></div>
-      </div>
-      <div class="stat-row reveal">
-        <div class="stat"><div class="v"><b>8</b>+</div><div class="l">Years experience</div></div>
-        <div class="stat"><div class="v"><b>90</b>+</div><div class="l">Projects shipped</div></div>
-        <div class="stat"><div class="v"><b>7</b>+</div><div class="l">CMS platforms</div></div>
-        <div class="stat"><div class="v"><b>1</b></div><div class="l">Person, whole build</div></div>
-      </div>
-    </div>
-  </section>
+        <h1 class="fx-name">Abdul Rehman Khan</h1>
 
-  <section>
-    <div class="wrap">
-      <div class="sec-head">
-        <div class="reveal"><p class="eyebrow">Selected work</p><h2 class="sec-title">Six recent builds</h2></div>
-        <a href="/projects" class="btn ghost reveal">View all projects →</a>
-      </div>
-      <div class="proj-grid">
-        {featured.map((p) => <ProjectCard p={p} />)}
-      </div>
-    </div>
-  </section>
+        <p class="fx-role" aria-live="polite">
+          <span class="fx-role-prefix">&gt;</span>
+          <span data-typewriter data-titles={JSON.stringify(titles)}>{titles[0]}</span>
+          <span class="fx-caret" aria-hidden="true"></span>
+        </p>
 
-  <section>
-    <div class="wrap">
-      <div class="reveal" style="margin-bottom:44px;"><p class="eyebrow">Toolkit</p><h2 class="sec-title">Skills &amp; technologies</h2></div>
-      <div class="skill-grid">
-        {groups.map((g) => (
-          <div class="skill-card reveal">
-            <span class="num">{g.n}</span><h3>{g.t}</h3>
-            <div class="tech-row">{g.items.map((t) => <IconChip label={t.label} path={t.path} />)}</div>
+        <p class="fx-bio">
+          Bridging elite CMS engineering, custom full-stack solutions, and automated cloud infrastructure — 8+ years shipping production systems.
+        </p>
+
+        <div class="fx-cta">
+          <a class="btn primary" href="#work">Explore work</a>
+          <a class="btn ghost fx-ghost-dark" href="#contact-terminal">Get in touch</a>
+        </div>
+
+        <ul class="fx-stack" aria-label="Core stack">
+          {stack.map((t) => (
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d={t.path} /></svg>
+              <span>{t.label}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="fx-hero-photo">
+        <div class="fx-photo-frame">
+          <img src="/images/photo.webp?v=8" alt="Abdul Rehman Khan — founder portrait" width="520" height="640" decoding="async" fetchpriority="high" />
+        </div>
+        <div class="fx-photo-badge">
+          <img src="/images/logo-icon.png?v=7" alt="" width="48" height="48" />
+          <div>
+            <strong>Founder</strong>
+            <span>ARK Designing Bureau</span>
           </div>
-        ))}
+        </div>
       </div>
     </div>
   </section>
 
-  <section>
-    <div class="wrap">
-      <div class="reveal" style="margin-bottom:28px;"><p class="eyebrow">Employment</p><h2 class="sec-title">Where the work happened</h2></div>
-      <div class="role-list reveal">
-        {roles.map((r) => (
-          <article class="role">
-            <time>{r.when}</time>
-            <div><strong>{r.title}</strong><span>{r.note}</span></div>
-            <em>{r.org}</em>
-          </article>
-        ))}
+  <div class="site-light site-ci">
+    <section class="fx-section founder-band" id="about">
+      <div class="wrap founder-grid">
+        <div class="founder-media reveal">
+          <img class="founder-shot" src="/images/photo-circle.webp?v=1" alt="Abdul Rehman Khan" width="640" height="640" loading="lazy" />
+          <img class="founder-arch" src="/images/hero-architecture.svg" alt="" aria-hidden="true" />
+        </div>
+        <div class="founder-copy reveal">
+          <p class="eyebrow">01 — Founder</p>
+          <h2 class="sec-title">One accountable build — <em class="sec-accent">design, code, cloud</em></h2>
+          <p class="sec-lead">
+            I bridge engineering and delivery so clinics, agencies, and product teams don’t need four vendors for one launch. Based in Karachi, open to remote EU/UK work.
+          </p>
+          <ul class="founder-stats">
+            <li><b>8+</b><span>Years</span></li>
+            <li><b>90+</b><span>Sites shipped</span></li>
+            <li><b>7+</b><span>CMS platforms</span></li>
+            <li><b>3</b><span>Countries</span></li>
+          </ul>
+          <div class="fx-cta founder-cta">
+            <a href="/about" class="btn ghost">More about me →</a>
+            <a href="/Abdul-Rehman-Khan-CV.pdf" class="btn ghost" download>Download CV</a>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section>
-    <div class="wrap">
-      <div class="sec-head">
-        <div class="reveal"><p class="eyebrow">Pricing</p><h2 class="sec-title">Simple, transparent packages</h2>
-        <p class="sec-lead">Fixed-scope packages to start, or a custom quote for bigger builds. Prices in PKR — use the calculator for your currency.</p></div>
-        <a href="/pricing" class="btn ghost reveal">Compare packages →</a>
-      </div>
-      <div class="reveal"><Pricing compact={true} /></div>
-      <div class="reveal" style="text-align:center;margin-top:26px;"><a href="/estimate" class="btn ghost">Build a live estimate →</a></div>
-    </div>
-  </section>
+    <section class="ci-section" id="skills">
+      <div class="wrap ci-split">
+        <div class="ci-sticky reveal">
+          <div class="ci-head">
+            <div class="ci-label-row">
+              <span class="ci-label">02</span>
+              <span class="ci-label-rule" aria-hidden="true"></span>
+              <span class="ci-label ci-label-accent">What I Do</span>
+            </div>
+            <h2>Every layer your product needs, from <em>one builder</em></h2>
+            <p class="ci-lead">CMS, frontend, backend, cloud, and automation — handled end to end so nothing falls between vendors.</p>
+          </div>
+          <a class="ci-arrow" href="/services">All capabilities in detail →</a>
+        </div>
 
-  <section>
-    <div class="wrap">
-      <div class="cta-band reveal"><div class="glow"></div>
-        <h2>Have a project in mind?</h2>
-        <p>CMS or custom, e-commerce, design, automation or hosting — one person, from first idea to a live, production site.</p>
-        <div class="hero-cta"><a href="/estimate" class="btn primary">Get an instant estimate</a><a href="/contact" class="btn ghost">Get in touch</a></div>
+        <ol class="svc-deck" data-stack>
+          {groups.map((g, i) => {
+            const copy = skillCopy[g.n] || { short: '', copy: '', points: [] };
+            return (
+              <li class="svc-slot" style={`--i:${i}`}>
+                <article class="svc-card" data-stack-card style={`--accent:${skillAccents[i % skillAccents.length]}`}>
+                  <a class="svc-card-link" href="/services">
+                    <div class="svc-card-head">
+                      <span class="svc-card-badge">{g.n}</span>
+                      <h3 class="svc-card-title">{g.t}</h3>
+                    </div>
+                    <div class="svc-card-body">
+                      <div class="svc-card-col">
+                        <p class="svc-card-short">{copy.short}</p>
+                        <p class="svc-card-copy">{copy.copy}</p>
+                        <span class="svc-card-meta">
+                          See more
+                          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                            <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path>
+                          </svg>
+                        </span>
+                      </div>
+                      <ul class="svc-card-list">
+                        {copy.points.map((pt) => <li>{pt}</li>)}
+                      </ul>
+                    </div>
+                  </a>
+                </article>
+              </li>
+            );
+          })}
+        </ol>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <section class="ci-section ci-section-alt" id="platforms">
+      <div class="wrap">
+        <header class="ci-head is-center reveal">
+          <div class="ci-label-row is-center">
+            <span class="ci-label">03</span>
+            <span class="ci-label-rule" aria-hidden="true"></span>
+            <span class="ci-label ci-label-accent">Tools stack</span>
+          </div>
+          <h2>Platforms I know <em>inside out</em></h2>
+          <p class="ci-lead" style="margin-inline:auto">I recommend what fits your team and goals — not what’s easiest for me.</p>
+        </header>
+        <ul class="partner-grid">
+          {platforms.map((p) => (
+            <li class="reveal">
+              <div class="partner-card" style={`--brand:${p.brand}`}>
+                {p.badge && <span class="partner-badge">{p.badge}</span>}
+                <div class="partner-mark" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d={p.path} /></svg>
+                </div>
+                <h3 class="partner-name">{p.label}</h3>
+                <p class="partner-note">{p.note}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="ci-section ci-section-night" id="work">
+      <div class="wrap">
+        <div class="ci-head-row reveal">
+          <div class="ci-head">
+            <div class="ci-label-row">
+              <span class="ci-label">04</span>
+              <span class="ci-label-rule" aria-hidden="true"></span>
+              <span class="ci-label ci-label-accent">Recent work</span>
+            </div>
+            <h2>Sites shipped for <em>real businesses</em></h2>
+            <p class="ci-lead">Custom from the ground up. No templates, no shortcuts. Real brands, real results.</p>
+          </div>
+          <a class="ci-arrow" href="/projects">Full portfolio ({featured.length}) →</a>
+        </div>
+        <div class="wkb">
+          {featured.map((p, i) => <ProjectCard p={p} index={i} />)}
+        </div>
+      </div>
+    </section>
+
+    <section class="ci-section ci-section-alt" id="experience">
+      <div class="wrap ci-split">
+        <div class="ci-sticky reveal">
+          <div class="ci-head">
+            <div class="ci-label-row">
+              <span class="ci-label">05</span>
+              <span class="ci-label-rule" aria-hidden="true"></span>
+              <span class="ci-label ci-label-accent">Career</span>
+            </div>
+            <h2>Where the work <em>actually happened</em></h2>
+            <p class="ci-lead">Senior ownership across CMS platforms, cloud infrastructure, and team delivery.</p>
+          </div>
+        </div>
+        <ol class="ci-rules">
+          {roles.map((r) => (
+            <li class="reveal">
+              <article class="ci-career-row">
+                <time class="ci-career-when">{r.when}</time>
+                <div>
+                  <h3>{r.title}</h3>
+                  <p class="ci-career-org">{r.org}</p>
+                  <p>{r.note}</p>
+                </div>
+              </article>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="ci-section ci-section-night" id="contact-terminal">
+      <div class="wrap ci-book">
+        <div class="reveal">
+          <div class="ci-head">
+            <div class="ci-label-row">
+              <span class="ci-label">06</span>
+              <span class="ci-label-rule" aria-hidden="true"></span>
+              <span class="ci-label ci-label-accent">Get started</span>
+            </div>
+            <h2>Book a clear conversation about <em>your next build</em></h2>
+            <p class="ci-lead">No pitch deck. We talk scope, timing, and what “good” looks like for your team — you keep the notes either way.</p>
+          </div>
+          <ol class="ci-book-steps">
+            <li>
+              <span class="ci-label">01</span>
+              <div>
+                <h3>A real conversation</h3>
+                <p>Your product, customers, and what’s not working right now.</p>
+              </div>
+            </li>
+            <li>
+              <span class="ci-label">02</span>
+              <div>
+                <h3>Honest feedback</h3>
+                <p>Design, speed, CMS structure, and ops — without sugarcoating.</p>
+              </div>
+            </li>
+            <li>
+              <span class="ci-label">03</span>
+              <div>
+                <h3>Clear scope &amp; range</h3>
+                <p>You leave knowing what it costs and how long it takes.</p>
+              </div>
+            </li>
+          </ol>
+          <dl class="ci-book-meta">
+            <div>
+              <dt>Response</dt>
+              <dd>Usually within 24 hours</dd>
+            </div>
+            <div>
+              <dt>Email</dt>
+              <dd><a href="mailto:ark.educationalist@gmail.com">ark.educationalist@gmail.com</a></dd>
+            </div>
+            <div>
+              <dt>LinkedIn</dt>
+              <dd><a href="https://www.linkedin.com/in/developerark/" target="_blank" rel="noopener">developerark</a></dd>
+            </div>
+            <div>
+              <dt>Studio</dt>
+              <dd><a href="https://arkdesigningbureau.com" target="_blank" rel="noopener">arkdesigningbureau.com</a></dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="ci-plate ci-plate-sticky reveal">
+          <form class="ci-plate-form" id="fxTerminal" novalidate>
+            <div class="ci-form-head">
+              <img src="/images/logo-icon.png?v=7" alt="" width="40" height="40" />
+              <div>
+                <strong>Start a project</strong>
+                <span>Free intro · remote friendly</span>
+              </div>
+            </div>
+            <label>
+              <span>Name</span>
+              <input type="text" name="name" required autocomplete="name" placeholder="Your name" />
+            </label>
+            <label>
+              <span>Email</span>
+              <input type="email" name="email" required autocomplete="email" placeholder="you@company.com" />
+            </label>
+            <label>
+              <span>Message</span>
+              <textarea name="message" required rows="4" placeholder="Describe the system you want to ship…"></textarea>
+            </label>
+            <p class="fx-term-status" data-status hidden></p>
+            <button type="submit" class="ci-btn ci-btn-paper ci-btn-lg">Send message →</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="ci-section" id="faq">
+      <div class="wrap ci-split">
+        <div class="ci-sticky reveal">
+          <div class="ci-head">
+            <div class="ci-label-row">
+              <span class="ci-label">07</span>
+              <span class="ci-label-rule" aria-hidden="true"></span>
+              <span class="ci-label ci-label-accent">FAQ</span>
+            </div>
+            <h2>Questions before <em>every project</em></h2>
+            <p class="ci-lead">Straight answers on process, platforms, and how engagement usually works.</p>
+          </div>
+        </div>
+        <ul class="ci-faq">
+          {faqs.map((f, i) => (
+            <li class="reveal">
+              <details>
+                <summary>
+                  <span class="ci-label">{String(i + 1).padStart(2, '0')}</span>
+                  <h3>{f.q}</h3>
+                  <span class="ci-faq-sign" aria-hidden="true"></span>
+                </summary>
+                <div class="ci-faq-body">
+                  <p>{f.a}</p>
+                </div>
+              </details>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  </div>
 </Base>
+
+<script>
+  function initTypewriter() {
+    const el = document.querySelector('[data-typewriter]');
+    if (!el || el.dataset.bound) return;
+    el.dataset.bound = '1';
+    let titles = [];
+    try { titles = JSON.parse(el.getAttribute('data-titles') || '[]'); } catch (_) {}
+    if (!titles.length) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      el.textContent = titles[0];
+      return;
+    }
+    let i = 0, pos = 0, deleting = false;
+    function tick() {
+      const word = titles[i];
+      el.textContent = word.slice(0, pos);
+      if (!deleting && pos < word.length) { pos++; setTimeout(tick, 70); }
+      else if (!deleting && pos === word.length) { deleting = true; setTimeout(tick, 1600); }
+      else if (deleting && pos > 0) { pos--; setTimeout(tick, 36); }
+      else { deleting = false; i = (i + 1) % titles.length; setTimeout(tick, 280); }
+    }
+    tick();
+  }
+
+  function initTerminal() {
+    const form = document.getElementById('fxTerminal');
+    if (!form || form.dataset.bound) return;
+    form.dataset.bound = '1';
+    const status = form.querySelector('[data-status]');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const name = String(data.get('name') || '').trim();
+      const email = String(data.get('email') || '').trim();
+      const message = String(data.get('message') || '').trim();
+      status.hidden = false;
+      if (!name || !email || !message || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        status.textContent = 'Please check name, email, and message.';
+        status.dataset.state = 'err';
+        return;
+      }
+      status.textContent = 'Opening mail…';
+      status.dataset.state = 'ok';
+      const subject = encodeURIComponent(`Portfolio contact — ${name}`);
+      const body = encodeURIComponent(`${message}\n\n— ${name}\n${email}`);
+      window.location.href = `mailto:ark.educationalist@gmail.com?subject=${subject}&body=${body}`;
+    });
+  }
+
+  function initHeroNav() {
+    const hero = document.querySelector('[data-fx-hero]');
+    if (!hero) {
+      document.body.classList.remove('has-fx-hero', 'nav-over-hero');
+      return;
+    }
+    document.body.classList.add('has-fx-hero', 'nav-over-hero');
+    const onScroll = () => {
+      const past = hero.getBoundingClientRect().bottom <= 80;
+      document.body.classList.toggle('nav-solid', past);
+      document.body.classList.toggle('nav-over-hero', !past);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+  }
+
+  function initStackCards() {
+    if (!document.querySelector('[data-stack]')) return;
+    if (document.documentElement.dataset.stackBound === '1') {
+      window.dispatchEvent(new Event('resize'));
+      return;
+    }
+    document.documentElement.dataset.stackBound = '1';
+    const reduceMq = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    const update = () => {
+      const decks = document.querySelectorAll('[data-stack]');
+      const reduce = reduceMq.matches;
+      decks.forEach((deck) => {
+        const cards = deck.querySelectorAll('[data-stack-card]');
+        cards.forEach((card, i) => {
+          if (reduce || window.matchMedia('(max-width:980px)').matches) {
+            card.style.transform = '';
+            return;
+          }
+          const slot = card.closest('.svc-slot');
+          const rect = (slot || card).getBoundingClientRect();
+          const stickyPad = 112;
+          const stuck = Math.max(0, stickyPad - rect.top);
+          const depth = Math.min(1, stuck / Math.max(160, rect.height * 0.35));
+          const remaining = cards.length - i - 1;
+          const stackedScale = Math.max(0.75, 1 - remaining * 0.05);
+          const scale = 1 - (1 - stackedScale) * depth;
+          card.style.transform = `scale(${scale.toFixed(4)})`;
+        });
+      });
+    };
+
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+  }
+
+  function boot() {
+    initTypewriter();
+    initTerminal();
+    initHeroNav();
+    initStackCards();
+  }
+  document.addEventListener('DOMContentLoaded', boot);
+  document.addEventListener('astro:page-load', boot);
+</script>

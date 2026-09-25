@@ -1,7 +1,7 @@
 ---
-const { label, path } = Astro.props;
+const { label, path, tone = 'cyan' } = Astro.props;
 ---
-<span class="techchip" title={label}>
+<span class:list={['skill-pill', `tone-${tone}`]} title={label}>
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d={path} /></svg>
   <em>{label}</em>
 </span>

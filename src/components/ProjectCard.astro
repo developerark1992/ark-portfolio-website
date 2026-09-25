@@ -1,21 +1,54 @@
 ---
-const { p } = Astro.props;
-const tags = [p.platform, p.category];
+const { p, index = 0 } = Astro.props;
+const n = String(index + 1).padStart(2, '0');
+const host = (() => {
+  try { return p.live ? new URL(p.live).hostname.replace(/^www\./, '') : ''; }
+  catch { return ''; }
+})();
+const year = p.added ? String(new Date(p.added).getFullYear()) : '';
+
+const tagMap = {
+  WordPress: 'Web design',
+  Shopify: 'E-commerce',
+  Webflow: 'Web design',
+  Wix: 'Web design',
+};
+const tags = [
+  tagMap[p.platform] || p.platform,
+  ...(p.category ? p.category.split(/\s*[&,/]\s*/).slice(0, 2) : []),
+]
+  .map((t) => String(t).trim())
+  .filter(Boolean)
+  .filter((t, i, arr) => arr.findIndex((x) => x.toLowerCase() === t.toLowerCase()) === i)
+  .slice(0, 3);
 ---
-<article class="proj reveal" data-cat={p.category} data-title={p.title} data-platform={p.platform} data-img={p.img} data-live={p.live || ''} tabindex="0" role="button" aria-label={`Preview ${p.title}`}>
-  <div class="proj-shot">
-    <span class="proj-cat">{p.category}</span>
-    <img src={p.img} alt={`${p.title} — screenshot`} loading="lazy" decoding="async" />
-    <span class="proj-view">View ↗</span>
+<a
+  class="wkb-item reveal"
+  href={p.live || '/projects'}
+  target={p.live ? '_blank' : undefined}
+  rel={p.live ? 'noopener' : undefined}
+  aria-label={`${p.title}${host ? `: open ${host}` : ''}`}
+>
+  <div class="wkb-shot">
+    <img src={p.img} alt="" loading="lazy" decoding="async" width="900" height="1200" draggable="false" />
   </div>
-  <div class="proj-body">
-    <h3>{p.title}</h3>
-    <div class="loc">{p.platform}</div>
-    <div class="tags">{tags.map((t) => <b>{t}</b>)}</div>
-    <div class="proj-actions">
-      {p.live
-        ? <a class="live" href={p.live} target="_blank" rel="noopener" data-live-link>Live demo ↗</a>
-        : <span class="case">Case study</span>}
-    </div>
+  <div class="wkb-body">
+    <span class="wkb-index ci-label">{n}</span>
+    <h3 class="wkb-name">{p.title}</h3>
+    <p class="wkb-meta">
+      <span class="ci-label">{p.category || 'Project'}</span>
+      {year && <span class="ci-label wkb-year">{year}</span>}
+    </p>
+    {tags.length > 0 && (
+      <ul class="wkb-tags">
+        {tags.map((t) => <li>{t}</li>)}
+      </ul>
+    )}
+    <span class="wkb-visit">
+      {host || (p.live ? 'Visit live' : 'See projects')}
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M4 12 12 4M12 4H6m6 0v6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </span>
   </div>
-</article>
+</a>

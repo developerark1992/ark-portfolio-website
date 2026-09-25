@@ -1,10 +1,10 @@
 ---
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
+import BrandLogo from '../components/BrandLogo.astro';
 import { siWhatsapp, siGithub, siFacebook, siInstagram, siX } from 'simple-icons';
 const WA = '923159429998';
 const WA_MSG = "Hi Abdul! I found you through your portfolio and I'd like to discuss a project.";
-// LinkedIn was removed from simple-icons (trademark) — official glyph path:
 const LINKEDIN_PATH = 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z';
 const socials = [
   { n: 'LinkedIn',  href: 'https://www.linkedin.com/in/developerark/',   path: LINKEDIN_PATH },
@@ -35,7 +35,7 @@ const links = [
   { href: '/blog',     name: 'Blog',     key: 'blog' },
   { href: '/estimate', name: 'Estimate', key: 'estimate' },
 ];
-const AV = '/images/avatar.webp';
+const AV = '/images/logo-icon.png?v=7';
 ---
 <!doctype html>
 <html lang="en">
@@ -47,7 +47,6 @@ const AV = '/images/avatar.webp';
   {keywords && <meta name="keywords" content={keywords} />}
   <meta name="author" content="Abdul Rehman Khan" />
   <link rel="canonical" href={canonical} />
-  <!-- Open Graph -->
   <meta property="og:type" content={ogType} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
@@ -55,15 +54,15 @@ const AV = '/images/avatar.webp';
   <meta property="og:image" content={ogImageUrl} />
   <meta property="og:site_name" content="Abdul Rehman Khan" />
   {publishedTime && <meta property="article:published_time" content={publishedTime} />}
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={title} />
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={ogImageUrl} />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,520;9..144,640&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231A1714'/%3E%3Ctext x='16' y='21' font-family='Georgia,serif' font-size='13' fill='%23F3EFE6' text-anchor='middle'%3EAK%3C/text%3E%3C/svg%3E" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" href="/images/favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="/images/logo-icon-192.png" />
   {ogType === 'article' && (
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org', '@type': 'BlogPosting',
@@ -75,9 +74,143 @@ const AV = '/images/avatar.webp';
   <ClientRouter />
 </head>
 <body>
+  <div id="preloader" class="preloader" aria-busy="true" aria-live="polite">
+    <div class="pre-sky" aria-hidden="true">
+      <svg class="pre-stars" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <radialGradient id="preGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#c8ff5a" stop-opacity=".55"/>
+            <stop offset="100%" stop-color="#c8ff5a" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <g class="pre-star-layer">
+          <circle cx="8" cy="12" r=".35" fill="#fff"/><circle cx="18" cy="28" r=".25" fill="#fff"/><circle cx="32" cy="9" r=".4" fill="#c8ff5a"/>
+          <circle cx="44" cy="22" r=".2" fill="#fff"/><circle cx="56" cy="14" r=".3" fill="#fff"/><circle cx="68" cy="30" r=".35" fill="#ff3d00"/>
+          <circle cx="78" cy="8" r=".25" fill="#fff"/><circle cx="90" cy="20" r=".4" fill="#fff"/><circle cx="12" cy="48" r=".3" fill="#fff"/>
+          <circle cx="26" cy="58" r=".2" fill="#c8ff5a"/><circle cx="40" cy="42" r=".35" fill="#fff"/><circle cx="54" cy="55" r=".25" fill="#fff"/>
+          <circle cx="70" cy="48" r=".3" fill="#fff"/><circle cx="84" cy="60" r=".2" fill="#ff3d00"/><circle cx="94" cy="44" r=".35" fill="#fff"/>
+          <circle cx="6" cy="72" r=".25" fill="#fff"/><circle cx="22" cy="84" r=".4" fill="#c8ff5a"/><circle cx="38" cy="76" r=".2" fill="#fff"/>
+          <circle cx="52" cy="88" r=".3" fill="#fff"/><circle cx="66" cy="78" r=".25" fill="#fff"/><circle cx="82" cy="90" r=".35" fill="#fff"/>
+          <circle cx="96" cy="74" r=".2" fill="#c8ff5a"/><circle cx="14" cy="36" r=".15" fill="#fff"/><circle cx="60" cy="36" r=".2" fill="#fff"/>
+        </g>
+      </svg>
+      <svg class="pre-current" viewBox="0 0 800 600" preserveAspectRatio="none">
+        <path class="pre-flow f1" d="M-40 120 C160 40 320 220 520 100 S780 60 860 140" fill="none"/>
+        <path class="pre-flow f2" d="M-60 300 C140 220 360 380 560 260 S820 300 900 220" fill="none"/>
+        <path class="pre-flow f3" d="M-20 480 C180 400 340 520 560 440 S800 480 880 400" fill="none"/>
+      </svg>
+      <div class="pre-orb pre-orb-a"></div>
+      <div class="pre-orb pre-orb-b"></div>
+    </div>
+
+    <div class="preloader-inner">
+      <div class="pre-ring-wrap" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="preBar">
+        <svg class="pre-ring" viewBox="0 0 120 120" aria-hidden="true">
+          <circle class="pre-ring-bg" cx="60" cy="60" r="52"/>
+          <circle class="pre-ring-fill" id="preFill" cx="60" cy="60" r="52"/>
+        </svg>
+        <img class="pre-icon" src="/images/logo-icon.png?v=7" alt="" width="88" height="88" decoding="async" />
+        <span class="pre-ring-pct" id="prePct">0</span>
+      </div>
+      <img class="pre-caption" src="/images/signature-modern.png?v=6" alt="Abdul Rehman Khan" width="520" height="110" decoding="async" />
+      <p class="pre-sub">Design × Software</p>
+    </div>
+  </div>
+  <script is:inline>
+    (function () {
+      var pre = document.getElementById('preloader');
+      if (!pre || pre.dataset.boot) return;
+      pre.dataset.boot = '1';
+      var fill = document.getElementById('preFill');
+      var pctEl = document.getElementById('prePct');
+      var bar = document.getElementById('preBar');
+      var progress = 0;
+      var finished = false;
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var CIRC = 2 * Math.PI * 52;
+
+      if (fill) {
+        fill.style.strokeDasharray = String(CIRC);
+        fill.style.strokeDashoffset = String(CIRC);
+      }
+
+      function setProgress(n) {
+        progress = Math.max(progress, Math.min(100, Math.round(n)));
+        if (fill) fill.style.strokeDashoffset = String(CIRC * (1 - progress / 100));
+        if (pctEl) pctEl.textContent = String(progress);
+        if (bar) bar.setAttribute('aria-valuenow', String(progress));
+      }
+
+      function done() {
+        if (finished || pre.dataset.done) return;
+        finished = true;
+        setProgress(100);
+        pre.dataset.done = '1';
+        pre.setAttribute('aria-busy', 'false');
+        pre.classList.add('done');
+        setTimeout(function () {
+          if (pre.parentNode) pre.parentNode.removeChild(pre);
+        }, 520);
+      }
+
+      window.__arkPreDone = done;
+      window.__arkPreSet = setProgress;
+
+      if (reduce) {
+        done();
+        return;
+      }
+
+      var tick = setInterval(function () {
+        if (finished) {
+          clearInterval(tick);
+          return;
+        }
+        var target =
+          document.readyState === 'complete'
+            ? 96
+            : document.readyState === 'interactive'
+              ? 78
+              : 42;
+        if (progress < target) {
+          setProgress(progress + Math.max(1, (target - progress) * 0.15));
+        }
+      }, 35);
+
+      function finish() {
+        if (finished) return;
+        clearInterval(tick);
+        var rush = setInterval(function () {
+          if (finished) {
+            clearInterval(rush);
+            return;
+          }
+          setProgress(progress + Math.max(3, (100 - progress) * 0.28));
+          if (progress >= 100) {
+            clearInterval(rush);
+            done();
+          }
+        }, 28);
+      }
+
+      if (document.readyState === 'complete') {
+        setTimeout(finish, 280);
+      } else {
+        window.addEventListener('load', function () {
+          setTimeout(finish, 220);
+        });
+      }
+      setTimeout(function () {
+        if (!finished) finish();
+      }, 4500);
+    })();
+  </script>
+
   <nav class="topnav">
     <div class="nav-in">
-      <a href="/" class="brandmark"><span class="ring">AK</span> Abdul&nbsp;Rehman&nbsp;Khan</a>
+      <a href="/" class="brand-link" aria-label="Abdul Rehman Khan — home">
+        <BrandLogo />
+      </a>
       <button class="navburger" id="burger" aria-label="Toggle menu">☰</button>
       <div class="navlinks" id="navlinks">
         {links.map((l) => (
@@ -93,6 +226,9 @@ const AV = '/images/avatar.webp';
   </main>
 
   <footer>
+    <div class="wrap foot-brand">
+      <BrandLogo light />
+    </div>
     <div class="wrap foot-social">
       {socials.map((s) => (
         <a href={s.href} target="_blank" rel="noopener" aria-label={s.n} title={s.n}>
@@ -107,7 +243,6 @@ const AV = '/images/avatar.webp';
     </div>
   </footer>
 
-  <!-- floating WhatsApp (independent of the chatbot) -->
   <a class="wa-float" href={`https://wa.me/${WA}`} target="_blank" rel="noopener" aria-label="Chat on WhatsApp" title="Chat on WhatsApp">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d={siWhatsapp.path} /></svg>
   </a>
@@ -392,7 +527,20 @@ const AV = '/images/avatar.webp';
           if((e.key==='Enter'||e.key===' ')){ var c=e.target.closest&&e.target.closest('.proj[data-title]'); if(c){ e.preventDefault(); open(c); } }
         });
       }
+      function initPreloader(){
+        // Progress bar boots from the early inline script next to #preloader.
+        // Keep a fallback if that script was blocked.
+        var pre=document.getElementById('preloader');
+        if(!pre||pre.dataset.done) return;
+        if(!pre.dataset.boot && typeof window.__arkPreDone==='function') return;
+        if(pre.dataset.boot) return;
+        if(typeof window.__arkPreDone==='function'){
+          if(document.readyState==='complete') setTimeout(window.__arkPreDone, 200);
+        }
+      }
       function initPage(){ setYear(); initReveal(); initMenu(); initHero(); initCalc(); initChat(); initLightbox(); }
+      // Start progress bar immediately; rest of UI on Astro page-load.
+      initPreloader();
       document.addEventListener('astro:page-load', initPage);
     })();
   </script>
