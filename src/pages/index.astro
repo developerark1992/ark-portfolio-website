@@ -51,7 +51,7 @@ const roles = [
   },
 ];
 
-const skillAccents = ['#22d3ee', '#a78bfa', '#67e8f9', '#c4b5fd', '#06b6d4'];
+const skillAccents = ['#22d3ee', '#a78bfa', '#67e8f9', '#c4b5fd', '#06b6d4', '#a78bfa', '#22d3ee'];
 
 const skillCopy = {
   '01': {
@@ -78,6 +78,16 @@ const skillCopy = {
     short: 'Workflows that remove busywork — triggers, APIs, and reliable handoffs.',
     copy: 'n8n, Make, and Zapier wired to real business events: lead capture, notifications, sync jobs, and ops that run without babysitting.',
     points: ['n8n / Make / Zapier', 'Webhook automation', 'Lead capture flows', 'Ops integrations', 'API orchestration'],
+  },
+  '06': {
+    short: 'Brand, UI, and creative direction — case notes coming soon.',
+    copy: 'Figma systems, Photoshop / Illustrator assets, and UI/UX polish ship with builds today. A fuller design portfolio write-up is on the way.',
+    points: ['Coming soon', 'Figma & XD systems', 'Brand & logo work', 'UI/UX polish', 'Marketing creatives'],
+  },
+  '07': {
+    short: 'Domains, hosting, and migrations — deeper notes coming soon.',
+    copy: 'WHM/cPanel, DNS/SSL, email, and site moves are part of delivery now. Expanded hosting playbooks will land here shortly.',
+    points: ['Coming soon', 'WHM / cPanel', 'DNS & SSL', 'Email setup', 'Site migrations'],
   },
 };
 
@@ -251,7 +261,11 @@ const faqs = [
 
         <ol class="svc-deck" data-stack>
           {groups.map((g, i) => {
-            const copy = skillCopy[g.n] || { short: '', copy: '', points: [] };
+            const copy = skillCopy[g.n] || {
+              short: 'Notes coming soon.',
+              copy: 'More detail for this craft is on the way — tools and delivery stay active in the meantime.',
+              points: ['Coming soon'],
+            };
             return (
               <li class="svc-slot" style={`--i:${i}`}>
                 <article class="svc-card" data-stack-card style={`--accent:${skillAccents[i % skillAccents.length]}`}>
@@ -558,9 +572,10 @@ const faqs = [
       const decks = document.querySelectorAll('[data-stack]');
       const reduce = reduceMq.matches;
       decks.forEach((deck) => {
+        const noshrink = deck.hasAttribute('data-stack-noshrink');
         const cards = deck.querySelectorAll('[data-stack-card]');
         cards.forEach((card, i) => {
-          if (reduce || window.matchMedia('(max-width:980px)').matches) {
+          if (reduce || noshrink || window.matchMedia('(max-width:980px)').matches) {
             card.style.transform = '';
             return;
           }

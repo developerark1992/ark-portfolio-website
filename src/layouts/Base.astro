@@ -118,8 +118,34 @@ const AV = '/images/logo-icon.png?v=7';
   </div>
   <script is:inline>
     (function () {
+      function killPreloader(el) {
+        el = el || document.getElementById('preloader');
+        if (!el) return;
+        el.dataset.done = '1';
+        el.setAttribute('aria-busy', 'false');
+        el.classList.add('done');
+        if (el.parentNode) el.parentNode.removeChild(el);
+      }
+
+      // ClientRouter reinjects #preloader on soft navs without re-running finish logic.
+      // Strip it on every swap — cold loads still animate below.
+      if (!window.__arkPreNavBound) {
+        window.__arkPreNavBound = true;
+        document.addEventListener('astro:after-swap', function () {
+          killPreloader();
+        });
+      }
+
       var pre = document.getElementById('preloader');
-      if (!pre || pre.dataset.boot) return;
+      if (!pre) return;
+
+      // Soft nav re-executed this script, or duplicate boot — don't block again.
+      if (window.__arkPreSeen || pre.dataset.boot) {
+        killPreloader(pre);
+        return;
+      }
+
+      window.__arkPreSeen = true;
       pre.dataset.boot = '1';
       var fill = document.getElementById('preFill');
       var pctEl = document.getElementById('prePct');
@@ -211,8 +237,17 @@ const AV = '/images/logo-icon.png?v=7';
       <a href="/" class="brand-link" aria-label="Abdul Rehman Khan — home">
         <BrandLogo />
       </a>
-      <button class="navburger" id="burger" aria-label="Toggle menu">☰</button>
-      <div class="navlinks" id="navlinks">
+      <button class="navburger" id="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navlinks">
+        <span class="navburger-bars" aria-hidden="true"></span>
+      </button>
+      <div class="nav-scrim" id="navScrim" hidden></div>
+      <div class="navlinks" id="navlinks" role="navigation" aria-label="Primary">
+        <div class="nav-drawer-top">
+          <a href="/" class="nav-drawer-brand" aria-label="Abdul Rehman Khan — home">
+            <BrandLogo />
+          </a>
+          <button class="nav-close" id="navClose" type="button" aria-label="Close menu">×</button>
+        </div>
         {links.map((l) => (
           <a href={l.href} class={active === l.key ? 'active' : ''}>{l.name}</a>
         ))}
@@ -226,15 +261,17 @@ const AV = '/images/logo-icon.png?v=7';
   </main>
 
   <footer>
-    <div class="wrap foot-brand">
-      <BrandLogo light />
-    </div>
-    <div class="wrap foot-social">
-      {socials.map((s) => (
-        <a href={s.href} target="_blank" rel="noopener" aria-label={s.n} title={s.n}>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d={s.path} /></svg>
-        </a>
-      ))}
+    <div class="wrap foot-top">
+      <a href="/" class="foot-brand" aria-label="Abdul Rehman Khan — home">
+        <BrandLogo light />
+      </a>
+      <div class="foot-social">
+        {socials.map((s) => (
+          <a href={s.href} target="_blank" rel="noopener" aria-label={s.n} title={s.n}>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d={s.path} /></svg>
+          </a>
+        ))}
+      </div>
     </div>
     <div class="wrap foot-in">
       <span>© <span id="yr"></span> Abdul Rehman Khan</span>
@@ -295,10 +332,36 @@ const AV = '/images/logo-icon.png?v=7';
         document.querySelectorAll('.reveal:not(.in)').forEach(function(el,i){el.style.transitionDelay=(Math.min(i%4,3)*0.06)+'s';io.observe(el);});
       }
       function initMenu(){
-        var b=document.getElementById('burger'),n=document.getElementById('navlinks');
+        var b=document.getElementById('burger');
+        var n=document.getElementById('navlinks');
+        var scrim=document.getElementById('navScrim');
+        var closeBtn=document.getElementById('navClose');
         if(!b||!n)return;
-        b.onclick=function(){n.classList.toggle('open');};
-        n.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){n.classList.remove('open');});});
+
+        function setOpen(open){
+          n.classList.toggle('open',open);
+          b.classList.toggle('is-open',open);
+          b.setAttribute('aria-expanded',open?'true':'false');
+          b.setAttribute('aria-label',open?'Close menu':'Open menu');
+          document.body.classList.toggle('nav-open',open);
+          if(scrim){
+            if(open){scrim.hidden=false;requestAnimationFrame(function(){scrim.classList.add('show');});}
+            else{scrim.classList.remove('show');scrim.hidden=true;}
+          }
+        }
+
+        b.onclick=function(){setOpen(!n.classList.contains('open'));};
+        if(closeBtn) closeBtn.onclick=function(){setOpen(false);};
+        if(scrim) scrim.onclick=function(){setOpen(false);};
+        n.querySelectorAll('a').forEach(function(a){
+          a.addEventListener('click',function(){setOpen(false);});
+        });
+        document.addEventListener('keydown',function(e){
+          if(e.key==='Escape'&&n.classList.contains('open')) setOpen(false);
+        });
+        window.addEventListener('resize',function(){
+          if(window.matchMedia('(min-width:861px)').matches) setOpen(false);
+        });
       }
       function setYear(){var y=document.getElementById('yr');if(y)y.textContent=new Date().getFullYear();}
 
@@ -529,18 +592,59 @@ const AV = '/images/logo-icon.png?v=7';
       }
       function initPreloader(){
         // Progress bar boots from the early inline script next to #preloader.
-        // Keep a fallback if that script was blocked.
+        // Soft navigations reinject #preloader — clear leftovers here too.
         var pre=document.getElementById('preloader');
-        if(!pre||pre.dataset.done) return;
-        if(!pre.dataset.boot && typeof window.__arkPreDone==='function') return;
+        if(!pre) return;
+        if(window.__arkPreSeen && !pre.dataset.boot){
+          pre.remove();
+          return;
+        }
+        if(pre.dataset.done) return;
         if(pre.dataset.boot) return;
-        if(typeof window.__arkPreDone==='function'){
-          if(document.readyState==='complete') setTimeout(window.__arkPreDone, 200);
+        if(typeof window.__arkPreDone==='function' && document.readyState==='complete'){
+          setTimeout(window.__arkPreDone, 200);
         }
       }
-      function initPage(){ setYear(); initReveal(); initMenu(); initHero(); initCalc(); initChat(); initLightbox(); }
-      // Start progress bar immediately; rest of UI on Astro page-load.
-      initPreloader();
+      function initStackCards(){
+        if(!document.querySelector('[data-stack]')) return;
+        if(document.documentElement.dataset.stackBound==='1'){
+          window.dispatchEvent(new Event('resize'));
+          return;
+        }
+        document.documentElement.dataset.stackBound='1';
+        var reduceMq=window.matchMedia('(prefers-reduced-motion: reduce)');
+        function update(){
+          var decks=document.querySelectorAll('[data-stack]');
+          var reduce=reduceMq.matches;
+          decks.forEach(function(deck){
+            var noshrink=deck.hasAttribute('data-stack-noshrink');
+            var cards=deck.querySelectorAll('[data-stack-card]');
+            cards.forEach(function(card,i){
+              if(reduce||noshrink||window.matchMedia('(max-width:980px)').matches){
+                card.style.transform='';
+                return;
+              }
+              var slot=card.closest('.svc-slot');
+              var rect=(slot||card).getBoundingClientRect();
+              var stickyPad=112;
+              var stuck=Math.max(0,stickyPad-rect.top);
+              var depth=Math.min(1,stuck/Math.max(160,rect.height*0.35));
+              var remaining=cards.length-i-1;
+              var stackedScale=Math.max(0.75,1-remaining*0.05);
+              var scale=1-(1-stackedScale)*depth;
+              card.style.transform='scale('+scale.toFixed(4)+')';
+            });
+          });
+        }
+        update();
+        window.addEventListener('scroll',update,{passive:true});
+        window.addEventListener('resize',update,{passive:true});
+      }
+      function initPage(){
+        initPreloader();
+        setYear(); initReveal(); initMenu(); initHero(); initCalc(); initChat(); initLightbox();
+        initStackCards();
+      }
       document.addEventListener('astro:page-load', initPage);
     })();
   </script>
