@@ -246,7 +246,9 @@ const AV = '/images/logo-icon.png?v=7';
           <a href="/" class="nav-drawer-brand" aria-label="Abdul Rehman Khan — home">
             <BrandLogo />
           </a>
-          <button class="nav-close" id="navClose" type="button" aria-label="Close menu">×</button>
+          <button class="nav-close" id="navClose" type="button" aria-label="Close menu">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
         </div>
         {links.map((l) => (
           <a href={l.href} class={active === l.key ? 'active' : ''}>{l.name}</a>
@@ -360,7 +362,7 @@ const AV = '/images/logo-icon.png?v=7';
           if(e.key==='Escape'&&n.classList.contains('open')) setOpen(false);
         });
         window.addEventListener('resize',function(){
-          if(window.matchMedia('(min-width:861px)').matches) setOpen(false);
+          if(window.matchMedia('(min-width:981px)').matches) setOpen(false);
         });
       }
       function setYear(){var y=document.getElementById('yr');if(y)y.textContent=new Date().getFullYear();}

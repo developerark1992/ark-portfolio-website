@@ -19,10 +19,10 @@ const cats = [['all', 'All', posts.length]].concat(Object.keys(counts).sort().ma
 const fmt = (d) => new Date(d).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
 ---
 <Base active="blog" title="Blog — Abdul Rehman Khan" description="Practical notes on CMS development, web platforms, hosting, DevOps and AI automation by Abdul Rehman Khan.">
-  <section style="padding-bottom:0;">
+  <section class="page-hero">
     <div class="wrap">
       <p class="eyebrow reveal">Blog</p>
-      <h1 class="reveal" style="font-size:clamp(32px,5.4vw,58px);margin-bottom:16px;">Notes &amp; guides.</h1>
+      <h1 class="reveal page-h1">Notes &amp; guides.</h1>
       <p class="sec-lead reveal" style="margin-bottom:32px;">Practical writing on CMS platforms, hosting, DevOps and AI automation — what actually works on real client projects.</p>
       {posts.length > 0 && (
         <div class="filters reveal" id="blogFilters">
@@ -33,7 +33,7 @@ const fmt = (d) => new Date(d).toLocaleDateString('en-US', { day: 'numeric', mon
       )}
     </div>
   </section>
-  <section style="padding-top:50px;">
+  <section class="page-body">
     <div class="wrap">
       {posts.length === 0 ? (
         <p class="sec-lead">No posts yet — check back soon.</p>
