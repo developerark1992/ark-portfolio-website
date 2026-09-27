@@ -585,41 +585,10 @@ const faqs = [
   }
 
   function initStackCards() {
-    if (!document.querySelector('[data-stack]')) return;
-    if (document.documentElement.dataset.stackBound === '1') {
-      window.dispatchEvent(new Event('resize'));
-      return;
-    }
-    document.documentElement.dataset.stackBound = '1';
-    const reduceMq = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-    const update = () => {
-      const decks = document.querySelectorAll('[data-stack]');
-      const reduce = reduceMq.matches;
-      decks.forEach((deck) => {
-        const noshrink = deck.hasAttribute('data-stack-noshrink');
-        const cards = deck.querySelectorAll('[data-stack-card]');
-        cards.forEach((card, i) => {
-          if (reduce || noshrink || window.matchMedia('(max-width:980px)').matches) {
-            card.style.transform = '';
-            return;
-          }
-          const slot = card.closest('.svc-slot');
-          const rect = (slot || card).getBoundingClientRect();
-          const stickyPad = 112;
-          const stuck = Math.max(0, stickyPad - rect.top);
-          const depth = Math.min(1, stuck / Math.max(160, rect.height * 0.35));
-          const remaining = cards.length - i - 1;
-          const stackedScale = Math.max(0.75, 1 - remaining * 0.05);
-          const scale = 1 - (1 - stackedScale) * depth;
-          card.style.transform = `scale(${scale.toFixed(4)})`;
-        });
-      });
-    };
-
-    update();
-    window.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update, { passive: true });
+    // Sticky stack CSS remains; skip JS scale transforms (they delay Speed Index).
+    document.querySelectorAll('[data-stack-card]').forEach((card) => {
+      card.style.transform = '';
+    });
   }
 
   function boot() {

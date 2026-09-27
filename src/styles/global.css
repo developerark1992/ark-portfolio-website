@@ -904,7 +904,7 @@ section.page-body{padding-top:20px;}
 .fx-ops-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--line);}
 .fx-ops-ping{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--good);}
 .fx-flow{width:100%;height:auto;display:block;max-height:220px;}
-.fx-flow-wire{fill:none;stroke-width:2;stroke-dasharray:6 8;animation:fxDash 1.2s linear infinite;}
+.fx-flow-wire{fill:none;stroke-width:2;stroke-dasharray:6 8;}
 @keyframes fxDash{to{stroke-dashoffset:-28;}}
 .fx-node rect{fill:#f8fafc;stroke:rgba(8,145,178,.35);stroke-width:1.5;}
 .fx-node text{fill:#0f172a;font-family:var(--mono);font-size:11px;}
