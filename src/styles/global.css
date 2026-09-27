@@ -630,7 +630,7 @@ section.page-body > .wrap{display:flex;flex-direction:column;align-items:stretch
 .wa-float{position:fixed;left:22px;bottom:22px;z-index:90;width:54px;height:54px;border-radius:50%;background:#25D366;color:#04140c;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 14px 30px -10px rgba(37,211,102,.6);transition:transform .18s ease;}
 .wa-float:hover{transform:translateY(-3px) scale(1.05);}
 .wa-float svg{width:28px;height:28px;fill:currentColor;}
-.wa-float::after{content:"";position:absolute;inset:0;border-radius:50%;background:#25D366;opacity:.55;animation:waPing 2.2s ease-out infinite;z-index:-1;}
+.wa-float::after{content:none;}
 @keyframes waPing{0%{transform:scale(1);opacity:.5}100%{transform:scale(2.4);opacity:0}}
 @media (max-width:480px){.wa-float{width:48px;height:48px;left:14px;bottom:14px;}.wa-float svg{width:24px;height:24px;}}
 @media (prefers-reduced-motion:reduce){.wa-float::after{animation:none;}}
@@ -750,9 +750,8 @@ section.page-body > .wrap{display:flex;flex-direction:column;align-items:stretch
 }
 
 /* ===== Home: dark hero + light body (pro responsive) ===== */
-/* Keep opacity visible so Speed Index isn't delayed by scroll-triggered fades */
-.reveal{opacity:1;transform:translateY(14px);transition:transform .45s cubic-bezier(.16,1,.3,1);}
-.reveal.in{transform:none;}
+/* No opacity/transform hide — scroll reveals were delaying Speed Index */
+.reveal,.reveal.in{opacity:1;transform:none;transition:none;}
 .fx-timeline-item.reveal{transition-delay:calc(var(--i,0) * .05s);}
 .fx-timeline-card{transition:transform .35s ease,box-shadow .35s ease,border-color .35s ease;}
 .fx-timeline-item:hover .fx-timeline-card{transform:translateY(-3px);border-color:rgba(8,145,178,.35);box-shadow:0 16px 32px -20px rgba(15,23,42,.35);}
