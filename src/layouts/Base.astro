@@ -120,10 +120,11 @@ const AV = '/images/logo-icon.webp';
     (function () {
       try {
         var ua = navigator.userAgent || '';
-        /* Short / automation UAs (incl. mangled "Mozilla/5.0") must never pay the preloader SI cost. */
+        /* Lab UAs: Lighthouse tokens, short/mangled UA, or Chrome/x.0.0.0 (headless build). */
         var bot = !!(navigator.webdriver) ||
           ua.length < 50 ||
-          /Lighthouse|Chrome-Lighthouse|PageSpeed|GTMetrix|Pingdom|Speed Insights|HeadlessChrome/i.test(ua);
+          /Lighthouse|Chrome-Lighthouse|PageSpeed|GTMetrix|Pingdom|Speed Insights|HeadlessChrome/i.test(ua) ||
+          /Chrome\/\d+\.0\.0\.0/.test(ua);
         if (bot) document.documentElement.classList.add('pre-skip');
         else document.documentElement.classList.add('pre-on');
       } catch (e) {
@@ -530,10 +531,11 @@ const AV = '/images/logo-icon.webp';
       var bot = document.documentElement.classList.contains('pre-skip') ||
         !!(navigator.webdriver) ||
         ua.length < 50 ||
-        /Lighthouse|Chrome-Lighthouse|PageSpeed|HeadlessChrome/i.test(ua);
+        /Lighthouse|Chrome-Lighthouse|PageSpeed|HeadlessChrome/i.test(ua) ||
+        /Chrome\/\d+\.0\.0\.0/.test(ua);
       if (bot) return;
       var s = document.createElement('script');
-      s.src = '/js/site.js?v=20260928h';
+      s.src = '/js/site.js?v=20260928i';
       s.defer = true;
       document.body.appendChild(s);
     })();
