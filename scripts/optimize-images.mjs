@@ -32,8 +32,8 @@ for (const f of shots) {
     sharp(file).resize({ width: 1100, withoutEnlargement: true }).webp({ quality: 68, effort: 6 }),
   );
   await sharp(file)
-    .resize({ width: 640, height: 420, fit: 'cover', position: 'top' })
-    .webp({ quality: 62, effort: 6 })
+    .resize({ width: 960, height: 660, fit: 'cover', position: 'top' })
+    .webp({ quality: 74, effort: 6 })
     .toFile(path.join(THUMBS, f));
   console.log('  thumb', f);
 }

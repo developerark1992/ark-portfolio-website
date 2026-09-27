@@ -97,7 +97,7 @@ const cats = [['all', 'All', projects.length]].concat(
           ' data-img="' + esc(p.img) + '" data-live="' + esc(p.live || '') + '"' +
           ' tabindex="0" role="button" aria-label="Preview ' + esc(p.title) + '" style="animation-delay:' + ((i % PAGE) * 0.04) + 's">' +
           '<div class="proj-shot"><span class="proj-cat">' + esc(p.category) + '</span>' +
-          '<img src="' + esc(String(p.img||'').replace('/images/projects/','/images/projects/thumbs/')) + '" alt="' + esc(p.title) + ' — screenshot" loading="lazy" decoding="async" width="640" height="420" sizes="(max-width: 640px) 100vw, (max-width: 980px) 50vw, 33vw" />' +
+          '<img src="' + esc(p.img || '') + '" srcset="' + esc(String(p.img||'').replace('/images/projects/','/images/projects/thumbs/') + ' 640w, ' + (p.img||'') + ' 1100w') + '" sizes="(max-width: 640px) 100vw, (max-width: 980px) 50vw, 420px" alt="' + esc(p.title) + ' — screenshot" loading="lazy" decoding="async" width="1100" height="756" />' +
           '<span class="proj-view">View ↗</span></div>' +
           '<div class="proj-body"><h3>' + esc(p.title) + '</h3>' +
           '<div class="loc">' + esc(p.platform) + '</div>' +
