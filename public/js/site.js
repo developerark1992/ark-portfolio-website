@@ -252,9 +252,6 @@
           if((e.key==='Enter'||e.key===' ')){ var c=e.target.closest&&e.target.closest('.proj[data-title]'); if(c){ e.preventDefault(); open(c); } }
         });
       }
-      function initPreloader(){
-        if(typeof window.__arkPreHide==='function') window.__arkPreHide();
-      }
       function initStackCards(){
         if(!document.querySelector('[data-stack]')) return;
         if(document.documentElement.dataset.stackBound==='1'){
@@ -291,7 +288,6 @@
         window.addEventListener('resize',update,{passive:true});
       }
       function initPage(){
-        try { initPreloader(); } catch (e) {}
         try { setYear(); } catch (e) {}
         try { initReveal(); } catch (e) {}
         try { initMenu(); } catch (e) {}
