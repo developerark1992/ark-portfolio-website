@@ -43,8 +43,8 @@ export const experience = [
   {
     when: '2018 — 2020',
     role: 'CMS & Full-Stack Developer',
-    co: 'Independent / ARK Designing Bureau',
-    d: 'Multi-CMS client delivery, PHP/MySQL apps, hosting & DNS ownership, and design-to-code for remote teams.',
+    co: 'Independent / ARK Designing Bureau (freelance brand)',
+    d: 'Multi-CMS client delivery, PHP/MySQL apps, hosting & DNS ownership, and design-to-code for remote teams — freelance collective model.',
   },
   {
     when: '2016 — 2018',
@@ -56,7 +56,7 @@ export const experience = [
     when: '2013 — 2016',
     role: 'Web Designer & Front-End Developer',
     co: 'Freelance — founding years',
-    d: 'Started the craft: HTML/CSS/JS, WordPress themes, logos and UI graphics — the start of the one-operator model.',
+    d: 'Started the craft: HTML/CSS/JS, WordPress themes, logos and UI graphics — the start of the freelance-lead model.',
   },
 ];
 
@@ -69,12 +69,12 @@ export const experienceHome = [
     when: '2020 — 2022',
     role: 'Software & Frontend Developer',
     co: 'Mystic Advertising · Nisshinbo Holdings · Logicose / Nextac / Novatex',
-    d: 'E-commerce, ASP.NET MVC, custom WordPress themes, and responsive builds from Figma/XD.',
+    d: 'E-commerce, ASP.NET MVC, custom WordPress themes, and responsive builds from Figma/XD — including agency/staff environments.',
   },
   {
     when: '2013 — 2020',
-    role: 'Web Designer → Full-Stack & CMS Developer',
-    co: 'Freelance / ARK Designing Bureau',
-    d: 'Thirteen-year foundation: design, CMS platforms, PHP stacks, hosting/DNS, and the one-person delivery model that still defines the practice.',
+    role: 'Web Designer → Full-Stack & CMS Freelancer',
+    co: 'Freelance / ARK Designing Bureau (brand)',
+    d: 'Thirteen-year foundation as freelance lead: design, CMS platforms, PHP stacks, hosting/DNS, and later a mini freelancers team — plus staff augmentation with startup agencies.',
   },
 ];
