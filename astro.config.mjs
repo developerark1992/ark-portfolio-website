@@ -13,7 +13,7 @@ export default defineConfig({
     prefetchAll: false,
     defaultStrategy: 'hover',
   },
-  build: { inlineStylesheets: 'auto' },
+  build: { inlineStylesheets: 'always' },
   vite: {
     build: {
       cssMinify: true,
