@@ -1,6 +1,6 @@
 ---
 import { projectThumb } from '../lib/media.mjs';
-const { p, index = 0 } = Astro.props;
+const { p, index = 0, eager = false } = Astro.props;
 const thumb = projectThumb(p.img);
 const n = String(index + 1).padStart(2, '0');
 const host = (() => {
@@ -31,7 +31,7 @@ const tags = [
   rel={p.live ? 'noopener noreferrer' : undefined}
 >
   <div class="wkb-shot">
-    <img src={thumb} alt="" loading="lazy" decoding="async" width="640" height="420" sizes="(max-width: 720px) 100vw, (max-width: 1200px) 70vw, 640px" draggable="false" />
+    <img src={thumb} alt="" loading={eager ? 'eager' : 'lazy'} decoding="async" width="640" height="420" sizes="(max-width: 720px) 100vw, (max-width: 1200px) 70vw, 640px" draggable="false" fetchpriority={eager && index === 0 ? 'high' : undefined} />
   </div>
   <div class="wkb-body">
     <span class="wkb-index ci-label">{n}</span>

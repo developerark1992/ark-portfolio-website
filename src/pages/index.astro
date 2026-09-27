@@ -323,7 +323,7 @@ const faqs = [
           <a class="ci-arrow" href="/projects">Full portfolio ({featured.length}) →</a>
         </div>
         <div class="wkb">
-          {featured.map((p, i) => <ProjectCard p={p} index={i} />)}
+          {featured.map((p, i) => <ProjectCard p={p} index={i} eager />)}
         </div>
       </div>
     </section>
