@@ -326,25 +326,17 @@
   position:relative;width:100%;aspect-ratio:16/11;border-radius:14px;overflow:hidden;
   border:1px solid var(--ci-night-rule);background:var(--ci-night-2);
   box-shadow:0 1px 2px rgba(0,0,0,.2),0 18px 40px -20px rgba(0,0,0,.55);
-  clip-path:inset(0 0 100% 0);
-  transition:border-color .4s,box-shadow .4s,clip-path 1.05s cubic-bezier(.16,1,.3,1);
+  transition:border-color .4s,box-shadow .4s;
 }
-.wkb-item.reveal.in .wkb-shot,
-.wkb-item:not(.reveal) .wkb-shot{clip-path:inset(0 0 0% 0);}
 .wkb-shot img{
-  position:absolute;left:0;top:0;width:100%;height:auto;min-height:100%;
+  position:absolute;left:0;top:0;width:100%;height:100%;
   object-fit:cover;object-position:top center;
-  transform:translateY(0);
-  transition:top 5.5s cubic-bezier(.25,.1,.25,1),transform 5.5s cubic-bezier(.25,.1,.25,1);
 }
 .wkb-item:hover .wkb-shot{
   border-color:color-mix(in srgb,var(--ci-accent-bright) 35%,var(--ci-night-rule));
   box-shadow:0 2px 4px rgba(0,0,0,.25),0 28px 56px -24px rgba(0,0,0,.65);
 }
-.wkb-item:hover .wkb-shot img{
-  top:100%;
-  transform:translateY(-100%);
-}
+/* No long hover pan — was hiding screenshots + hurting SI */
 
 .wkb-body{min-width:0;}
 .wkb-index{display:block;color:var(--ci-accent-bright);font-weight:700;}
@@ -381,9 +373,7 @@
 #work .ci-arrow:hover{color:var(--ci-accent-bright);border-color:var(--ci-accent-bright);}
 
 @media (prefers-reduced-motion:reduce){
-  .wkb-shot{clip-path:none;transition:border-color .4s,box-shadow .4s;}
-  .wkb-shot img{transition:none;}
-  .wkb-item:hover .wkb-shot img{top:0;transform:none;}
+  .wkb-shot{transition:border-color .4s,box-shadow .4s;}
 }
 
 /* —— Career rules list —— */
