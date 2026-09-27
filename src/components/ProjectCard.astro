@@ -1,7 +1,9 @@
 ---
-import { projectThumb } from '../lib/media.mjs';
+import { projectThumb, projectSrcSet } from '../lib/media.mjs';
 const { p, index = 0, eager = false } = Astro.props;
-const thumb = projectThumb(p.img);
+const full = p.img || '';
+const thumb = projectThumb(full);
+const srcset = projectSrcSet(full);
 const n = String(index + 1).padStart(2, '0');
 const host = (() => {
   try { return p.live ? new URL(p.live).hostname.replace(/^www\./, '') : ''; }
@@ -31,7 +33,18 @@ const tags = [
   rel={p.live ? 'noopener noreferrer' : undefined}
 >
   <div class="wkb-shot">
-    <img src={thumb} alt={`${p.title} website`} loading={eager ? 'eager' : 'lazy'} decoding="async" width="640" height="420" sizes="(max-width: 720px) 100vw, (max-width: 1200px) 70vw, 640px" draggable="false" fetchpriority={eager && index === 0 ? 'high' : undefined} />
+    <img
+      src={full || thumb}
+      srcset={srcset || undefined}
+      sizes="(max-width: 720px) 100vw, (max-width: 1100px) 62vw, 720px"
+      alt={`${p.title} website`}
+      loading={eager ? 'eager' : 'lazy'}
+      decoding="async"
+      width="1100"
+      height="756"
+      draggable="false"
+      fetchpriority={eager && index === 0 ? 'high' : undefined}
+    />
   </div>
   <div class="wkb-body">
     <span class="wkb-index ci-label">{n}</span>
