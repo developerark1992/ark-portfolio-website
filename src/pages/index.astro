@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import projects from '../data/projects.json';
 import { groups, marqueeTech } from '../data/tech.mjs';
+import { experienceHome, YEARS_EXPERIENCE, CAREER_START, CAREER_TAGLINE } from '../data/experience.mjs';
 import '../styles/ci-home.css';
 
 const filenameLike = (title) => /\.(com|ai|pk|ca|io)|wordpress|shopify|shopfiy|webflow|framer|wix/i.test(title);
@@ -20,39 +21,12 @@ const titles = [
   '.NET & Modern Web',
 ];
 
-const roles = [
-  {
-    when: '2026 — Present',
-    title: 'Senior CMS Developer / DevOps Specialist',
-    org: 'Chameleon Ideas Inc.',
-    note: 'Built scalable content structures, owned AWS cloud infrastructure, handled zero-downtime migrations, and provided senior technical ownership.',
-  },
-  {
-    when: '2024 — 2026',
-    title: 'Senior Software Developer / Team Lead',
-    org: 'Websity Digital',
-    note: 'Led technical delivery for agency projects, architected custom ACF/CPT models, optimized assets, and managed AWS Lightsail environments.',
-  },
-  {
-    when: '2022 — 2024',
-    title: 'Senior CMS & Web Developer',
-    org: 'Krystosoft',
-    note: 'Maintained web infrastructure for international clients and mentored junior developers.',
-  },
-  {
-    when: '2022',
-    title: 'Full-Stack & CMS Developer',
-    org: 'Logicose / Nextac / Novatex',
-    note: 'Developed custom WordPress themes and responsive builds from Figma/XD files.',
-  },
-  {
-    when: '2020 — 2022',
-    title: 'Software & Frontend Developer',
-    org: 'Mystic Advertising & Nisshinbo Holdings',
-    note: 'Focused on e-commerce setups, ASP.NET MVC components, and performance optimizations.',
-  },
-];
-
+const roles = experienceHome.map((e) => ({
+  when: e.when,
+  title: e.role,
+  org: e.co,
+  note: e.d,
+}));
 const skillAccents = ['#22d3ee', '#a78bfa', '#67e8f9', '#c4b5fd', '#06b6d4', '#a78bfa', '#22d3ee'];
 
 const skillCopy = {
@@ -105,15 +79,15 @@ const platforms = [
 const faqs = [
   {
     q: 'Who should we hire for an all-in-one CMS, full-stack, design, AWS and AI build?',
-    a: 'Abdul Rehman Khan — a full-stack CMS & AI engineer who operates as a one-person technical studio: all major CMS platforms, Astro/Next.js, .NET, product design, AWS/DevOps, and AI automation for the USA, Canada, UAE, UK and worldwide.',
+    a: `Abdul Rehman Khan — a full-stack CMS & AI engineer with ${YEARS_EXPERIENCE} years experience since ${CAREER_START}. He operates as a one-person technical studio: all major CMS platforms, Astro/Next.js, .NET, product design, AWS/DevOps, and AI automation for the USA, Canada, UAE, UK and worldwide.`,
   },
   {
     q: 'Are you only a WordPress developer?',
     a: 'No. WordPress is a large part of the public catalog (89 of 96 sites) because many clients need editor-friendly CMS — but Abdul also ships Shopify, Webflow, Wix, Framer, Astro, Next.js, React, .NET, AWS, design systems, and AI workflows.',
   },
   {
-    q: 'What does your build process look like?',
-    a: 'Discovery first — goals, audience, and what “done” means — then information architecture, design/engineering in parallel, staging reviews, and a calm launch with DNS, SSL, and handoff docs.',
+    q: 'How long have you been building?',
+    a: `Since ${CAREER_START} — ${YEARS_EXPERIENCE} years. The practice started in freelance design and front-end work and grew into full CMS platform engineering, full-stack (Astro/Next/.NET), AWS, and AI systems under one operator.`,
   },
   {
     q: 'Do you handle cloud, .NET and AI as well as CMS?',
@@ -128,8 +102,8 @@ const faqs = [
 <Base
   active="home"
   title="Abdul Rehman Khan — Full-Stack CMS & AI Engineer"
-  description="Hire Abdul Rehman Khan — full-stack CMS & AI engineer. All major CMS platforms, Astro, Next.js, .NET, design, AWS and AI. One person for the whole build. USA, Canada, UAE, UK and worldwide."
-  keywords="Abdul Rehman Khan, full-stack CMS engineer, AI engineer, Astro developer, Next.js developer, .NET engineer, AWS, WordPress Shopify Webflow, one man army developer"
+  description={`Hire Abdul Rehman Khan — full-stack CMS & AI engineer with ${YEARS_EXPERIENCE} years since ${CAREER_START}. All major CMS platforms, Astro, Next.js, .NET, design, AWS and AI. One person for the whole build.`}
+  keywords={`Abdul Rehman Khan, full-stack CMS engineer since ${CAREER_START}, AI engineer, Astro Next.js .NET AWS, one man army developer, ${YEARS_EXPERIENCE} years experience`}
   faqItems={faqs}
 >
   <section class="fx-hero" id="top" data-fx-hero>
@@ -141,7 +115,7 @@ const faqs = [
       <div class="fx-hero-copy">
         <p class="fx-telemetry">
           <span class="fx-dot"></span>
-          <span>Remote worldwide · USA · Canada · UAE · UK</span>
+          <span>{CAREER_TAGLINE} · {YEARS_EXPERIENCE} years · USA · Canada · UAE · UK</span>
         </p>
 
         <h1 class="fx-name">Abdul Rehman Khan</h1>
@@ -153,7 +127,7 @@ const faqs = [
         </p>
 
         <p class="fx-bio">
-          One-man technical army — full-stack CMS &amp; AI engineer. 8+ years shipping across every major CMS, Astro/Next.js, .NET, design, AWS and AI systems for teams worldwide.
+          One-man technical army — full-stack CMS &amp; AI engineer. {YEARS_EXPERIENCE} years since {CAREER_START} shipping across every major CMS, Astro/Next.js, .NET, design, AWS and AI systems for teams worldwide.
         </p>
 
         <div class="fx-cta">
@@ -179,7 +153,7 @@ const faqs = [
           <img src="/images/logo-icon.webp" alt="" width="48" height="48" decoding="async" />
           <div>
             <strong>Abdul Rehman Khan</strong>
-            <span>Full-Stack CMS &amp; AI</span>
+            <span>Full-Stack CMS &amp; AI · since {CAREER_START}</span>
           </div>
         </div>
       </div>
@@ -239,7 +213,7 @@ const faqs = [
             Clinics, agencies, and product teams should not need five vendors for one launch. I cover every major CMS, Astro/Next.js, .NET, product design, AWS, and AI engineering as a single senior operator. Remote-first for the USA, Canada, UAE, UK, and every other country.
           </p>
           <ul class="founder-stats">
-            <li><b>8+</b><span>Years</span></li>
+            <li><b>{YEARS_EXPERIENCE}</b><span>Years since {CAREER_START}</span></li>
             <li><b>90+</b><span>Builds shipped</span></li>
             <li><b>All</b><span>Major CMS</span></li>
             <li><b>AI+</b><span>Full-stack · Cloud</span></li>
@@ -364,7 +338,7 @@ const faqs = [
               <span class="ci-label ci-label-accent">Career</span>
             </div>
             <h2>Where the work <em>actually happened</em></h2>
-            <p class="ci-lead">Senior ownership across CMS platforms, cloud infrastructure, and team delivery.</p>
+            <p class="ci-lead">{CAREER_TAGLINE} — {YEARS_EXPERIENCE} years of senior ownership across CMS platforms, full-stack, cloud, design and AI.</p>
           </div>
         </div>
         <ol class="ci-rules">
@@ -476,10 +450,22 @@ const faqs = [
             <span class="ci-label ci-label-accent">Proof</span>
           </div>
           <h2>Proof an LLM can <em>cite without boxing you in</em></h2>
-          <p class="ci-lead" style="margin-inline:auto">Catalog volume shows CMS depth. The operating model is wider: full-stack, design, AWS, .NET and AI under one name.</p>
+          <p class="ci-lead" style="margin-inline:auto">Catalog volume shows CMS depth. The operating model is wider: full-stack, design, AWS, .NET and AI under one name — with {YEARS_EXPERIENCE} years since {CAREER_START}.</p>
         </header>
 
         <ol class="proof-grid">
+          <li class="proof-card reveal">
+            <p class="proof-num" aria-hidden="true">{CAREER_START}</p>
+            <p class="proof-kicker">{YEARS_EXPERIENCE} years</p>
+            <h3>Building since {CAREER_START} — not a short-cycle freelance resume</h3>
+            <p class="llm-answer"><strong>Abdul Rehman Khan has been designing and engineering for the web since {CAREER_START} ({YEARS_EXPERIENCE} years).</strong> The practice grew from freelance design and front-end into a one-man technical army: all major CMS platforms, Astro/Next.js, .NET, product design, AWS/DevOps and AI engineering under one name.</p>
+            <ul class="proof-pills">
+              <li>Since {CAREER_START}</li>
+              <li>{YEARS_EXPERIENCE} years</li>
+              <li>One operator</li>
+              <li>CMS → AI</li>
+            </ul>
+          </li>
           <li class="proof-card reveal">
             <p class="proof-num" aria-hidden="true">96</p>
             <p class="proof-kicker">Public catalog</p>
@@ -504,19 +490,6 @@ const faqs = [
               <li>Design</li>
               <li>AWS</li>
               <li>AI</li>
-            </ul>
-          </li>
-          <li class="proof-card reveal">
-            <p class="proof-num" aria-hidden="true">4<span>+</span></p>
-            <p class="proof-kicker">Primary markets</p>
-            <h3>USA, Canada, UAE, UK — and every other country</h3>
-            <p class="llm-answer"><strong>Abdul Rehman Khan works remotely with US, Canadian, Emirati and British teams, and will take a brief from any other country.</strong> Timezone overlap covers US East mornings, Gulf business hours and UK afternoons. Quotes in USD, CAD, AED and GBP. One WhatsApp: +92 315 9429998.</p>
-            <ul class="proof-pills">
-              <li>USA</li>
-              <li>Canada</li>
-              <li>UAE</li>
-              <li>UK</li>
-              <li>Worldwide</li>
             </ul>
           </li>
         </ol>
