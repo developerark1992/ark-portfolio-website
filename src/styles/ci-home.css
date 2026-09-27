@@ -152,7 +152,8 @@
   display:flex;align-items:flex-start;justify-content:center;
   z-index:auto;
 }
-.svc-card{
+/* Scoped under .svc-deck so /services .svc-card styles never get overridden */
+.svc-deck .svc-card{
   --accent:var(--ci-accent-bright);
   position:relative;
   top:0;
@@ -173,80 +174,90 @@
     0 0 48px -20px color-mix(in srgb,var(--accent) 35%,transparent);
   transform-origin:center top;
 }
-/* Desktop sticky stack: short slots + last-child auto = stack look without huge gap before next section */
+/* Desktop sticky stack: gap between cards; last card not sticky so Platforms never gets covered */
 @media (min-width:981px){
+  #skills{
+    padding-bottom:clamp(2.75rem,5vw,4.5rem);
+  }
+  #platforms{
+    position:relative;
+    z-index:4;
+    isolation:isolate;
+  }
   .svc-deck:not(.skill-deck){
-    display:block;gap:0;
+    display:flex;
+    flex-direction:column;
+    gap:1.35rem;
   }
   .svc-deck:not(.skill-deck) .svc-slot{
-    position:sticky;top:0;
-    height:min(40vh,18.5rem);
-    padding-bottom:.85rem;
-    box-sizing:content-box;
+    position:sticky;
+    top:calc(5.25rem + var(--i,0) * 1.15rem);
+    height:auto;
+    padding-bottom:0;
     z-index:calc(1 + var(--i,0));
   }
   .svc-deck:not(.skill-deck) .svc-slot:last-child{
-    height:auto;
-    padding-bottom:0;
+    position:relative;
+    top:auto;
   }
   .svc-deck:not(.skill-deck) .svc-card{
-    top:calc(5rem + var(--i,0) * 1.15rem);
+    top:0;
   }
   .svc-deck:not(.skill-deck) .svc-card-link{
-    min-height:min(36vh,16.5rem);
+    min-height:0;
   }
 }
-.svc-card::before{
+.svc-deck .svc-card::before{
   content:"";position:absolute;inset:0;z-index:0;border-radius:inherit;pointer-events:none;
   background:
     radial-gradient(90% 120% at 8% 0%,color-mix(in srgb,var(--accent) 55%,transparent) 0%,transparent 62%),
     linear-gradient(180deg,color-mix(in srgb,var(--accent) 12%,transparent) 0%,transparent 40%);
   mix-blend-mode:screen;
 }
-.svc-card-link{
+.svc-deck .svc-card-link{
   position:relative;z-index:1;
   display:flex;flex-direction:column;gap:1.25rem;height:100%;
   padding:clamp(1.5rem,2.8vw,2rem) clamp(1.5rem,3vw,2.15rem);
   border-radius:inherit;min-height:min(48vh,24rem);
   color:#eef3f8;text-decoration:none;
 }
-.svc-card-link:focus-visible{outline:2px solid var(--accent);outline-offset:-6px;}
-.svc-card-head{
+.svc-deck .svc-card-link:focus-visible{outline:2px solid var(--accent);outline-offset:-6px;}
+.svc-deck .svc-card-head{
   display:flex;align-items:center;gap:.875rem;padding-bottom:1.25rem;
   border-bottom:1px solid transparent;
   border-image:linear-gradient(to right,var(--accent),var(--ci-night-rule) 30%,transparent) 1;
 }
-.svc-card-badge{
+.svc-deck .svc-card-badge{
   width:2rem;height:2rem;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;
   background:var(--accent);color:#0b1220;
   font-family:var(--mono);font-size:.75rem;font-weight:700;flex-shrink:0;
   box-shadow:inset 0 1px rgba(255,255,255,.4),0 2px 8px -2px var(--accent);
 }
-.svc-card-title{
+.svc-deck .svc-card-title{
   margin:0;font-size:clamp(1.25rem,2.2vw,1.75rem);font-weight:700;
   letter-spacing:-.018em;line-height:1.12;color:#f8fafc;
   transition:color .7s var(--ci-ease);
 }
-.svc-card:hover .svc-card-title{color:var(--accent);}
-.svc-card-body{
+.svc-deck .svc-card:hover .svc-card-title{color:var(--accent);}
+.svc-deck .svc-card-body{
   display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);
   gap:1.25rem 2.5rem;flex:1;align-items:start;
 }
-.svc-card-col{display:flex;flex-direction:column;min-height:100%;color:#eef3f8;}
-.svc-card-short{margin:0;color:#f8fafc;font-size:1.0625rem;line-height:1.5;font-weight:500;}
-.svc-card-copy{margin:.75rem 0 0;color:#cbd5e1;font-size:.9375rem;line-height:1.6;}
-.svc-card-meta{
+.svc-deck .svc-card-col{display:flex;flex-direction:column;min-height:100%;color:#eef3f8;}
+.svc-deck .svc-card-short{margin:0;color:#f8fafc;font-size:1.0625rem;line-height:1.5;font-weight:500;}
+.svc-deck .svc-card-copy{margin:.75rem 0 0;color:#cbd5e1;font-size:.9375rem;line-height:1.6;}
+.svc-deck .svc-card-meta{
   margin-top:auto;padding-top:1.25rem;display:inline-flex;align-items:center;gap:.5rem;
   color:var(--accent);font-size:.875rem;font-weight:600;
 }
-.svc-card-meta svg{width:1rem;height:1rem;flex-shrink:0;transition:transform .5s var(--ci-ease);}
-.svc-card:hover .svc-card-meta svg{transform:translateX(.25rem);}
-.svc-card-list{list-style:none;margin:0;padding:.15rem 0 0;display:grid;gap:.5rem;align-content:start;}
-.svc-card-list li{
+.svc-deck .svc-card-meta svg{width:1rem;height:1rem;flex-shrink:0;transition:transform .5s var(--ci-ease);}
+.svc-deck .svc-card:hover .svc-card-meta svg{transform:translateX(.25rem);}
+.svc-deck .svc-card-list{list-style:none;margin:0;padding:.15rem 0 0;display:grid;gap:.5rem;align-content:start;}
+.svc-deck .svc-card-list li{
   position:relative;padding-left:1.125rem;
   color:#cbd5e1;font-size:.9375rem;line-height:1.45;
 }
-.svc-card-list li::before{
+.svc-deck .svc-card-list li::before{
   content:"";position:absolute;left:0;top:.72em;width:.5rem;height:1px;background:var(--accent);
 }
 
@@ -467,13 +478,13 @@
   .ci-sticky,.ci-plate-sticky{position:static;}
   .svc-deck{width:100%;max-width:100%;}
   .svc-slot{height:auto;position:relative;width:100%;}
-  .svc-card,.skill-stack-card{
+  .svc-deck .svc-card,.skill-stack-card{
     top:0 !important;margin-bottom:.85rem;
     width:100%;max-width:100%;box-sizing:border-box;
   }
-  .svc-card-link{min-height:0;width:100%;}
-  .svc-card-body{grid-template-columns:1fr;gap:1.25rem;}
-  .svc-card-meta{padding-top:1rem;}
+  .svc-deck .svc-card-link{min-height:0;width:100%;}
+  .svc-deck .svc-card-body{grid-template-columns:1fr;gap:1.25rem;}
+  .svc-deck .svc-card-meta{padding-top:1rem;}
   .skill-deck .svc-slot{height:auto;}
   .skill-stack-card .skill-pills{gap:6px;}
   .partner-grid{grid-template-columns:1fr 1fr;gap:.75rem;}
@@ -499,11 +510,11 @@
 }
 
 @supports not (background: color-mix(in srgb, red 50%, blue)){
-  .svc-card{
+  .svc-deck .svc-card{
     background:radial-gradient(120% 90% at 0% 0%,rgba(34,211,238,.32) 0%,transparent 58%),linear-gradient(152deg,#243447 0%,#1a2836 42%,#0f1925 100%);
     border-color:rgba(34,211,238,.28);
   }
-  .svc-card::before{background:radial-gradient(90% 120% at 8% 0%,rgba(34,211,238,.5) 0%,transparent 62%);}
+  .svc-deck .svc-card::before{background:radial-gradient(90% 120% at 8% 0%,rgba(34,211,238,.5) 0%,transparent 62%);}
   .partner-card{
     border-color:var(--ci-rule-soft);
     background:linear-gradient(160deg,#fff 0%,#f8fafc 100%);
