@@ -95,10 +95,26 @@ const AV = '/images/logo-icon.webp';
   {markdownHref && <link rel="alternate" type="text/markdown" href={markdownHref} title="Markdown version" />}
   <link rel="alternate" type="text/markdown" href="/llms.txt" title="Agent brief (llms.txt)" />
   <link rel="alternate" type="text/markdown" href="/llms-full.md" title="Full agent brief" />
+  <link rel="ard" href="/.well-known/ard.json" type="application/json" title="Agentic Resource Discovery" />
+  <link rel="ai-catalog" href="/.well-known/ai-catalog.json" type="application/json" title="AI catalog (ARD)" />
   <link rel="author" href={`${SITE_URL}/for-llms`} />
+
   <style is:inline>
     html,body{margin:0;padding:0;width:100%;overflow-x:clip;}
+    #preloader{position:fixed;inset:0;width:100%;height:100%;min-height:100dvh;z-index:200;background:#07080c;}
+    #preloader.done,html.pre-skip #preloader{opacity:0;visibility:hidden;pointer-events:none;}
   </style>
+  <script is:inline>
+    (function () {
+      try {
+        if (sessionStorage.getItem('arkPreSeen') === '1' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          document.documentElement.classList.add('pre-skip');
+        }
+      } catch (e) {
+        document.documentElement.classList.add('pre-skip');
+      }
+    })();
+  </script>
   <script type="application/ld+json" set:html={JSON.stringify({
     '@context': 'https://schema.org',
     '@graph': [
@@ -274,6 +290,98 @@ const AV = '/images/logo-icon.webp';
   })} />
 </head>
 <body class:list={[active === 'home' && 'has-fx-hero nav-over-hero']} data-av={AV} data-wa={WA}>
+  <div id="preloader" class="preloader" aria-busy="true" aria-live="polite">
+    <div class="pre-sky" aria-hidden="true">
+      <svg class="pre-stars" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
+        <g class="pre-star-layer">
+          <circle cx="8" cy="12" r=".35" fill="#fff"/><circle cx="18" cy="28" r=".25" fill="#fff"/><circle cx="32" cy="9" r=".4" fill="#c8ff5a"/>
+          <circle cx="44" cy="22" r=".2" fill="#fff"/><circle cx="56" cy="14" r=".3" fill="#fff"/><circle cx="68" cy="30" r=".35" fill="#ff3d00"/>
+          <circle cx="78" cy="8" r=".25" fill="#fff"/><circle cx="90" cy="20" r=".4" fill="#fff"/><circle cx="12" cy="48" r=".3" fill="#fff"/>
+          <circle cx="26" cy="58" r=".2" fill="#c8ff5a"/><circle cx="40" cy="42" r=".35" fill="#fff"/><circle cx="54" cy="55" r=".25" fill="#fff"/>
+          <circle cx="70" cy="48" r=".3" fill="#fff"/><circle cx="84" cy="60" r=".2" fill="#ff3d00"/><circle cx="94" cy="44" r=".35" fill="#fff"/>
+          <circle cx="6" cy="72" r=".25" fill="#fff"/><circle cx="22" cy="84" r=".4" fill="#c8ff5a"/><circle cx="38" cy="76" r=".2" fill="#fff"/>
+          <circle cx="52" cy="88" r=".3" fill="#fff"/><circle cx="66" cy="78" r=".25" fill="#fff"/><circle cx="82" cy="90" r=".35" fill="#fff"/>
+        </g>
+      </svg>
+      <svg class="pre-current" viewBox="0 0 800 600" preserveAspectRatio="none">
+        <path class="pre-flow f1" d="M-40 120 C160 40 320 220 520 100 S780 60 860 140" fill="none"/>
+        <path class="pre-flow f2" d="M-60 300 C140 220 360 380 560 260 S820 300 900 220" fill="none"/>
+        <path class="pre-flow f3" d="M-20 480 C180 400 340 520 560 440 S800 480 880 400" fill="none"/>
+      </svg>
+      <div class="pre-orb pre-orb-a"></div>
+      <div class="pre-orb pre-orb-b"></div>
+    </div>
+    <div class="preloader-inner">
+      <div class="pre-ring-wrap" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Loading" id="preBar">
+        <svg class="pre-ring" viewBox="0 0 120 120" aria-hidden="true">
+          <circle class="pre-ring-bg" cx="60" cy="60" r="52"/>
+          <circle class="pre-ring-fill" id="preFill" cx="60" cy="60" r="52"/>
+        </svg>
+        <img class="pre-icon" src="/images/logo-icon.webp" alt="" width="88" height="88" decoding="async" fetchpriority="low" />
+        <span class="pre-ring-pct" id="prePct">0</span>
+      </div>
+      <img class="pre-caption" src="/images/signature-modern.webp" alt="Abdul Rehman Khan" width="280" height="48" decoding="async" fetchpriority="low" />
+      <p class="pre-sub">Design × Software</p>
+    </div>
+  </div>
+  <script is:inline>
+    (function () {
+      var CIRC = 2 * Math.PI * 52;
+      var MAX_MS = 520;
+      var pre = document.getElementById('preloader');
+      if (!pre) return;
+
+      function setProgress(n) {
+        var progress = Math.max(0, Math.min(100, Math.round(n)));
+        pre.dataset.progress = String(progress);
+        var fill = document.getElementById('preFill');
+        var pctEl = document.getElementById('prePct');
+        var bar = document.getElementById('preBar');
+        if (fill) {
+          fill.style.strokeDasharray = String(CIRC);
+          fill.style.strokeDashoffset = String(CIRC * (1 - progress / 100));
+        }
+        if (pctEl) pctEl.textContent = String(progress);
+        if (bar) bar.setAttribute('aria-valuenow', String(progress));
+      }
+
+      function finish() {
+        setProgress(100);
+        pre.dataset.done = '1';
+        pre.setAttribute('aria-busy', 'false');
+        pre.classList.add('done');
+        try { sessionStorage.setItem('arkPreSeen', '1'); } catch (e) {}
+      }
+
+      if (document.documentElement.classList.contains('pre-skip')) {
+        finish();
+        return;
+      }
+
+      pre.classList.add('is-live');
+      setProgress(8);
+      var started = Date.now();
+      var tick = setInterval(function () {
+        if (pre.dataset.done === '1') { clearInterval(tick); return; }
+        var cur = parseInt(pre.dataset.progress || '0', 10);
+        if (cur < 88) setProgress(cur + Math.max(2, (92 - cur) * 0.18));
+        if (Date.now() - started >= MAX_MS) {
+          clearInterval(tick);
+          finish();
+        }
+      }, 24);
+
+      function onReady() {
+        var left = Math.max(0, MAX_MS - (Date.now() - started));
+        setTimeout(function () {
+          clearInterval(tick);
+          finish();
+        }, left);
+      }
+      if (document.readyState === 'complete') onReady();
+      else window.addEventListener('load', onReady, { once: true });
+    })();
+  </script>
 
   <nav class="topnav">
     <div class="nav-in">
@@ -361,8 +469,21 @@ const AV = '/images/logo-icon.webp';
     </div>
     <div class="ark-msgs" id="arkMsgs" aria-live="polite"></div>
     <div class="ark-chips" id="arkChips"></div>
-    <form class="ark-foot" id="arkForm" autocomplete="off">
-      <input id="arkInput" type="text" placeholder="Type a message…" aria-label="Message" />
+    <form
+      class="ark-foot"
+      id="arkForm"
+      autocomplete="off"
+      toolname="askArkAssistant"
+      tooldescription="Send a short message to the on-site ARK Assistant about Abdul Rehman Khan, services, or hiring."
+    >
+      <input
+        id="arkInput"
+        name="message"
+        type="text"
+        placeholder="Type a message…"
+        aria-label="Message"
+        toolparamdescription="The visitor's question or hiring note for the ARK Assistant."
+      />
       <button type="submit" aria-label="Send">→</button>
     </form>
   </section>

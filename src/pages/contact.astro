@@ -45,27 +45,37 @@ const trust = [
       <div class="reveal">
         <h2 class="sec-title" style="font-size:clamp(24px,3.4vw,34px);">Send a project brief</h2>
         <p class="sec-lead" style="margin:8px 0 24px;">Scoped proposal back within 1 business day.</p>
-        <form id="contactForm">
+        <form
+          id="contactForm"
+          toolname="submitProjectBrief"
+          tooldescription="Submit a project brief to Abdul Rehman Khan for a scoped proposal on websites, apps, design, SEO, CMS, cloud or staff augmentation."
+        >
           <div class="field-row">
-            <div class="field"><label for="cf-name">Name *</label><input id="cf-name" required placeholder="Your name" /></div>
-            <div class="field"><label for="cf-email">Email *</label><input id="cf-email" type="email" required placeholder="you@company.com" /></div>
+            <div class="field"><label for="cf-name">Name *</label><input id="cf-name" name="name" required autocomplete="name" placeholder="Your name" toolparamdescription="Visitor full name." /></div>
+            <div class="field"><label for="cf-email">Email *</label><input id="cf-email" name="email" type="email" required autocomplete="email" placeholder="you@company.com" toolparamdescription="Visitor email for the proposal reply." /></div>
           </div>
           <div class="field-row">
-            <div class="field"><label for="cf-phone">Phone / WhatsApp</label><input id="cf-phone" placeholder="Optional" /></div>
-            <div class="field"><label for="cf-company">Company / brand</label><input id="cf-company" placeholder="Optional" /></div>
+            <div class="field"><label for="cf-phone">Phone / WhatsApp</label><input id="cf-phone" name="phone" autocomplete="tel" placeholder="Optional" toolparamdescription="Optional phone or WhatsApp number." /></div>
+            <div class="field"><label for="cf-company">Company / brand</label><input id="cf-company" name="company" autocomplete="organization" placeholder="Optional" toolparamdescription="Optional company or brand name." /></div>
           </div>
           <div class="field-row">
             <div class="field"><label for="cf-type">Project type</label>
-              <select id="cf-type"><option>New website</option><option>Redesign</option><option>E-commerce store</option><option>Web app / SaaS</option><option>MVP / prototype</option><option>Automation / workflow</option><option>Hosting / migration / DevOps</option><option>Graphic design / branding</option><option>Other</option></select>
+              <select id="cf-type" name="type" toolparamdescription="Primary project type for routing the brief.">
+                <option>New website</option><option>Redesign</option><option>E-commerce store</option><option>Web app / SaaS</option><option>MVP / prototype</option><option>Automation / workflow</option><option>Hosting / migration / DevOps</option><option>Graphic design / branding</option><option>Other</option>
+              </select>
             </div>
             <div class="field"><label for="cf-budget">Budget (PKR)</label>
-              <select id="cf-budget"><option>PKR 100k – 250k</option><option>PKR 250k – 500k</option><option>PKR 500k – 1M</option><option>PKR 1M – 2.5M</option><option>PKR 2.5M+</option><option>Not sure yet</option></select>
+              <select id="cf-budget" name="budget" toolparamdescription="Approximate budget range in Pakistani Rupees.">
+                <option>PKR 100k – 250k</option><option>PKR 250k – 500k</option><option>PKR 500k – 1M</option><option>PKR 1M – 2.5M</option><option>PKR 2.5M+</option><option>Not sure yet</option>
+              </select>
             </div>
           </div>
           <div class="field"><label for="cf-timeline">Timeline</label>
-            <select id="cf-timeline"><option>ASAP / rush</option><option>2–4 weeks</option><option>1–3 months</option><option>Flexible</option></select>
+            <select id="cf-timeline" name="timeline" toolparamdescription="Desired project timeline.">
+              <option>ASAP / rush</option><option>2–4 weeks</option><option>1–3 months</option><option>Flexible</option>
+            </select>
           </div>
-          <div class="field"><label for="cf-msg">Project brief *</label><textarea id="cf-msg" required placeholder="What are you looking to build? Goals, pages/features, any reference sites…"></textarea></div>
+          <div class="field"><label for="cf-msg">Project brief *</label><textarea id="cf-msg" name="message" required placeholder="What are you looking to build? Goals, pages/features, any reference sites…" toolparamdescription="Project goals, scope, features, and reference sites."></textarea></div>
           <input type="text" id="cf-hp" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
           <div class="hero-cta" style="gap:10px;">
             <button type="submit" id="cfSubmit" class="btn primary">Send brief →</button>

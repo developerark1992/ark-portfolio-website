@@ -200,7 +200,7 @@ const faqs = [
           <a class="ci-arrow" href="/services">All capabilities in detail →</a>
         </div>
 
-        <ol class="svc-deck">
+        <ol class="svc-deck" data-stack data-stack-noshrink>
           {groups.map((g, i) => {
             const copy = skillCopy[g.n] || {
               short: 'Notes coming soon.',
@@ -373,7 +373,13 @@ const faqs = [
         </div>
 
         <div class="ci-plate ci-plate-sticky reveal">
-          <form class="ci-plate-form" id="fxTerminal" novalidate>
+          <form
+            class="ci-plate-form"
+            id="fxTerminal"
+            novalidate
+            toolname="startProjectInquiry"
+            tooldescription="Send a short project inquiry to Abdul Rehman Khan from the home page contact plate."
+          >
             <div class="ci-form-head">
               <img src="/images/logo-icon.webp" alt="" width="40" height="40" decoding="async" />
               <div>
@@ -383,15 +389,15 @@ const faqs = [
             </div>
             <label>
               <span>Name</span>
-              <input type="text" name="name" required autocomplete="name" placeholder="Your name" />
+              <input type="text" name="name" required autocomplete="name" placeholder="Your name" toolparamdescription="Visitor full name." />
             </label>
             <label>
               <span>Email</span>
-              <input type="email" name="email" required autocomplete="email" placeholder="you@company.com" />
+              <input type="email" name="email" required autocomplete="email" placeholder="you@company.com" toolparamdescription="Visitor email for follow-up." />
             </label>
             <label>
               <span>Message</span>
-              <textarea name="message" required rows="4" placeholder="Describe the system you want to ship…"></textarea>
+              <textarea name="message" required rows="4" placeholder="Describe the system you want to ship…" toolparamdescription="Short description of the system or project to ship."></textarea>
             </label>
             <p class="fx-term-status" data-status hidden></p>
             <button type="submit" class="ci-btn ci-btn-paper ci-btn-lg">Send message →</button>

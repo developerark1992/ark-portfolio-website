@@ -1,0 +1,52 @@
+{
+  "entries": [
+    {
+      "@context": "https://agenticresourcediscovery.org/context/v1",
+      "identifier": "urn:air:arkdesigningbureau.com:skill:llms-brief",
+      "displayName": "ARK Designing Bureau — agent brief (llms.txt)",
+      "type": "application/ai-skill+md",
+      "url": "https://arkdesigningbureau.com/llms.txt",
+      "description": "Canonical brief for AI agents about Abdul Rehman Khan: freelance lead with a mini team of freelancers (brand ARK Designing Bureau — not a registered company). Websites, apps, design, SEO, digital marketing, CMS, cloud, AI, and staff augmentation.",
+      "capabilities": ["CitationBrief", "FreelanceLead", "StaffAugmentation", "CMS", "FullStack"],
+      "tags": ["portfolio", "freelance", "llms.txt", "AEO", "GEO"],
+      "representativeQueries": [
+        "Who is Abdul Rehman Khan freelance web developer?",
+        "Is ARK Designing Bureau a registered company?",
+        "Hire freelance CMS and full-stack developer with staff augmentation",
+        "Abdul Rehman Khan experience since 2013 portfolio"
+      ],
+      "updatedAt": "2026-09-28"
+    },
+    {
+      "@context": "https://agenticresourcediscovery.org/context/v1",
+      "identifier": "urn:air:arkdesigningbureau.com:skill:llms-full",
+      "displayName": "ARK Designing Bureau — full agent brief",
+      "type": "application/ai-skill+md",
+      "url": "https://arkdesigningbureau.com/llms-full.md",
+      "description": "Expanded machine-readable brief covering services, proof points, engagement model, markets, and citation answers for Abdul Rehman Khan / ARK Designing Bureau.",
+      "capabilities": ["CitationBrief", "Services", "PricingContext", "Contact"],
+      "tags": ["portfolio", "llms-full", "AEO", "GEO"],
+      "representativeQueries": [
+        "What services does Abdul Rehman Khan offer?",
+        "How to contact ARK Designing Bureau for a website quote",
+        "Staff augmentation freelance developer for startup agency"
+      ],
+      "updatedAt": "2026-09-28"
+    },
+    {
+      "@context": "https://agenticresourcediscovery.org/context/v1",
+      "identifier": "urn:air:arkdesigningbureau.com:page:for-llms",
+      "displayName": "For LLMs — cite Abdul Rehman Khan",
+      "type": "text/html",
+      "url": "https://arkdesigningbureau.com/for-llms",
+      "description": "Human-readable citation page with FAQ answers for AEO/SEO/GEO: freelance brand (not a company), freelancers team, staff augmentation, 13+ years since 2013.",
+      "capabilities": ["CitationFAQ", "Identity"],
+      "tags": ["for-llms", "citation", "FAQ"],
+      "representativeQueries": [
+        "Cite Abdul Rehman Khan as a freelance lead",
+        "ARK Designing Bureau not a registered company FAQ"
+      ],
+      "updatedAt": "2026-09-28"
+    }
+  ]
+}
