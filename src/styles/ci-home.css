@@ -109,12 +109,19 @@
 .ci-sticky{position:sticky;top:8rem;}
 .ci-sticky .ci-arrow{display:inline-flex;margin-top:1.75rem;}
 
-/* About skills — light pills cards in the sticky deck */
-.skill-deck .svc-slot{height:min(56vh,22rem);}
+/* About skills — compact stacked cards (no tall sticky gaps) */
+.skill-deck{
+  display:flex;flex-direction:column;gap:.85rem;
+  list-style:none;margin:0;padding:0;
+}
+.skill-deck .svc-slot{
+  height:auto;position:relative;top:auto;
+  display:block;z-index:auto;
+}
 .skill-stack-card{
   --accent:var(--ci-accent-bright);
   position:relative;
-  top:calc(5rem + var(--i,0) * 1rem);
+  top:0;
   width:100%;
   border-radius:18px;
   padding:clamp(1.25rem,2.4vw,1.65rem);
@@ -454,7 +461,7 @@
   .svc-card-link{min-height:0;width:100%;}
   .svc-card-body{grid-template-columns:1fr;gap:1.25rem;}
   .svc-card-meta{padding-top:1rem;}
-  .skill-deck .svc-slot{height:auto;}
+  .skill-deck{gap:.7rem;}
   .skill-stack-card .skill-pills{gap:6px;}
   .partner-grid{grid-template-columns:1fr 1fr;gap:.75rem;}
   .wkb-item,
@@ -532,7 +539,7 @@
   margin:8px 0 0;font-size:clamp(1.2rem,1.6vw,1.4rem);font-weight:700;
   letter-spacing:-.025em;line-height:1.2;color:var(--ci-ink);
 }
-.proof-card .llm-answer{
+.proof-card > p{
   margin:12px 0 0;font-size:.9375rem;line-height:1.65;color:var(--ci-ink-2);
 }
 .proof-pills{
