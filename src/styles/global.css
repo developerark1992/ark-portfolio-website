@@ -270,21 +270,20 @@ footer{border-top:1px solid var(--line);padding:50px 0;background:var(--bg-2);}
 @media (max-width:640px){.proj-grid{grid-template-columns:1fr;}}
 .proj{position:relative;background:var(--surface);border:1px solid var(--glass-line);border-radius:var(--r-lg);overflow:hidden;transition:transform .4s cubic-bezier(.16,1,.3,1),border-color .3s,box-shadow .4s;}
 .proj:hover{transform:translateY(-7px);border-color:color-mix(in srgb,var(--accent) 45%,var(--glass-line));box-shadow:var(--shadow);}
-.proj-shot{position:relative;aspect-ratio:16/11;overflow:hidden;background:var(--bg-2);container-type:size;}
+.proj-shot{position:relative;aspect-ratio:16/11;overflow:hidden;background:var(--bg-2);}
 .proj-shot img{
-  position:absolute;left:0;top:0;width:100%;height:auto;min-height:100%;
+  position:absolute;left:0;top:0;width:100%;height:100%;
   object-fit:cover;object-position:top center;
-  transform:translateY(0);
-  transition:transform 3.2s cubic-bezier(.22,.61,.36,1);
+  transition:object-position 3.2s cubic-bezier(.22,.61,.36,1);
 }
 .proj:hover .proj-shot img,
 .proj:focus-visible .proj-shot img{
-  transform:translateY(calc(-100% + 100cqh));
+  object-position:center bottom;
 }
 @media (prefers-reduced-motion:reduce){
   .proj-shot img{transition:none;}
   .proj:hover .proj-shot img,
-  .proj:focus-visible .proj-shot img{transform:none;}
+  .proj:focus-visible .proj-shot img{object-position:top center;}
 }
 .proj-cat{position:absolute;top:12px;left:12px;background:rgba(12,10,8,.55);backdrop-filter:blur(8px);color:#F4EFE4;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;padding:5px 11px;border-radius:999px;border:1px solid rgba(255,255,255,.16);}
 .proj-body{padding:22px 22px 24px;}
@@ -876,6 +875,8 @@ section.page-body{padding-top:20px;}
 .fx-hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;padding:50px 0;padding-top:max(50px,74px);background:#030712;color:#e2e8f0;}
 @media (max-width:980px){
   .fx-hero{min-height:auto;overflow:visible;overflow-x:clip;}
+  .fx-orb{display:none;}
+  .fx-photo-badge{backdrop-filter:none;-webkit-backdrop-filter:none;}
 }
 .fx-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(148,163,184,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(148,163,184,.07) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse 75% 65% at 50% 40%,#000 15%,transparent 78%);pointer-events:none;}
 .fx-orb{position:absolute;border-radius:50%;pointer-events:none;opacity:.55;}
