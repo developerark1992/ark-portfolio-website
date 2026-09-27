@@ -13,7 +13,8 @@ export default defineConfig({
     prefetchAll: false,
     defaultStrategy: 'hover',
   },
-  build: { inlineStylesheets: 'auto' },
+  /* Inline CSS — removes Slow-4G stylesheet RTTs that swing mobile Speed Index on PSI. */
+  build: { inlineStylesheets: 'always' },
   vite: {
     build: {
       cssMinify: true,
