@@ -43,9 +43,11 @@
 
       /* ---------- calculator ---------- */
       function initCalc(){
-        if(!document.getElementById('estPrice'))return;
-        if(document.getElementById('estPrice').dataset.ready==='1')return;
-        document.getElementById('estPrice').dataset.ready='1';
+        var page=document.querySelector('.calc-grid');
+        var priceEl=document.getElementById('estPrice');
+        if(!page||!priceEl)return;
+        if(page.dataset.bound==='1')return;
+        page.dataset.bound='1';
         // Single-price model in PKR (solo-freelancer rates, min 100k); converted to other currencies below.
         var TYPES={website:{base:100000,incl:5,label:"Website"},webapp:{base:400000,incl:6,label:"Web app"},ecommerce:{base:250000,incl:8,label:"E-commerce"},saas:{base:900000,incl:6,label:"SaaS platform"},mvp:{base:350000,incl:5,label:"MVP / prototype"}};
         var PER_PAGE=15000;
@@ -108,7 +110,6 @@
           $('breakdown').innerHTML=r.breakdown.map(function(b){return '<li><span>'+b.l+'</span><span>'+b.v+'</span></li>';}).join('')||'<li class="empty">Select options</li>';
           var rng=$('pageRange');rng.style.setProperty('--fill',((rng.value-rng.min)/(rng.max-rng.min)*100)+"%");
         }
-        var page=document.querySelector('.calc-grid');
         page.addEventListener('click',function(e){
           var b=e.target.closest('button[data-val]');if(!b)return;
           var group=b.parentElement.getAttribute('data-group');
@@ -292,7 +293,9 @@
       function initPage(){
         initPreloader();
         setYear(); initReveal(); initMenu(); initLightbox();
-        var later=function(){ initCalc(); initChat(); initStackCards(); };
+        // Calculator must bind immediately — idle delay made Estimate look broken
+        try { initCalc(); } catch (e) {}
+        var later=function(){ try { initChat(); } catch (e) {} try { initStackCards(); } catch (e) {} };
         if('requestIdleCallback' in window) requestIdleCallback(later,{timeout:1800});
         else setTimeout(later,1);
         var launch=document.getElementById('arkLaunch');
