@@ -45,13 +45,13 @@ await sharp(path.join(IMAGES, 'logo-icon.png'))
   .toFile(path.join(IMAGES, 'logo-icon.webp'));
 
 await sharp(path.join(IMAGES, 'signature-modern.png'))
-  .resize({ width: 520, withoutEnlargement: true })
-  .webp({ quality: 80, effort: 6 })
+  .resize({ width: 280, withoutEnlargement: true })
+  .webp({ quality: 64, effort: 6, alphaQuality: 80 })
   .toFile(path.join(IMAGES, 'signature-modern.webp'));
 
 await sharp(path.join(IMAGES, 'signature-modern-dark.png'))
-  .resize({ width: 520, withoutEnlargement: true })
-  .webp({ quality: 80, effort: 6 })
+  .resize({ width: 280, withoutEnlargement: true })
+  .webp({ quality: 64, effort: 6, alphaQuality: 80 })
   .toFile(path.join(IMAGES, 'signature-modern-dark.webp'));
 
 saved += await rewrite(

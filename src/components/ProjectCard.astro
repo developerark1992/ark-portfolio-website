@@ -28,8 +28,7 @@ const tags = [
   class="wkb-item reveal"
   href={p.live || '/projects'}
   target={p.live ? '_blank' : undefined}
-  rel={p.live ? 'noopener' : undefined}
-  aria-label={`${p.title}${host ? `: open ${host}` : ''}`}
+  rel={p.live ? 'noopener noreferrer' : undefined}
 >
   <div class="wkb-shot">
     <img src={thumb} alt="" loading="lazy" decoding="async" width="640" height="420" sizes="(max-width: 720px) 100vw, (max-width: 1200px) 70vw, 640px" draggable="false" />
