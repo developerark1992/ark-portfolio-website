@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://arkdesigningbureau.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://arkdesigningbureau.com/about</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://arkdesigningbureau.com/projects</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://arkdesigningbureau.com/services</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://arkdesigningbureau.com/pricing</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://arkdesigningbureau.com/blog</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://arkdesigningbureau.com/estimate</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://arkdesigningbureau.com/contact</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://arkdesigningbureau.com/</loc><lastmod>2026-09-28</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://arkdesigningbureau.com/for-llms</loc><lastmod>2026-09-28</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://arkdesigningbureau.com/about</loc><lastmod>2026-09-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://arkdesigningbureau.com/projects</loc><lastmod>2026-09-28</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://arkdesigningbureau.com/services</loc><lastmod>2026-09-28</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://arkdesigningbureau.com/pricing</loc><lastmod>2026-09-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://arkdesigningbureau.com/blog</loc><lastmod>2026-09-28</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://arkdesigningbureau.com/estimate</loc><lastmod>2026-09-28</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://arkdesigningbureau.com/contact</loc><lastmod>2026-09-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://arkdesigningbureau.com/llms.txt</loc><lastmod>2026-09-28</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://arkdesigningbureau.com/llms-full.txt</loc><lastmod>2026-09-28</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
 </urlset>

@@ -1,28 +1,66 @@
+# Abdul Rehman Khan — https://arkdesigningbureau.com
+# LLM sources: /llms.txt and /llms-full.txt
+
 User-agent: *
 Allow: /
+Disallow: /dashboard
+Disallow: /api/
 
+# OpenAI
 User-agent: GPTBot
 Allow: /
 
 User-agent: ChatGPT-User
 Allow: /
 
-User-agent: Google-Extended
+User-agent: OAI-SearchBot
 Allow: /
 
-User-agent: PerplexityBot
-Allow: /
-
+# Anthropic
 User-agent: ClaudeBot
 Allow: /
 
 User-agent: anthropic-ai
 Allow: /
 
+User-agent: Claude-Web
+Allow: /
+
+# Google Gemini / AI Overviews training opt-in
+User-agent: Google-Extended
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+# Apple Intelligence
 User-agent: Applebot-Extended
 Allow: /
 
-Disallow: /dashboard
-Disallow: /api/
+# Meta AI
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+# Others commonly used for AI search / grounding
+User-agent: Bytespider
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: Cohere-ai
+Allow: /
+
+User-agent: Diffbot
+Allow: /
+
+User-agent: YouBot
+Allow: /
 
 Sitemap: https://arkdesigningbureau.com/sitemap.xml
+# LLM: https://arkdesigningbureau.com/llms.txt
+# LLM-Full: https://arkdesigningbureau.com/llms-full.txt

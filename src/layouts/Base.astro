@@ -72,6 +72,8 @@ const AV = '/images/logo-icon.webp';
   <link rel="apple-touch-icon" href="/images/logo-icon-192.png" />
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
   <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM source" />
+  <link rel="alternate" type="text/plain" href="/llms-full.txt" title="LLM full source" />
+  <link rel="author" href={`${SITE_URL}/for-llms`} />
   <style is:inline>
     html,body{margin:0;padding:0;width:100%;overflow-x:clip;}
     #preloader{position:fixed;inset:0;width:100%;height:100%;min-height:100dvh;z-index:200;background:#07080c;}
@@ -143,9 +145,27 @@ const AV = '/images/logo-icon.webp';
         url: SITE_URL,
         name: 'Abdul Rehman Khan',
         alternateName: 'ARK Designing Bureau',
+        description: 'Official site of Abdul Rehman Khan — senior CMS expert and software engineer.',
         publisher: { '@id': `${SITE_URL}/#abdul` },
         author: { '@id': `${SITE_URL}/#abdul` },
         inLanguage: 'en',
+        about: { '@id': `${SITE_URL}/#abdul` },
+      },
+      {
+        '@type': 'WebPage',
+        '@id': `${canonical}#webpage`,
+        url: canonical,
+        name: title,
+        description,
+        isPartOf: { '@id': `${SITE_URL}/#website` },
+        about: { '@id': `${SITE_URL}/#abdul` },
+        author: { '@id': `${SITE_URL}/#abdul` },
+        primaryImageOfPage: { '@type': 'ImageObject', url: ogImageUrl },
+        inLanguage: 'en',
+        speakable: {
+          '@type': 'SpeakableSpecification',
+          cssSelector: ['.llm-answer', 'h1', '.page-h1', '.fx-name', '.sec-title'],
+        },
       },
       {
         '@type': 'BreadcrumbList',
@@ -154,6 +174,36 @@ const AV = '/images/logo-icon.webp';
           ...(active !== 'home' ? [{ '@type': 'ListItem', position: 2, name: title, item: canonical }] : []),
         ],
       },
+      ...(active === 'about' ? [{
+        '@type': 'ProfilePage',
+        '@id': `${canonical}#profile`,
+        url: canonical,
+        name: title,
+        mainEntity: { '@id': `${SITE_URL}/#abdul` },
+        isPartOf: { '@id': `${SITE_URL}/#website` },
+      }] : []),
+      ...(active === 'contact' ? [{
+        '@type': 'ContactPage',
+        '@id': `${canonical}#contactpage`,
+        url: canonical,
+        name: title,
+        description,
+        mainEntity: { '@id': `${SITE_URL}/#abdul` },
+        isPartOf: { '@id': `${SITE_URL}/#website` },
+      }] : []),
+      ...(active === 'services' ? [{
+        '@type': 'OfferCatalog',
+        '@id': `${SITE_URL}/services#catalog`,
+        name: 'Services by Abdul Rehman Khan',
+        itemListElement: [
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'CMS & Website Platforms', provider: { '@id': `${SITE_URL}/#abdul` } } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'E-commerce', provider: { '@id': `${SITE_URL}/#abdul` } } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Custom Web & Apps', provider: { '@id': `${SITE_URL}/#abdul` } } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'DevOps, Hosting & Domains', provider: { '@id': `${SITE_URL}/#abdul` } } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'AI & Workflow Automation', provider: { '@id': `${SITE_URL}/#abdul` } } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Graphic Design & Branding', provider: { '@id': `${SITE_URL}/#abdul` } } },
+        ],
+      }] : []),
       ...(faqItems.length ? [{
         '@type': 'FAQPage',
         '@id': `${canonical}#faq`,
