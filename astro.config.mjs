@@ -16,6 +16,7 @@ export default defineConfig({
   build: { inlineStylesheets: 'auto' },
   vite: {
     build: {
+      cssCodeSplit: false,
       cssMinify: true,
       minify: true,
     },
