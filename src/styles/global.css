@@ -276,14 +276,13 @@ footer{border-top:1px solid var(--line);padding:50px 0;background:var(--bg-2);}
   object-fit:cover;object-position:top center;
   transform:translateY(0);
   transition:transform 3.2s cubic-bezier(.22,.61,.36,1);
-  will-change:transform;
 }
 .proj:hover .proj-shot img,
 .proj:focus-visible .proj-shot img{
   transform:translateY(calc(-100% + 100cqh));
 }
 @media (prefers-reduced-motion:reduce){
-  .proj-shot img{transition:none;will-change:auto;}
+  .proj-shot img{transition:none;}
   .proj:hover .proj-shot img,
   .proj:focus-visible .proj-shot img{transform:none;}
 }

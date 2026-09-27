@@ -34,9 +34,9 @@ const tags = [
 >
   <div class="wkb-shot">
     <img
-      src={full || thumb}
+      src={thumb || full}
       srcset={srcset || undefined}
-      sizes="(max-width: 720px) 100vw, (max-width: 1100px) 62vw, 720px"
+      sizes="(max-width: 900px) 320px, (max-width: 1200px) 55vw, 700px"
       alt={`${p.title} website`}
       loading={eager ? 'eager' : 'lazy'}
       decoding="async"
