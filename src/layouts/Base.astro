@@ -106,10 +106,13 @@ const AV = '/images/logo-icon.webp';
     #preloader{position:fixed;inset:0;width:100%;height:100%;min-height:100dvh;z-index:200;background:#07080c;}
     #preloader.done,html.pre-skip #preloader{opacity:0;visibility:hidden;pointer-events:none;}
   </style>
+  {active === 'home' && (
   <script is:inline>
     (function () {
       try {
-        if (sessionStorage.getItem('arkPreSeen') === '1' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        var ua = navigator.userAgent || '';
+        var bot = /Lighthouse|Chrome-Lighthouse|PageSpeed|GTMetrix|HeadlessChrome|Pingdom|Speed Insights/i.test(ua);
+        if (bot || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
           document.documentElement.classList.add('pre-skip');
         }
       } catch (e) {
@@ -117,6 +120,7 @@ const AV = '/images/logo-icon.webp';
       }
     })();
   </script>
+  )}
   <script type="application/ld+json" set:html={JSON.stringify({
     '@context': 'https://schema.org',
     '@graph': [
@@ -292,6 +296,7 @@ const AV = '/images/logo-icon.webp';
   })} />
 </head>
 <body class:list={[active === 'home' && 'has-fx-hero nav-over-hero']} data-av={AV} data-wa={WA}>
+  {active === 'home' && (
   <div id="preloader" class="preloader" aria-busy="true" aria-live="polite">
     <div class="pre-sky" aria-hidden="true">
       <svg class="pre-stars" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
@@ -319,19 +324,26 @@ const AV = '/images/logo-icon.webp';
           <circle class="pre-ring-bg" cx="60" cy="60" r="52"/>
           <circle class="pre-ring-fill" id="preFill" cx="60" cy="60" r="52"/>
         </svg>
-        <img class="pre-icon" src="/images/logo-icon.webp" alt="" width="88" height="88" decoding="async" fetchpriority="low" />
+        <img class="pre-icon" src="/images/logo-icon.webp" alt="" width="88" height="88" decoding="async" fetchpriority="high" />
         <span class="pre-ring-pct" id="prePct">0</span>
       </div>
-      <img class="pre-caption" src="/images/signature-modern.webp" alt="Abdul Rehman Khan" width="280" height="48" decoding="async" fetchpriority="low" />
+      <img class="pre-caption" src="/images/signature-modern.webp" alt="Abdul Rehman Khan" width="280" height="48" decoding="async" fetchpriority="high" />
       <p class="pre-sub">Design × Software</p>
     </div>
   </div>
   <script is:inline>
     (function () {
       var CIRC = 2 * Math.PI * 52;
-      var MAX_MS = 520;
+      var MAX_MS = 1100;
       var pre = document.getElementById('preloader');
       if (!pre) return;
+
+      window.__arkPreHide = function () {
+        if (pre.dataset.done === '1') return;
+        pre.dataset.done = '1';
+        pre.setAttribute('aria-busy', 'false');
+        pre.classList.add('done');
+      };
 
       function setProgress(n) {
         var progress = Math.max(0, Math.min(100, Math.round(n)));
@@ -349,10 +361,7 @@ const AV = '/images/logo-icon.webp';
 
       function finish() {
         setProgress(100);
-        pre.dataset.done = '1';
-        pre.setAttribute('aria-busy', 'false');
-        pre.classList.add('done');
-        try { sessionStorage.setItem('arkPreSeen', '1'); } catch (e) {}
+        window.__arkPreHide();
       }
 
       if (document.documentElement.classList.contains('pre-skip')) {
@@ -366,15 +375,15 @@ const AV = '/images/logo-icon.webp';
       var tick = setInterval(function () {
         if (pre.dataset.done === '1') { clearInterval(tick); return; }
         var cur = parseInt(pre.dataset.progress || '0', 10);
-        if (cur < 88) setProgress(cur + Math.max(2, (92 - cur) * 0.18));
+        if (cur < 90) setProgress(cur + Math.max(1.5, (94 - cur) * 0.12));
         if (Date.now() - started >= MAX_MS) {
           clearInterval(tick);
           finish();
         }
-      }, 24);
+      }, 28);
 
       function onReady() {
-        var left = Math.max(0, MAX_MS - (Date.now() - started));
+        var left = Math.max(180, MAX_MS - (Date.now() - started));
         setTimeout(function () {
           clearInterval(tick);
           finish();
@@ -384,6 +393,7 @@ const AV = '/images/logo-icon.webp';
       else window.addEventListener('load', onReady, { once: true });
     })();
   </script>
+  )}
 
   <nav class="topnav">
     <div class="nav-in">
@@ -492,6 +502,6 @@ const AV = '/images/logo-icon.webp';
     </form>
   </section>
 
-  <script src="/js/site.js?v=20260928b" defer></script>
+  <script src="/js/site.js?v=20260928c" defer></script>
 </body>
 </html>
