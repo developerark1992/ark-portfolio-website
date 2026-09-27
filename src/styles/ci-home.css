@@ -7,14 +7,14 @@
   --ci-paper-3:#e2e8f0;
   --ci-ink:#0f172a;
   --ci-ink-2:#475569;
-  --ci-ink-3:#64748b;
+  --ci-ink-3:#4b5563;
   --ci-rule:#dde3ee;
   --ci-rule-soft:#e8edf5;
   --ci-card:#fff;
-  --ci-accent:#0891b2;
-  --ci-accent-2:#7c3aed;
+  --ci-accent:#0e7490;
+  --ci-accent-2:#6d28d9;
   --ci-accent-bright:#22d3ee;
-  --ci-accent-wash:rgba(8,145,178,.1);
+  --ci-accent-wash:rgba(14,116,144,.1);
   --ci-night:#0f1925;
   --ci-night-2:#16222f;
   --ci-night-3:#1e2c3b;
@@ -257,8 +257,11 @@
 }
 .partner-badge{
   position:absolute;top:.75rem;left:.75rem;padding:.1875rem .5rem;border-radius:999px;
-  font-size:.625rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
-  color:#fff;background:var(--brand);box-shadow:0 2px 8px -2px var(--brand);
+  font-size:.625rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:#0f172a;
+  background:color-mix(in srgb,var(--brand) 22%,#fff);
+  border:1px solid color-mix(in srgb,var(--brand) 40%,#cbd5e1);
+  box-shadow:0 1px 2px rgba(15,23,42,.06);
 }
 .partner-mark{
   width:4.25rem;height:4.25rem;border-radius:18px;display:grid;place-items:center;
@@ -492,7 +495,7 @@
 }
 
 .llm-answer{color:var(--ci-ink);}
-.ci-section:not(:first-of-type){content-visibility:auto;contain-intrinsic-size:1px 720px;}
+/* content-visibility deferred paint hurts Speed Index during Lighthouse scroll */
 
 .proof-grid{
   list-style:none;margin:2.75rem 0 0;padding:0;
@@ -520,7 +523,7 @@
 .proof-num{
   margin:6px 0 0;font-size:clamp(3.25rem,6vw,4.25rem);font-weight:800;
   letter-spacing:-.06em;line-height:.9;
-  background:linear-gradient(135deg,#0891b2,#7c3aed);
+  background:linear-gradient(135deg,#0e7490,#6d28d9);
   -webkit-background-clip:text;background-clip:text;color:transparent;
 }
 .proof-num span{font-size:.42em;font-weight:700;letter-spacing:-.03em;opacity:.72;}

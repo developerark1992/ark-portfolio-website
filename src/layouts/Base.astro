@@ -1,6 +1,5 @@
 ---
 import '../styles/global.css';
-import { ClientRouter } from 'astro:transitions';
 import BrandLogo from '../components/BrandLogo.astro';
 import { siWhatsapp, siGithub, siFacebook, siInstagram, siX } from 'simple-icons';
 const WA = '923159429998';
@@ -67,7 +66,16 @@ const AV = '/images/logo-icon.webp';
   <meta name="twitter:title" content={title} />
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={ogImageUrl} />
-  {active === 'home' && <link rel="preload" as="image" href="/images/photo-400.webp" />}
+  {(active === 'home' || active === 'about') && (
+    <link
+      rel="preload"
+      as="image"
+      href="/images/photo-400.webp"
+      imagesrcset="/images/photo-400.webp 400w, /images/photo-640.webp 640w"
+      imagesizes="(max-width: 720px) 70vw, 520px"
+      fetchpriority="high"
+    />
+  )}
   <link rel="icon" href="/images/favicon.png" type="image/png" />
   <link rel="apple-touch-icon" href="/images/logo-icon-192.png" />
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
@@ -76,8 +84,6 @@ const AV = '/images/logo-icon.webp';
   <link rel="author" href={`${SITE_URL}/for-llms`} />
   <style is:inline>
     html,body{margin:0;padding:0;width:100%;overflow-x:clip;}
-    #preloader{position:fixed;inset:0;width:100%;height:100%;min-height:100dvh;z-index:200;background:#07080c;}
-    #preloader.done{opacity:0;visibility:hidden;pointer-events:none;}
   </style>
   <script type="application/ld+json" set:html={JSON.stringify({
     '@context': 'https://schema.org',
@@ -252,150 +258,8 @@ const AV = '/images/logo-icon.webp';
       }] : []),
     ],
   })} />
-  <ClientRouter />
 </head>
-<body data-av={AV} data-wa={WA}>
-  <div id="preloader" class="preloader done" transition:persist="ark-preloader" aria-busy="false" aria-live="polite" data-done="1">
-    <div class="pre-sky" aria-hidden="true">
-      <svg class="pre-stars" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
-        <defs>
-          <radialGradient id="preGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#c8ff5a" stop-opacity=".55"/>
-            <stop offset="100%" stop-color="#c8ff5a" stop-opacity="0"/>
-          </radialGradient>
-        </defs>
-        <g class="pre-star-layer">
-          <circle cx="8" cy="12" r=".35" fill="#fff"/><circle cx="18" cy="28" r=".25" fill="#fff"/><circle cx="32" cy="9" r=".4" fill="#c8ff5a"/>
-          <circle cx="44" cy="22" r=".2" fill="#fff"/><circle cx="56" cy="14" r=".3" fill="#fff"/><circle cx="68" cy="30" r=".35" fill="#ff3d00"/>
-          <circle cx="78" cy="8" r=".25" fill="#fff"/><circle cx="90" cy="20" r=".4" fill="#fff"/><circle cx="12" cy="48" r=".3" fill="#fff"/>
-          <circle cx="26" cy="58" r=".2" fill="#c8ff5a"/><circle cx="40" cy="42" r=".35" fill="#fff"/><circle cx="54" cy="55" r=".25" fill="#fff"/>
-          <circle cx="70" cy="48" r=".3" fill="#fff"/><circle cx="84" cy="60" r=".2" fill="#ff3d00"/><circle cx="94" cy="44" r=".35" fill="#fff"/>
-          <circle cx="6" cy="72" r=".25" fill="#fff"/><circle cx="22" cy="84" r=".4" fill="#c8ff5a"/><circle cx="38" cy="76" r=".2" fill="#fff"/>
-          <circle cx="52" cy="88" r=".3" fill="#fff"/><circle cx="66" cy="78" r=".25" fill="#fff"/><circle cx="82" cy="90" r=".35" fill="#fff"/>
-          <circle cx="96" cy="74" r=".2" fill="#c8ff5a"/><circle cx="14" cy="36" r=".15" fill="#fff"/><circle cx="60" cy="36" r=".2" fill="#fff"/>
-        </g>
-      </svg>
-      <svg class="pre-current" viewBox="0 0 800 600" preserveAspectRatio="none">
-        <path class="pre-flow f1" d="M-40 120 C160 40 320 220 520 100 S780 60 860 140" fill="none"/>
-        <path class="pre-flow f2" d="M-60 300 C140 220 360 380 560 260 S820 300 900 220" fill="none"/>
-        <path class="pre-flow f3" d="M-20 480 C180 400 340 520 560 440 S800 480 880 400" fill="none"/>
-      </svg>
-      <div class="pre-orb pre-orb-a"></div>
-      <div class="pre-orb pre-orb-b"></div>
-    </div>
-
-    <div class="preloader-inner">
-      <div class="pre-ring-wrap" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="preBar">
-        <svg class="pre-ring" viewBox="0 0 120 120" aria-hidden="true">
-          <circle class="pre-ring-bg" cx="60" cy="60" r="52"/>
-          <circle class="pre-ring-fill" id="preFill" cx="60" cy="60" r="52"/>
-        </svg>
-        <img class="pre-icon" src="/images/logo-icon.webp" alt="" width="88" height="88" decoding="async" loading="lazy" />
-        <span class="pre-ring-pct" id="prePct">0</span>
-      </div>
-      <img class="pre-caption" src="/images/signature-modern.webp" alt="Abdul Rehman Khan" width="520" height="110" decoding="async" loading="lazy" />
-      <p class="pre-sub">Design × Software</p>
-    </div>
-  </div>
-  <script is:inline>
-    (function () {
-      var CIRC = 2 * Math.PI * 52;
-      var MIN_MS = 480;
-      var MAX_MS = 1400;
-
-      function preEl() { return document.getElementById('preloader'); }
-
-      function setProgress(n) {
-        var pre = preEl();
-        if (!pre) return;
-        var cur = parseInt(pre.dataset.progress || '0', 10);
-        var progress = Math.max(cur, Math.min(100, Math.round(n)));
-        pre.dataset.progress = String(progress);
-        var fill = document.getElementById('preFill');
-        var pctEl = document.getElementById('prePct');
-        var bar = document.getElementById('preBar');
-        if (fill) {
-          fill.style.strokeDasharray = String(CIRC);
-          fill.style.strokeDashoffset = String(CIRC * (1 - progress / 100));
-        }
-        if (pctEl) pctEl.textContent = String(progress);
-        if (bar) bar.setAttribute('aria-valuenow', String(progress));
-      }
-
-      function show() {
-        var pre = preEl();
-        if (!pre) return;
-        if (pre.dataset.showing === '1') return;
-        pre.dataset.showing = '1';
-        delete pre.dataset.done;
-        pre.dataset.progress = '0';
-        pre.classList.remove('done');
-        pre.setAttribute('aria-busy', 'true');
-        pre.style.opacity = '';
-        pre.style.visibility = '';
-        pre.style.pointerEvents = '';
-        setProgress(6);
-        pre.dataset.started = String(Date.now());
-        if (pre._tick) clearInterval(pre._tick);
-        pre._tick = setInterval(function () {
-          if (!preEl() || pre.dataset.done === '1') {
-            clearInterval(pre._tick);
-            return;
-          }
-          var cur = parseInt(pre.dataset.progress || '0', 10);
-          if (cur < 86) setProgress(cur + Math.max(1, (90 - cur) * 0.14));
-        }, 28);
-      }
-
-      function hide() {
-        var pre = preEl();
-        if (!pre || pre.dataset.done === '1') return;
-        var started = parseInt(pre.dataset.started || String(Date.now()), 10);
-        var wait = Math.max(0, MIN_MS - (Date.now() - started));
-        if (pre._hideTo) clearTimeout(pre._hideTo);
-        pre._hideTo = setTimeout(function () {
-          var node = preEl();
-          if (!node || node.dataset.done === '1') return;
-          if (node._tick) clearInterval(node._tick);
-          var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-          if (reduce) {
-            setProgress(100);
-            node.dataset.done = '1';
-            node.dataset.showing = '0';
-            node.setAttribute('aria-busy', 'false');
-            node.classList.add('done');
-            return;
-          }
-          var rush = setInterval(function () {
-            var cur = parseInt(node.dataset.progress || '0', 10);
-            setProgress(cur + Math.max(5, (100 - cur) * 0.32));
-            if (parseInt(node.dataset.progress || '0', 10) >= 100) {
-              clearInterval(rush);
-              node.dataset.done = '1';
-              node.dataset.showing = '0';
-              node.setAttribute('aria-busy', 'false');
-              node.classList.add('done');
-            }
-          }, 22);
-        }, wait);
-      }
-
-      window.__arkPreShow = show;
-      window.__arkPreHide = hide;
-
-      if (!window.__arkPreBound) {
-        window.__arkPreBound = true;
-        document.addEventListener('astro:before-preparation', function () {
-          show();
-        });
-        document.addEventListener('astro:page-load', function () {
-          hide();
-        });
-      }
-
-      // First paint stays clear for LCP. The overlay only appears on in-app navigations.
-    })();
-  </script>
+<body class:list={[active === 'home' && 'has-fx-hero nav-over-hero']} data-av={AV} data-wa={WA}>
 
   <nav class="topnav">
     <div class="nav-in">
@@ -467,8 +331,8 @@ const AV = '/images/logo-icon.webp';
   </div>
 
   <!-- chatbot -->
-  <button class="ark-launch" id="arkLaunch" aria-label="Open chat assistant">
-    <span class="pg"></span>
+  <button class="ark-launch" id="arkLaunch" type="button">
+    <span class="pg" aria-hidden="true"></span>
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5.5h16v11H8l-4 3.5V5.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
     Ask about me
   </button>
