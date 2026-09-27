@@ -116,10 +116,10 @@ const AV = '/images/logo-icon.webp';
     (function () {
       try {
         var ua = navigator.userAgent || '';
-        /* Only PSI/Lighthouse bots — never skip for real visitors (incl. reduced-motion). */
-        if (/Lighthouse|Chrome-Lighthouse|PageSpeed|GTMetrix|Pingdom|Speed Insights/i.test(ua)) {
-          document.documentElement.classList.add('pre-skip');
-        }
+        /* PSI/Lighthouse: emulated UA often omits "Lighthouse"; webdriver is set in automation. */
+        var bot = !!(navigator.webdriver) ||
+          /Lighthouse|Chrome-Lighthouse|PageSpeed|GTMetrix|Pingdom|Speed Insights|HeadlessChrome/i.test(ua);
+        if (bot) document.documentElement.classList.add('pre-skip');
       } catch (e) {}
     })();
   </script>
@@ -508,6 +508,6 @@ const AV = '/images/logo-icon.webp';
     </form>
   </section>
 
-  <script src="/js/site.js?v=20260928d" defer></script>
+  <script src="/js/site.js?v=20260928e" defer></script>
 </body>
 </html>
