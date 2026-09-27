@@ -1056,4 +1056,13 @@ section.page-body{padding-top:20px;}
 .llm-clip h3{margin:22px 0 8px;font-size:20px;}
 .llm-clip p{margin:0 0 12px;color:var(--ink-soft);line-height:1.6;}
 .llm-answer{color:var(--ink);}
+/* Machine/GEO source only — kept in HTML for crawlers, hidden from visitors */
+.geo-source{
+  position:absolute !important;
+  width:1px !important;height:1px !important;
+  padding:0 !important;margin:-1px !important;
+  overflow:hidden !important;clip:rect(0,0,0,0) !important;
+  white-space:nowrap !important;border:0 !important;
+  clip-path:inset(50%) !important;
+}
 footer{content-visibility:auto;contain-intrinsic-size:1px 280px;}
