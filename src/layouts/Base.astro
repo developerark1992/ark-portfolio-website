@@ -90,6 +90,8 @@ const AV = '/images/logo-icon.webp';
   )}
   <link rel="icon" href="/images/favicon.png" type="image/png" />
   <link rel="apple-touch-icon" href="/images/logo-icon-192.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="theme-color" content="#0891b2" />
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
   <link rel="describedby" href="/llms.txt" />
   {markdownHref && <link rel="alternate" type="text/markdown" href={markdownHref} title="Markdown version" />}
@@ -420,8 +422,9 @@ const AV = '/images/logo-icon.webp';
       </a>
       <div class="foot-social">
         {socials.map((s) => (
-          <a href={s.href} target="_blank" rel="noopener" aria-label={s.n} title={s.n}>
+          <a href={s.href} target="_blank" rel="noopener" aria-label={`${s.n} profile of Abdul Rehman Khan`} title={`${s.n} — Abdul Rehman Khan`}>
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d={s.path} /></svg>
+            <span class="visually-hidden">{s.n} profile of Abdul Rehman Khan</span>
           </a>
         ))}
       </div>
@@ -433,8 +436,9 @@ const AV = '/images/logo-icon.webp';
     </div>
   </footer>
 
-  <a class="wa-float" href={`https://wa.me/${WA}`} target="_blank" rel="noopener" aria-label="Chat on WhatsApp" title="Chat on WhatsApp">
+  <a class="wa-float" href={`https://wa.me/${WA}`} target="_blank" rel="noopener" aria-label="Chat with Abdul Rehman Khan on WhatsApp" title="Chat on WhatsApp">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d={siWhatsapp.path} /></svg>
+    <span class="visually-hidden">Chat with Abdul Rehman Khan on WhatsApp</span>
   </a>
 
   <!-- global project lightbox -->
