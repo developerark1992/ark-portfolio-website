@@ -109,17 +109,26 @@
 .ci-sticky{position:sticky;top:8rem;}
 .ci-sticky .ci-arrow{display:inline-flex;margin-top:1.75rem;}
 
-/* About skills — sticky stack kept; shorter slots = less empty gap */
-.skill-deck{display:block;}
+/* About skills sticky stack — gap between cards; last card not sticky so Certifications stays clear */
+.skill-deck{
+  display:flex;
+  flex-direction:column;
+  gap:1.25rem;
+}
 .skill-deck .svc-slot{
-  position:sticky;top:0;
-  height:min(34vh,15rem);
+  position:sticky;
+  top:calc(5.25rem + var(--i,0) * 1.05rem);
+  height:auto;
   z-index:calc(1 + var(--i,0));
+}
+.skill-deck .svc-slot:last-child{
+  position:relative;
+  top:auto;
 }
 .skill-stack-card{
   --accent:var(--ci-accent-bright);
   position:relative;
-  top:calc(5rem + var(--i,0) * 1rem);
+  top:0;
   width:100%;
   border-radius:18px;
   padding:clamp(1.25rem,2.4vw,1.65rem);
@@ -134,6 +143,14 @@
     0 0 40px -22px color-mix(in srgb,var(--accent) 35%,transparent);
   transform:none !important;
   transform-origin:center top;
+}
+#skills.site-ci{
+  padding-bottom:clamp(2.5rem,5vw,4rem);
+}
+.about-edu{
+  position:relative;
+  z-index:5;
+  isolation:isolate;
 }
 .skill-stack-card .num{
   font-family:var(--mono);font-size:11px;letter-spacing:.08em;
@@ -485,7 +502,10 @@
   .svc-deck .svc-card-link{min-height:0;width:100%;}
   .svc-deck .svc-card-body{grid-template-columns:1fr;gap:1.25rem;}
   .svc-deck .svc-card-meta{padding-top:1rem;}
-  .skill-deck .svc-slot{height:auto;}
+  .skill-deck .svc-slot,
+  .skill-deck .svc-slot:last-child{
+    position:relative;top:auto;height:auto;
+  }
   .skill-stack-card .skill-pills{gap:6px;}
   .partner-grid{grid-template-columns:1fr 1fr;gap:.75rem;}
   .wkb-item,
