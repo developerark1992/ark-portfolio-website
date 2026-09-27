@@ -1,6 +1,9 @@
 ---
-const { class: className = '', light = false, size = 'md', lazy = false } = Astro.props;
+const { class: className = '', light = false, size = 'md', lazy = false, prefer = 'light' } = Astro.props;
 const loading = lazy ? 'lazy' : undefined;
+/* On dark heroes only the light signature is visible at first paint — defer the other. */
+const loadOnLight = lazy ? 'lazy' : prefer === 'dark' ? 'lazy' : undefined;
+const loadOnDark = lazy ? 'lazy' : prefer === 'light' ? 'lazy' : undefined;
 ---
 <span class:list={['hlogo', light && 'hlogo-light', size === 'lg' && 'hlogo-lg', className]}>
   <img class="hlogo-icon" src="/images/logo-icon.webp" alt="" width="44" height="44" decoding="async" loading={loading} />
@@ -12,7 +15,7 @@ const loading = lazy ? 'lazy' : undefined;
       width="280"
       height="48"
       decoding="async"
-      loading={loading}
+      loading={loadOnLight}
     />
     <img
       class="hlogo-sig hlogo-sig-on-dark"
@@ -21,7 +24,7 @@ const loading = lazy ? 'lazy' : undefined;
       width="280"
       height="48"
       decoding="async"
-      loading={loading}
+      loading={loadOnDark}
     />
   </span>
   <span class="visually-hidden">Abdul Rehman Khan</span>

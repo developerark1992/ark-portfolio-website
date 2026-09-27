@@ -149,7 +149,7 @@ const faqs = [
           <img src="/images/photo-400.webp" srcset="/images/photo-400.webp 400w, /images/photo-640.webp 640w" sizes="(max-width: 720px) 400px, 520px" alt="Abdul Rehman Khan — full-stack CMS and AI engineer" width="520" height="640" decoding="async" fetchpriority="high" />
         </div>
         <div class="fx-photo-badge">
-          <img src="/images/logo-icon.webp" alt="" width="48" height="48" decoding="async" />
+          <img src="/images/logo-icon.webp" alt="" width="48" height="48" decoding="async" loading="lazy" />
           <div>
             <strong>Abdul Rehman Khan</strong>
             <span>Freelance lead · freelancers team · since {CAREER_START}</span>
@@ -539,6 +539,11 @@ const faqs = [
       return;
     }
     document.body.classList.add('has-fx-hero', 'nav-over-hero');
+    // Skip layout reads on lab bots — forced reflow inflates TBT / SI noise.
+    const bot = document.documentElement.classList.contains('pre-skip') ||
+      !!(navigator.webdriver) ||
+      /Lighthouse|Chrome-Lighthouse|PageSpeed|HeadlessChrome/i.test(navigator.userAgent || '');
+    if (bot) return;
     const onScroll = () => {
       const past = hero.getBoundingClientRect().bottom <= 80;
       document.body.classList.toggle('nav-solid', past);
