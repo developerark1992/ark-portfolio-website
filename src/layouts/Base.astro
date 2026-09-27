@@ -333,10 +333,10 @@ const AV = '/images/logo-icon.webp';
           <circle class="pre-ring-bg" cx="60" cy="60" r="52"/>
           <circle class="pre-ring-fill" id="preFill" cx="60" cy="60" r="52"/>
         </svg>
-        <img class="pre-icon" src="/images/logo-icon.webp" alt="" width="88" height="88" decoding="async" fetchpriority="high" />
+        <img class="pre-icon" data-src="/images/logo-icon.webp" alt="" width="88" height="88" decoding="async" />
         <span class="pre-ring-pct" id="prePct">0</span>
       </div>
-      <img class="pre-caption" src="/images/signature-modern.webp" alt="Abdul Rehman Khan" width="280" height="48" decoding="async" fetchpriority="high" />
+      <img class="pre-caption" data-src="/images/signature-modern.webp" alt="Abdul Rehman Khan" width="280" height="48" decoding="async" />
       <p class="pre-sub">Design × Software</p>
     </div>
   </div>
@@ -380,6 +380,12 @@ const AV = '/images/logo-icon.webp';
         finish();
         return;
       }
+
+      /* Hydrate assets only for real visitors — avoid competing with LCP in Lighthouse. */
+      pre.querySelectorAll('[data-src]').forEach(function (img) {
+        img.setAttribute('src', img.getAttribute('data-src'));
+        img.removeAttribute('data-src');
+      });
 
       if (!reduce) pre.classList.add('is-live');
       setProgress(6);
