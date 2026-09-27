@@ -1,8 +1,9 @@
 import {
   siWordpress, siWoocommerce, siShopify, siWebflow, siWix,
   siHtml5, siCss, siJavascript, siReact, siTailwindcss, siSass,
+  siAstro, siNextdotjs,
   siPhp, siMysql, siDotnet, siPostgresql, siFirebase,
-  siGit, siN8n, siMake, siZapier, siFigma, siCpanel,
+  siGit, siN8n, siMake, siZapier, siFigma, siCpanel, siAnthropic, siClaude,
 } from 'simple-icons';
 
 const cloud = 'M6.8 19.5A4.8 4.8 0 0 1 6 10a6.2 6.2 0 0 1 12-1.1 4.9 4.9 0 0 1-.6 9.6H6.8Z';
@@ -27,20 +28,20 @@ export const groups = [
     items: [I(siWordpress), I(siWoocommerce, 'WooCommerce'), I(siShopify), I(siWebflow), I(siWix), C('OpenCart', cart)],
   },
   {
-    n: '02', t: 'Frontend & Core', tone: 'violet',
-    items: [I(siHtml5, 'HTML5'), I(siCss, 'CSS3'), I(siJavascript, 'JavaScript'), C('ES6+', es6), I(siReact), I(siTailwindcss, 'Tailwind CSS'), I(siSass, 'SASS')],
+    n: '02', t: 'Frontend & Full-Stack Web', tone: 'violet',
+    items: [I(siAstro, 'Astro'), I(siNextdotjs, 'Next.js'), I(siReact), I(siHtml5, 'HTML5'), I(siCss, 'CSS3'), I(siJavascript, 'JavaScript'), I(siTailwindcss, 'Tailwind CSS'), I(siSass, 'SASS'), C('ES6+', es6)],
   },
   {
-    n: '03', t: 'Backend & Infrastructure', tone: 'cyan',
-    items: [I(siPhp), I(siMysql), I(siDotnet, 'C# / .NET'), I(siPostgresql, 'PostgreSQL'), C('REST APIs', api), I(siFirebase)],
+    n: '03', t: 'Backend & .NET', tone: 'cyan',
+    items: [I(siDotnet, 'C# / .NET'), I(siPhp), I(siMysql), I(siPostgresql, 'PostgreSQL'), C('REST APIs', api), I(siFirebase)],
   },
   {
     n: '04', t: 'DevOps & Cloud', tone: 'violet',
     items: [C('AWS', cloud), C('EC2 / Lightsail', cloud), C('Route 53', dns), I(siGit), C('CI/CD', cicd), C('DNS / SSL', dns)],
   },
   {
-    n: '05', t: 'Automation & Workflows', tone: 'cyan',
-    items: [I(siN8n, 'n8n'), I(siMake), I(siZapier), C('API integrations', api)],
+    n: '05', t: 'AI Engineering & Automation', tone: 'cyan',
+    items: [I(siClaude, 'Claude'), I(siAnthropic, 'Anthropic'), C('ChatGPT / OpenAI', api), I(siN8n, 'n8n'), I(siMake), I(siZapier), C('AI agents & ops', api)],
   },
   {
     n: '06', t: 'Design & Creative', tone: 'violet',
@@ -59,8 +60,8 @@ export const groups = [
 ];
 
 export const marqueeTech = [
-  I(siWordpress), I(siWoocommerce, 'WooCommerce'), I(siShopify), I(siWebflow),
-  C('AWS', cloud), I(siN8n, 'n8n'), I(siReact), I(siPhp),
+  I(siWordpress), I(siAstro, 'Astro'), I(siNextdotjs, 'Next.js'), I(siReact),
+  I(siDotnet, '.NET'), C('AWS', cloud), I(siClaude, 'AI'), I(siN8n, 'n8n'),
 ];
 
 export const allTech = groups.flatMap((g) => g.items);

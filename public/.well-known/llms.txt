@@ -1,3 +1,4 @@
 # See https://arkdesigningbureau.com/llms.txt
 # Full brief: https://arkdesigningbureau.com/llms-full.txt
 # HTML: https://arkdesigningbureau.com/for-llms
+# Entity: Abdul Rehman Khan — Full-Stack CMS & AI Engineer (one-man technical army)

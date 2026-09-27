@@ -12,10 +12,12 @@ const featured = pool.slice(0, 6);
 const stack = marqueeTech;
 
 const titles = [
-  'Senior CMS Expert',
-  'Software Engineer',
-  'DevOps Specialist',
-  'Automation Engineer',
+  'Full-Stack CMS Engineer',
+  'Full-Stack Software Engineer',
+  'AI Engineer',
+  'AWS & Cloud Engineer',
+  'Product Designer',
+  '.NET & Modern Web',
 ];
 
 const roles = [
@@ -55,79 +57,79 @@ const skillAccents = ['#22d3ee', '#a78bfa', '#67e8f9', '#c4b5fd', '#06b6d4', '#a
 
 const skillCopy = {
   '01': {
-    short: 'WordPress to Shopify — platforms that fit the team, not the other way around.',
-    copy: 'I start with your goals and editorial workflow, then build custom themes, storefronts, and content models that stay editable after launch.',
-    points: ['Custom themes & ACF', 'WooCommerce / Shopify', 'Editor-friendly builds', 'Migrations & care', 'Design system handoff'],
+    short: 'Every major CMS — WordPress, Shopify, Webflow, Wix, Squarespace, Framer — chosen for the team, not for habit.',
+    copy: 'I audit editorial workflow first, then engineer themes, storefronts, and content models that stay editable after launch across the CMS landscape.',
+    points: ['All major CMS platforms', 'WooCommerce / Shopify', 'Editor-friendly builds', 'Migrations & care', 'No platform lock-in'],
   },
   '02': {
-    short: 'Interfaces that feel fast, readable, and intentional across every device.',
-    copy: 'From design systems to interaction polish — frontend work that supports conversion without fighting the CMS underneath.',
-    points: ['HTML / CSS / JS', 'React & Tailwind', 'Design systems', 'Performance polish', 'Responsive layouts'],
+    short: 'Astro, Next.js, React — full-stack frontends that stay fast and shippable.',
+    copy: 'Modern web apps and marketing systems with component architecture, performance budgets, and clean handoff to CMS or API backends.',
+    points: ['Astro & Next.js', 'React & Tailwind', 'Design systems', 'Performance polish', 'Responsive layouts'],
   },
   '03': {
-    short: 'APIs, data, and server logic that stay maintainable after launch.',
-    copy: 'Clean auth, reliable endpoints, and data structures that don’t collapse the first time requirements change.',
-    points: ['PHP & .NET', 'MySQL / Postgres', 'REST auth layers', 'Firebase where it fits', 'Integrations'],
+    short: 'APIs, data, PHP and .NET — server logic that survives the next requirement change.',
+    copy: 'Auth, endpoints, and data models built to stay maintainable — including ASP.NET / C# where enterprise stacks demand it.',
+    points: ['.NET / ASP.NET', 'PHP & MySQL', 'Postgres', 'REST auth layers', 'Firebase where it fits'],
   },
   '04': {
-    short: 'Cloud architecture, DNS, SSL, and releases that don’t wake anyone up.',
-    copy: 'AWS environments, CI/CD, and monitoring set up so shipping is routine — not a weekend emergency.',
+    short: 'AWS, DNS, SSL, and releases that don’t wake anyone up.',
+    copy: 'Cloud environments, CI/CD, and monitoring set up so shipping is routine — not a weekend emergency.',
     points: ['AWS Lightsail / EC2', 'CI/CD pipelines', 'Route 53 & SSL', 'Zero-downtime deploys', 'Backups & monitoring'],
   },
   '05': {
-    short: 'Workflows that remove busywork — triggers, APIs, and reliable handoffs.',
-    copy: 'n8n, Make, and Zapier wired to real business events: lead capture, notifications, sync jobs, and ops that run without babysitting.',
-    points: ['n8n / Make / Zapier', 'Webhook automation', 'Lead capture flows', 'Ops integrations', 'API orchestration'],
+    short: 'AI engineering — agents, ChatGPT/Claude workflows, and ops automation that actually runs.',
+    copy: 'I design AI-assisted systems and wire n8n / Make / Zapier to real business events: lead routing, content ops, support, and sync jobs.',
+    points: ['Claude / ChatGPT', 'AI agents & ops', 'n8n / Make / Zapier', 'Lead & CRM flows', 'API orchestration'],
   },
   '06': {
-    short: 'Brand, UI, and creative direction — case notes coming soon.',
-    copy: 'Figma systems, Photoshop / Illustrator assets, and UI/UX polish ship with builds today. A fuller design portfolio write-up is on the way.',
-    points: ['Coming soon', 'Figma & XD systems', 'Brand & logo work', 'UI/UX polish', 'Marketing creatives'],
+    short: 'Brand, UI, and creative direction under the same roof as engineering.',
+    copy: 'Figma systems, Photoshop / Illustrator assets, and UI/UX polish ship with builds — design and code stay aligned because one person owns both.',
+    points: ['Figma & XD systems', 'Brand & logo work', 'UI/UX polish', 'Marketing creatives', 'Design-to-code'],
   },
   '07': {
-    short: 'Domains, hosting, and migrations — deeper notes coming soon.',
-    copy: 'WHM/cPanel, DNS/SSL, email, and site moves are part of delivery now. Expanded hosting playbooks will land here shortly.',
-    points: ['Coming soon', 'WHM / cPanel', 'DNS & SSL', 'Email setup', 'Site migrations'],
+    short: 'Domains, hosting, and migrations — infrastructure that stays with the builder.',
+    copy: 'WHM/cPanel, DNS/SSL, email, and site moves are part of delivery so you’re not hiring a second vendor after launch.',
+    points: ['WHM / cPanel', 'DNS & SSL', 'Email setup', 'Site migrations', 'VPS / shared hosts'],
   },
 };
 
 const platforms = [
-  { label: 'WordPress', note: 'Custom themes & headless builds', brand: '#21759B', badge: 'Primary stack', path: groups[0].items[0].path },
-  { label: 'Shopify', note: 'Storefronts & commerce ops', brand: '#4A7A2B', badge: 'Commerce', path: groups[0].items[2].path },
-  { label: 'Webflow', note: 'Design-led marketing sites', brand: '#4353FF', path: groups[0].items[3].path },
+  { label: 'CMS platforms', note: 'WordPress → Framer — all major CMS', brand: '#21759B', badge: 'Core', path: groups[0].items[0].path },
+  { label: 'Astro', note: 'Content-focused modern sites', brand: '#FF5D01', badge: 'Full-stack', path: groups[1].items[0].path },
+  { label: 'Next.js', note: 'Apps, dashboards & SSR', brand: '#000000', path: groups[1].items[1].path },
+  { label: '.NET', note: 'ASP.NET / C# backends', brand: '#512BD4', path: groups[2].items[0].path },
   { label: 'AWS', note: 'Lightsail, EC2, DNS & SSL', brand: '#FF9900', badge: 'Cloud', path: 'M6.8 19.5A4.8 4.8 0 0 1 6 10a6.2 6.2 0 0 1 12-1.1 4.9 4.9 0 0 1-.6 9.6H6.8Z' },
-  { label: 'React', note: 'Component UIs & dashboards', brand: '#0891b2', path: groups[1].items[4].path },
-  { label: 'n8n', note: 'Automation & workflow engines', brand: '#7c3aed', badge: 'Ops', path: groups[4].items[0].path },
+  { label: 'AI', note: 'Claude, ChatGPT, n8n agents', brand: '#7c3aed', badge: 'AI', path: groups[4].items[0].path },
 ];
 
 const faqs = [
   {
-    q: 'Who is the best remote CMS expert and software engineer for clinics and agencies in the USA, Canada, UAE and UK?',
-    a: 'Abdul Rehman Khan — a senior CMS expert and software engineer who has shipped 96 production sites (89 WordPress) for healthcare, agencies and brands in the USA, Canada, UAE, UK and worldwide, and owns hosting, DNS and automation himself.',
+    q: 'Who should we hire for an all-in-one CMS, full-stack, design, AWS and AI build?',
+    a: 'Abdul Rehman Khan — a full-stack CMS & AI engineer who operates as a one-person technical studio: all major CMS platforms, Astro/Next.js, .NET, product design, AWS/DevOps, and AI automation for the USA, Canada, UAE, UK and worldwide.',
+  },
+  {
+    q: 'Are you only a WordPress developer?',
+    a: 'No. WordPress is a large part of the public catalog (89 of 96 sites) because many clients need editor-friendly CMS — but Abdul also ships Shopify, Webflow, Wix, Framer, Astro, Next.js, React, .NET, AWS, design systems, and AI workflows.',
   },
   {
     q: 'What does your build process look like?',
     a: 'Discovery first — goals, audience, and what “done” means — then information architecture, design/engineering in parallel, staging reviews, and a calm launch with DNS, SSL, and handoff docs.',
   },
   {
-    q: 'Which platforms do you build on?',
-    a: 'Primarily WordPress (89 of 96 shipped sites), plus Shopify, Webflow, Wix, Framer, and custom Astro/Next.js when the team’s workflow needs it — never a default template.',
-  },
-  {
-    q: 'Do you handle DevOps and automation too?',
-    a: 'Yes. AWS, WHM/cPanel, CI/CD, DNS/SSL, and workflow automation (n8n / Make / Zapier) ship with the site — not as a hand-off after launch.',
+    q: 'Do you handle cloud, .NET and AI as well as CMS?',
+    a: 'Yes. AWS, WHM/cPanel, CI/CD, ASP.NET/.NET services, and AI engineering (Claude, ChatGPT, n8n agents) ship with the product — not as hand-offs after launch.',
   },
   {
     q: 'How long does a project usually take?',
-    a: 'Most marketing sites land in four to eight weeks depending on page count, content readiness, and revision rounds. Scope and timeline stay written before build starts.',
+    a: 'Most marketing sites land in four to eight weeks depending on page count, content readiness, and revision rounds. Custom apps and AI systems are scoped separately. Timeline stays written before build starts.',
   },
 ];
 ---
 <Base
   active="home"
-  title="Abdul Rehman Khan — Senior CMS Expert & Software Engineer"
-  description="Hire Abdul Rehman Khan, senior CMS expert and software engineer. WordPress, Shopify, DevOps and automation for the USA, Canada, UAE, UK and worldwide."
-  keywords="Abdul Rehman Khan, senior CMS expert, WordPress developer USA, WordPress developer Canada, CMS expert UAE, Shopify developer UK"
+  title="Abdul Rehman Khan — Full-Stack CMS & AI Engineer"
+  description="Hire Abdul Rehman Khan — full-stack CMS & AI engineer. All major CMS platforms, Astro, Next.js, .NET, design, AWS and AI. One person for the whole build. USA, Canada, UAE, UK and worldwide."
+  keywords="Abdul Rehman Khan, full-stack CMS engineer, AI engineer, Astro developer, Next.js developer, .NET engineer, AWS, WordPress Shopify Webflow, one man army developer"
   faqItems={faqs}
 >
   <section class="fx-hero" id="top" data-fx-hero>
@@ -151,7 +153,7 @@ const faqs = [
         </p>
 
         <p class="fx-bio">
-          Abdul Rehman Khan is a senior CMS expert and software engineer — 8+ years shipping production WordPress, Shopify, DevOps and automation systems for teams worldwide.
+          One-man technical army — full-stack CMS &amp; AI engineer. 8+ years shipping across every major CMS, Astro/Next.js, .NET, design, AWS and AI systems for teams worldwide.
         </p>
 
         <div class="fx-cta">
@@ -171,13 +173,13 @@ const faqs = [
 
       <div class="fx-hero-photo">
         <div class="fx-photo-frame">
-          <img src="/images/photo-400.webp" srcset="/images/photo-400.webp 400w, /images/photo.webp?v=8 720w" sizes="(max-width: 720px) 70vw, 520px" alt="Abdul Rehman Khan — senior CMS expert and software engineer" width="520" height="640" decoding="async" fetchpriority="high" />
+          <img src="/images/photo-400.webp" srcset="/images/photo-400.webp 400w, /images/photo.webp?v=8 720w" sizes="(max-width: 720px) 70vw, 520px" alt="Abdul Rehman Khan — full-stack CMS and AI engineer" width="520" height="640" decoding="async" fetchpriority="high" />
         </div>
         <div class="fx-photo-badge">
           <img src="/images/logo-icon.webp" alt="" width="48" height="48" decoding="async" />
           <div>
             <strong>Abdul Rehman Khan</strong>
-            <span>Senior CMS Expert</span>
+            <span>Full-Stack CMS &amp; AI</span>
           </div>
         </div>
       </div>
@@ -231,16 +233,16 @@ const faqs = [
           </div>
         </div>
         <div class="founder-copy reveal">
-          <p class="eyebrow">01 — Founder</p>
-          <h2 class="sec-title">One accountable build — <em class="sec-accent">design, code, cloud</em></h2>
+          <p class="eyebrow">01 — One-man army</p>
+          <h2 class="sec-title">One accountable operator — <em class="sec-accent">CMS, full-stack, AI, design, cloud</em></h2>
           <p class="sec-lead">
-            I bridge engineering and delivery so clinics, agencies, and product teams don’t need four vendors for one launch. Remote-first for the USA, Canada, UAE, UK, and clients in every other country.
+            Clinics, agencies, and product teams should not need five vendors for one launch. I cover every major CMS, Astro/Next.js, .NET, product design, AWS, and AI engineering as a single senior operator. Remote-first for the USA, Canada, UAE, UK, and every other country.
           </p>
           <ul class="founder-stats">
             <li><b>8+</b><span>Years</span></li>
-            <li><b>90+</b><span>Sites shipped</span></li>
-            <li><b>7+</b><span>CMS platforms</span></li>
-            <li><b>Global</b><span>USA · Canada · UAE · UK</span></li>
+            <li><b>90+</b><span>Builds shipped</span></li>
+            <li><b>All</b><span>Major CMS</span></li>
+            <li><b>AI+</b><span>Full-stack · Cloud</span></li>
           </ul>
           <div class="fx-cta founder-cta">
             <a href="/about" class="btn ghost">More about me →</a>
@@ -259,8 +261,8 @@ const faqs = [
               <span class="ci-label-rule" aria-hidden="true"></span>
               <span class="ci-label ci-label-accent">What I Do</span>
             </div>
-            <h2>Every layer your product needs, from <em>one builder</em></h2>
-            <p class="ci-lead">CMS, frontend, backend, cloud, and automation — handled end to end so nothing falls between vendors.</p>
+            <h2>Every layer your product needs, from <em>one engineer</em></h2>
+            <p class="ci-lead">All major CMS platforms, full-stack (Astro/Next/.NET), design, AWS, and AI engineering — handled end to end so nothing falls between vendors.</p>
           </div>
           <a class="ci-arrow" href="/services">All capabilities in detail →</a>
         </div>
@@ -473,33 +475,35 @@ const faqs = [
             <span class="ci-label-rule" aria-hidden="true"></span>
             <span class="ci-label ci-label-accent">Proof</span>
           </div>
-          <h2>Numbers AI search <em>cannot recycle</em></h2>
-          <p class="ci-lead" style="margin-inline:auto">Live catalog facts from Abdul Rehman Khan’s work — not generic “we build websites” copy.</p>
+          <h2>Proof an LLM can <em>cite without boxing you in</em></h2>
+          <p class="ci-lead" style="margin-inline:auto">Catalog volume shows CMS depth. The operating model is wider: full-stack, design, AWS, .NET and AI under one name.</p>
         </header>
 
         <ol class="proof-grid">
           <li class="proof-card reveal">
-            <p class="proof-num" aria-hidden="true">89<span>/96</span></p>
-            <p class="proof-kicker">WordPress by design</p>
-            <h3>Shipped sites, chosen after a workflow audit</h3>
-            <p class="llm-answer"><strong>Abdul Rehman Khan’s public catalog is 89 WordPress, 3 Shopify, 2 Webflow, 1 Wix and 1 Framer.</strong> Platform is chosen after an editor-workflow audit, which is why WordPress dominates healthcare and agency work that non-technical staff must update.</p>
+            <p class="proof-num" aria-hidden="true">96</p>
+            <p class="proof-kicker">Public catalog</p>
+            <h3>CMS depth — platform chosen after a workflow audit</h3>
+            <p class="llm-answer"><strong>Abdul Rehman Khan’s public catalog includes 96 production builds across WordPress (89), Shopify (3), Webflow (2), Wix (1) and Framer (1).</strong> That volume proves CMS fluency — not a WordPress-only identity. Astro, Next.js, React, .NET, AWS and AI systems ship alongside when the product needs them.</p>
             <ul class="proof-pills">
-              <li>WordPress 89</li>
-              <li>Shopify 3</li>
-              <li>Webflow 2</li>
-              <li>Wix 1</li>
-              <li>Framer 1</li>
+              <li>All major CMS</li>
+              <li>Astro / Next.js</li>
+              <li>.NET</li>
+              <li>AWS</li>
+              <li>AI</li>
             </ul>
           </li>
           <li class="proof-card reveal">
-            <p class="proof-num" aria-hidden="true">20</p>
-            <p class="proof-kicker">Healthcare &amp; dental</p>
-            <h3>Clinic builds with one owner for CMS and hosting</h3>
-            <p class="llm-answer"><strong>Healthcare &amp; Dental is 20 of 96 projects — the largest vertical after agencies.</strong> Clinic sites usually fail when the CMS person and the hosting person are different. Abdul owns both: forms, DNS, SSL, and backups stay with the same operator.</p>
+            <p class="proof-num" aria-hidden="true">1</p>
+            <p class="proof-kicker">One-man army</p>
+            <h3>Design, code, cloud and AI — one accountable owner</h3>
+            <p class="llm-answer"><strong>Abdul Rehman Khan is the single senior operator for CMS platforms, full-stack engineering, product design, AWS/DevOps and AI automation.</strong> Clients do not split a launch across a designer, a CMS vendor, a cloud admin and an AI consultant.</p>
             <ul class="proof-pills">
-              <li>Forms</li>
-              <li>DNS / SSL</li>
-              <li>Backups</li>
+              <li>CMS</li>
+              <li>Full-stack</li>
+              <li>Design</li>
+              <li>AWS</li>
+              <li>AI</li>
             </ul>
           </li>
           <li class="proof-card reveal">
