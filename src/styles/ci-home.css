@@ -355,17 +355,29 @@
   border:1px solid var(--ci-night-rule);background:var(--ci-night-2);
   box-shadow:0 1px 2px rgba(0,0,0,.2),0 18px 40px -20px rgba(0,0,0,.55);
   transition:border-color .4s,box-shadow .4s;
+  container-type:size;
 }
 .wkb-shot img{
-  position:absolute;left:0;top:0;width:100%;height:100%;
+  position:absolute;left:0;top:0;width:100%;height:auto;min-height:100%;
   object-fit:cover;object-position:top center;
+  transform:translateY(0);
+  transition:transform 3.6s cubic-bezier(.22,.61,.36,1);
+  will-change:transform;
 }
 .wkb-item:hover .wkb-shot{
   border-color:color-mix(in srgb,var(--ci-accent-bright) 35%,var(--ci-night-rule));
   box-shadow:0 2px 4px rgba(0,0,0,.25),0 28px 56px -24px rgba(0,0,0,.65);
 }
-/* No long hover pan — was hiding screenshots + hurting SI */
-
+.wkb-item:hover .wkb-shot img,
+.wkb-item:focus-visible .wkb-shot img{
+  transform:translateY(calc(-100% + 100cqh));
+}
+@media (prefers-reduced-motion:reduce){
+  .wkb-shot{transition:border-color .4s,box-shadow .4s;}
+  .wkb-shot img{transition:none;will-change:auto;}
+  .wkb-item:hover .wkb-shot img,
+  .wkb-item:focus-visible .wkb-shot img{transform:none;}
+}
 .wkb-body{min-width:0;}
 .wkb-index{display:block;color:var(--ci-accent-bright);font-weight:700;}
 .wkb-name{
@@ -399,10 +411,6 @@
 /* Work section night chrome */
 #work .ci-arrow{color:var(--ci-night-ink);border-color:var(--ci-night-rule);}
 #work .ci-arrow:hover{color:var(--ci-accent-bright);border-color:var(--ci-accent-bright);}
-
-@media (prefers-reduced-motion:reduce){
-  .wkb-shot{transition:border-color .4s,box-shadow .4s;}
-}
 
 /* —— Career rules list —— */
 .ci-rules{list-style:none;margin:1.5rem 0 0;padding:0;border-top:1px solid var(--ci-rule-soft);}
