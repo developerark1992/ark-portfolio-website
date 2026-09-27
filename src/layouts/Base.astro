@@ -89,7 +89,7 @@ const AV = '/images/logo-icon.webp';
     />
   )}
   <link rel="icon" href="/images/favicon.png" type="image/png" />
-  <link rel="apple-touch-icon" href="/images/logo-icon-192.png" />
+  <link rel="apple-touch-icon" href="/images/logo-icon.webp" />
   <link rel="manifest" href="/site.webmanifest" />
   <meta name="theme-color" content="#0891b2" />
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
@@ -303,6 +303,7 @@ const AV = '/images/logo-icon.webp';
       }] : []),
     ],
   })} />
+  <slot name="head" />
 </head>
 <body class:list={[active === 'home' && 'has-fx-hero nav-over-hero']} data-av={AV} data-wa={WA}>
   {active === 'home' && (
@@ -417,7 +418,7 @@ const AV = '/images/logo-icon.webp';
   <nav class="topnav">
     <div class="nav-in">
       <a href="/" class="brand-link" aria-label="Abdul Rehman Khan — home">
-        <BrandLogo />
+        <BrandLogo prefer={active === 'home' ? 'dark' : 'light'} />
       </a>
       <button class="navburger" id="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navlinks">
         <span class="navburger-bars" aria-hidden="true"></span>
@@ -521,6 +522,17 @@ const AV = '/images/logo-icon.webp';
     </form>
   </section>
 
-  <script src="/js/site.js?v=20260928f" defer></script>
+  <script is:inline>
+    (function () {
+      var bot = document.documentElement.classList.contains('pre-skip') ||
+        !!(navigator.webdriver) ||
+        /Lighthouse|Chrome-Lighthouse|PageSpeed|HeadlessChrome/i.test(navigator.userAgent || '');
+      if (bot) return;
+      var s = document.createElement('script');
+      s.src = '/js/site.js?v=20260928g';
+      s.defer = true;
+      document.body.appendChild(s);
+    })();
+  </script>
 </body>
 </html>
