@@ -26,6 +26,18 @@ const {
 const SITE_URL = String(Astro.site || 'https://arkdesigningbureau.com').replace(/\/$/, '');
 const canonical = new URL(Astro.url.pathname, SITE_URL).href;
 const ogImageUrl = new URL(ogImage, SITE_URL).href;
+const pathSeg = Astro.url.pathname.replace(/\/+$/, '') || '';
+const markdownByPath = {
+  '': '/index.md',
+  '/about': '/about.md',
+  '/services': '/services.md',
+  '/contact': '/contact.md',
+  '/projects': '/projects.md',
+  '/pricing': '/pricing.md',
+  '/estimate': '/estimate.md',
+  '/for-llms': '/for-llms.md',
+};
+const markdownHref = markdownByPath[pathSeg] || null;
 const links = [
   { href: '/',         name: 'Home',     key: 'home' },
   { href: '/about',    name: 'About',    key: 'about' },
@@ -79,8 +91,10 @@ const AV = '/images/logo-icon.webp';
   <link rel="icon" href="/images/favicon.png" type="image/png" />
   <link rel="apple-touch-icon" href="/images/logo-icon-192.png" />
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-  <link rel="alternate" type="text/plain" href="/llms.txt" title="Machine-readable brief" />
-  <link rel="alternate" type="text/plain" href="/llms-full.txt" title="Machine-readable full brief" />
+  <link rel="describedby" href="/llms.txt" />
+  {markdownHref && <link rel="alternate" type="text/markdown" href={markdownHref} title="Markdown version" />}
+  <link rel="alternate" type="text/markdown" href="/llms.txt" title="Agent brief (llms.txt)" />
+  <link rel="alternate" type="text/markdown" href="/llms-full.md" title="Full agent brief" />
   <link rel="author" href={`${SITE_URL}/for-llms`} />
   <style is:inline>
     html,body{margin:0;padding:0;width:100%;overflow-x:clip;}

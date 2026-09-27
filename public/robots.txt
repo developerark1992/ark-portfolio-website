@@ -62,5 +62,5 @@ User-agent: YouBot
 Allow: /
 
 Sitemap: https://arkdesigningbureau.com/sitemap.xml
-# LLM: https://arkdesigningbureau.com/llms.txt
-# LLM-Full: https://arkdesigningbureau.com/llms-full.txt
+# Agent brief: https://arkdesigningbureau.com/llms.txt
+# Agent full: https://arkdesigningbureau.com/llms-full.md

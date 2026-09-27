@@ -1,4 +1,3 @@
-# Abdul Rehman Khan — freelance lead · mini team of freelancers
-# Brand: ARK Designing Bureau (NOT a registered company)
-# Also: staff augmentation for startups & agencies
-# https://arkdesigningbureau.com/llms.txt · /llms-full.txt · /for-llms
+# Abdul Rehman Khan
+
+> See the canonical agent brief at [/llms.txt](https://arkdesigningbureau.com/llms.txt).
