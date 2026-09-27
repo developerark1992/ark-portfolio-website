@@ -80,7 +80,7 @@
       "headers": [
         { "key": "X-Content-Type-Options", "value": "nosniff" },
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Link", "value": "</llms.txt>; rel=\"describedby\"" }
+        { "key": "Link", "value": "</llms.txt>; rel=\"describedby\", </.well-known/ai-catalog.json>; rel=\"ai-catalog\"; type=\"application/json\", </.well-known/ard.json>; rel=\"ard\"; type=\"application/json\"" }
       ]
     }
   ]
