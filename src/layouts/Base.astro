@@ -114,6 +114,21 @@ const AV = '/images/logo-icon.webp';
       opacity:1;visibility:visible;pointer-events:auto;
     }
     #preloader.done,html.pre-skip #preloader{opacity:0!important;visibility:hidden!important;pointer-events:none!important;}
+    /* Critical hero shell — values must match global.css to avoid CLS when full CSS arrives. */
+    body.has-fx-hero{background:#030712;}
+    body.has-fx-hero main{padding-top:0;}
+    .fx-hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;padding:50px 0;padding-top:max(50px,74px);background:#030712;color:#e2e8f0;}
+    .fx-hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.9fr);gap:clamp(18px,2.5vw,32px);align-items:center;width:100%;}
+    .fx-hero-copy{order:1;text-align:left;max-width:none;}
+    .fx-hero-photo{order:2;position:relative;justify-self:stretch;width:100%;max-width:520px;margin-inline:auto 0;}
+    .fx-photo-frame{position:relative;z-index:1;border-radius:24px;overflow:hidden;aspect-ratio:4/5;background:#0b1220;}
+    .fx-photo-frame img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;}
+    @media (max-width:980px){
+      .fx-hero{min-height:auto;overflow:visible;overflow-x:clip;}
+      .fx-hero-grid{grid-template-columns:1fr;gap:28px;}
+      .fx-hero-copy,.fx-hero-photo{order:0;}
+      .fx-hero-photo{justify-self:center;width:min(100%,380px);}
+    }
   </style>
   {active === 'home' && (
   <script is:inline>
