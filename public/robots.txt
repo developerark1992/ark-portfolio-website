@@ -62,7 +62,7 @@ User-agent: YouBot
 Allow: /
 
 Sitemap: https://arkdesigningbureau.com/sitemap.xml
-Agentmap: https://arkdesigningbureau.com/.well-known/ard.json
 # Agent brief: https://arkdesigningbureau.com/llms.txt
 # Agent full: https://arkdesigningbureau.com/llms-full.md
-# ARD / AI catalog: https://arkdesigningbureau.com/.well-known/ard.json
+# ARD catalog (Agentmap): https://arkdesigningbureau.com/.well-known/ard.json
+# AI catalog: https://arkdesigningbureau.com/.well-known/ai-catalog.json

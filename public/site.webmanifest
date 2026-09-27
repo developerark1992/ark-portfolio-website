@@ -1,0 +1,29 @@
+{
+  "name": "Abdul Rehman Khan — ARK Designing Bureau",
+  "short_name": "ARK Khan",
+  "description": "Freelance lead with a mini team of freelancers. Websites, apps, design, SEO, CMS, cloud and AI. Staff augmentation for startups and agencies.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07080c",
+  "theme_color": "#0891b2",
+  "icons": [
+    {
+      "src": "/images/favicon.png",
+      "sizes": "32x32",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/logo-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/logo-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

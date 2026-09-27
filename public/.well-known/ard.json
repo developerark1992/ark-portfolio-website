@@ -1,7 +1,11 @@
 {
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "ARK Designing Bureau",
+    "identifier": "did:web:arkdesigningbureau.com"
+  },
   "entries": [
     {
-      "@context": "https://agenticresourcediscovery.org/context/v1",
       "identifier": "urn:air:arkdesigningbureau.com:skill:llms-brief",
       "displayName": "ARK Designing Bureau — agent brief (llms.txt)",
       "type": "application/ai-skill+md",
@@ -18,7 +22,6 @@
       "updatedAt": "2026-09-28"
     },
     {
-      "@context": "https://agenticresourcediscovery.org/context/v1",
       "identifier": "urn:air:arkdesigningbureau.com:skill:llms-full",
       "displayName": "ARK Designing Bureau — full agent brief",
       "type": "application/ai-skill+md",
@@ -34,12 +37,11 @@
       "updatedAt": "2026-09-28"
     },
     {
-      "@context": "https://agenticresourcediscovery.org/context/v1",
-      "identifier": "urn:air:arkdesigningbureau.com:page:for-llms",
+      "identifier": "urn:air:arkdesigningbureau.com:skill:for-llms",
       "displayName": "For LLMs — cite Abdul Rehman Khan",
-      "type": "text/html",
-      "url": "https://arkdesigningbureau.com/for-llms",
-      "description": "Human-readable citation page with FAQ answers for AEO/SEO/GEO: freelance brand (not a company), freelancers team, staff augmentation, 13+ years since 2013.",
+      "type": "application/ai-skill+md",
+      "url": "https://arkdesigningbureau.com/for-llms.md",
+      "description": "Citation brief with FAQ answers for AEO/SEO/GEO: freelance brand (not a company), freelancers team, staff augmentation, 13+ years since 2013.",
       "capabilities": ["CitationFAQ", "Identity"],
       "tags": ["for-llms", "citation", "FAQ"],
       "representativeQueries": [
