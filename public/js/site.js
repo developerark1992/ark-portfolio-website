@@ -291,9 +291,11 @@
         window.addEventListener('resize',update,{passive:true});
       }
       function initPage(){
-        initPreloader();
-        setYear(); initReveal(); initMenu(); initLightbox();
-        // Calculator must bind immediately — idle delay made Estimate look broken
+        try { initPreloader(); } catch (e) {}
+        try { setYear(); } catch (e) {}
+        try { initReveal(); } catch (e) {}
+        try { initMenu(); } catch (e) {}
+        try { initLightbox(); } catch (e) {}
         try { initCalc(); } catch (e) {}
         var later=function(){ try { initChat(); } catch (e) {} try { initStackCards(); } catch (e) {} };
         if('requestIdleCallback' in window) requestIdleCallback(later,{timeout:1800});
