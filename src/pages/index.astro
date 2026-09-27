@@ -9,7 +9,7 @@ import '../styles/ci-home.css';
 const filenameLike = (title) => /\.(com|ai|pk|ca|io)|wordpress|shopify|shopfiy|webflow|framer|wix/i.test(title);
 const clean = projects.filter((p) => p.img && p.title && !filenameLike(p.title) && p.live);
 const pool = clean.length >= 8 ? clean : projects.filter((p) => p.img);
-const featured = pool.slice(0, 6);
+const featured = pool.slice(0, 4);
 const stack = marqueeTech;
 
 const titles = [
