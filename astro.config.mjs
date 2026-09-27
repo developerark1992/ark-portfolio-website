@@ -1,4 +1,4 @@
-import { defineConfig } from 'astro/config';
+﻿import { defineConfig } from 'astro/config';
 import vercel from '@astrojs/vercel';
 
 // Hybrid: pages are static by default (fastest); routes that opt in with
@@ -13,8 +13,7 @@ export default defineConfig({
     prefetchAll: false,
     defaultStrategy: 'hover',
   },
-  /* Inline CSS — removes Slow-4G stylesheet RTTs that swing mobile Speed Index on PSI. */
-  build: { inlineStylesheets: 'always' },
+  build: { inlineStylesheets: 'auto' },
   vite: {
     build: {
       cssMinify: true,
