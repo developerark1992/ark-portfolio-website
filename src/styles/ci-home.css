@@ -172,7 +172,20 @@
     0 32px 64px -24px rgba(15,25,37,.45),
     0 0 48px -20px color-mix(in srgb,var(--accent) 35%,transparent);
   transform-origin:center top;
-  will-change:transform;
+}
+/* Desktop/home sticky stack look — mobile stays flat for PageSpeed SI */
+@media (min-width:981px){
+  .svc-deck:not(.skill-deck){
+    display:block;gap:0;
+  }
+  .svc-deck:not(.skill-deck) .svc-slot{
+    position:sticky;top:0;
+    height:min(46vh,21rem);
+    z-index:calc(1 + var(--i,0));
+  }
+  .svc-deck:not(.skill-deck) .svc-card{
+    top:calc(5rem + var(--i,0) * 1.1rem);
+  }
 }
 .svc-card::before{
   content:"";position:absolute;inset:0;z-index:0;border-radius:inherit;pointer-events:none;
