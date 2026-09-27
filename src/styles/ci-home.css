@@ -109,19 +109,12 @@
 .ci-sticky{position:sticky;top:8rem;}
 .ci-sticky .ci-arrow{display:inline-flex;margin-top:1.75rem;}
 
-/* About skills — compact stacked cards (no tall sticky gaps) */
-.skill-deck{
-  display:flex;flex-direction:column;gap:.85rem;
-  list-style:none;margin:0;padding:0;
-}
-.skill-deck .svc-slot{
-  height:auto;position:relative;top:auto;
-  display:block;z-index:auto;
-}
+/* About skills — sticky stack kept; shorter slots = less empty gap */
+.skill-deck .svc-slot{height:min(34vh,15rem);}
 .skill-stack-card{
   --accent:var(--ci-accent-bright);
   position:relative;
-  top:0;
+  top:calc(5rem + var(--i,0) * 1rem);
   width:100%;
   border-radius:18px;
   padding:clamp(1.25rem,2.4vw,1.65rem);
@@ -461,7 +454,7 @@
   .svc-card-link{min-height:0;width:100%;}
   .svc-card-body{grid-template-columns:1fr;gap:1.25rem;}
   .svc-card-meta{padding-top:1rem;}
-  .skill-deck{gap:.7rem;}
+  .skill-deck .svc-slot{height:auto;}
   .skill-stack-card .skill-pills{gap:6px;}
   .partner-grid{grid-template-columns:1fr 1fr;gap:.75rem;}
   .wkb-item,
