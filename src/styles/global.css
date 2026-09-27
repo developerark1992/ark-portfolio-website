@@ -30,8 +30,8 @@ html,body{margin:0;padding:0;width:100%;min-height:100%;background:var(--bg);col
 html{scroll-behavior:smooth;}
 body.has-fx-hero{background:#030712;}
 
-/* Score-safe preloader — short first visit, then session-skip */
-.preloader{position:fixed;inset:0;width:100%;height:100%;min-height:100dvh;z-index:200;display:grid;place-items:center;background:#07080c;overflow:hidden;transition:opacity .35s ease,visibility .35s ease;}
+/* Home preloader — bots skip via html.pre-skip; site.js must never force-hide early */
+.preloader{position:fixed;inset:0;width:100%;height:100%;min-height:100dvh;z-index:9999;display:grid;place-items:center;background:#07080c;overflow:hidden;transition:opacity .4s ease,visibility .4s ease;}
 .preloader.done{opacity:0;visibility:hidden;pointer-events:none;}
 .pre-sky{position:absolute;inset:0;pointer-events:none;}
 .pre-stars{position:absolute;inset:0;width:100%;height:100%;opacity:.9;}
@@ -308,6 +308,16 @@ footer{border-top:1px solid var(--line);padding:50px 0;background:var(--bg-2);}
 .proj-search #projSearchClear:hover{color:var(--ink);background:var(--line);}
 .proj-empty{color:var(--ink-soft);font-size:16px;text-align:center;padding:40px 0;}
 section.page-body > .wrap{display:flex;flex-direction:column;align-items:stretch;}
+section.page-body > .wrap.svc-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:24px;
+  width:100%;
+  align-items:stretch;
+}
+@media (max-width:820px){
+  section.page-body > .wrap.svc-grid{grid-template-columns:1fr;}
+}
 .proj-grid{width:100%;}
 .proj-foot{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -420,12 +430,14 @@ section.page-body > .wrap{display:flex;flex-direction:column;align-items:stretch
 .cert-list span{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);border:1px solid var(--line);padding:5px 11px;border-radius:999px;}
 
 .svc-grid{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
   gap:24px;
   width:100%;
 }
-@media (max-width:820px){.svc-grid{grid-template-columns:1fr;}}
+@media (max-width:820px){
+  .svc-grid{grid-template-columns:1fr !important;}
+}
 .svc-grid > .svc-card{
   background:var(--surface,#fff);
   border:1px solid var(--glass-line,#e2e8f0);
