@@ -362,7 +362,6 @@
   object-fit:cover;object-position:top center;
   transform:translateY(0);
   transition:transform 3.6s cubic-bezier(.22,.61,.36,1);
-  will-change:transform;
 }
 .wkb-item:hover .wkb-shot{
   border-color:color-mix(in srgb,var(--ci-accent-bright) 35%,var(--ci-night-rule));
@@ -374,7 +373,7 @@
 }
 @media (prefers-reduced-motion:reduce){
   .wkb-shot{transition:border-color .4s,box-shadow .4s;}
-  .wkb-shot img{transition:none;will-change:auto;}
+  .wkb-shot img{transition:none;}
   .wkb-item:hover .wkb-shot img,
   .wkb-item:focus-visible .wkb-shot img{transform:none;}
 }
