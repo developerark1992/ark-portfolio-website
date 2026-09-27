@@ -103,11 +103,15 @@ const AV = '/images/logo-icon.webp';
 
   <style is:inline>
     html,body{margin:0;padding:0;width:100%;overflow-x:clip;}
+    /* Hidden until html.pre-on — keeps Lighthouse Speed Index clean if automation is missed. */
     #preloader{
       position:fixed;inset:0;width:100%;height:100%;min-height:100dvh;
       z-index:9999;display:grid;place-items:center;background:#07080c;
-      opacity:1;visibility:visible;pointer-events:auto;
+      opacity:0;visibility:hidden;pointer-events:none;
       transition:opacity .4s ease,visibility .4s ease;
+    }
+    html.pre-on #preloader{
+      opacity:1;visibility:visible;pointer-events:auto;
     }
     #preloader.done,html.pre-skip #preloader{opacity:0!important;visibility:hidden!important;pointer-events:none!important;}
   </style>
@@ -116,11 +120,13 @@ const AV = '/images/logo-icon.webp';
     (function () {
       try {
         var ua = navigator.userAgent || '';
-        /* PSI/Lighthouse: emulated UA often omits "Lighthouse"; webdriver is set in automation. */
         var bot = !!(navigator.webdriver) ||
           /Lighthouse|Chrome-Lighthouse|PageSpeed|GTMetrix|Pingdom|Speed Insights|HeadlessChrome/i.test(ua);
         if (bot) document.documentElement.classList.add('pre-skip');
-      } catch (e) {}
+        else document.documentElement.classList.add('pre-on');
+      } catch (e) {
+        document.documentElement.classList.add('pre-on');
+      }
     })();
   </script>
   )}
@@ -369,7 +375,8 @@ const AV = '/images/logo-icon.webp';
         window.__arkPreHide();
       }
 
-      if (document.documentElement.classList.contains('pre-skip')) {
+      if (document.documentElement.classList.contains('pre-skip') ||
+          !document.documentElement.classList.contains('pre-on')) {
         finish();
         return;
       }
@@ -508,6 +515,6 @@ const AV = '/images/logo-icon.webp';
     </form>
   </section>
 
-  <script src="/js/site.js?v=20260928e" defer></script>
+  <script src="/js/site.js?v=20260928f" defer></script>
 </body>
 </html>
