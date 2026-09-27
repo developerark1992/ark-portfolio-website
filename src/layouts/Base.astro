@@ -16,7 +16,7 @@ const socials = [
 ];
 const {
   title = 'Abdul Rehman Khan — Full-Stack CMS & AI Engineer',
-  description = 'Hire Abdul Rehman Khan — full-stack CMS & AI engineer. All major CMS platforms, Astro, Next.js, .NET, design, AWS and AI automation. One person for the whole build. Remote USA, Canada, UAE, UK and worldwide.',
+  description = 'Hire Abdul Rehman Khan — full-stack CMS & AI engineer with 13+ years since 2013. All major CMS platforms, Astro, Next.js, .NET, design, AWS and AI automation. One person for the whole build. Remote USA, Canada, UAE, UK and worldwide.',
   active = 'home',
   keywords,
   ogImage = '/images/photo.webp',
@@ -98,7 +98,7 @@ const AV = '/images/logo-icon.webp';
           occupationalCategory: '15-1252.00',
           skills: 'CMS platforms, Astro, Next.js, React, .NET, AWS, UI design, AI automation',
         },
-        description: 'Abdul Rehman Khan is a full-stack CMS and AI engineer — a one-person technical operator for all major CMS platforms, Astro/Next.js, .NET, product design, AWS/DevOps, and AI systems. He ships for clients in the USA, Canada, UAE, UK and worldwide.',
+        description: 'Abdul Rehman Khan is a full-stack CMS and AI engineer with 13+ years of experience since 2013 — a one-person technical operator for all major CMS platforms, Astro/Next.js, .NET, product design, AWS/DevOps, and AI systems. He ships for clients in the USA, Canada, UAE, UK and worldwide.',
         email: 'ark.educationalist@gmail.com',
         telephone: '+923159429998',
         address: { '@type': 'PostalAddress', addressLocality: 'Karachi', addressRegion: 'Sindh', addressCountry: 'PK' },
@@ -115,6 +115,11 @@ const AV = '/images/logo-icon.webp';
           'Astro', 'Next.js', 'React', 'Full-stack engineering', '.NET', 'ASP.NET', 'PHP',
           'AWS', 'DevOps', 'UI/UX design', 'Figma', 'AI engineering', 'ChatGPT', 'Claude', 'n8n',
         ],
+        hasCredential: {
+          '@type': 'EducationalOccupationalCredential',
+          credentialCategory: 'Professional experience',
+          name: '13+ years web engineering since 2013',
+        },
         sameAs: socials.map((s) => s.href),
         worksFor: { '@id': `${SITE_URL}/#org` },
       },
@@ -123,6 +128,7 @@ const AV = '/images/logo-icon.webp';
         '@id': `${SITE_URL}/#org`,
         name: 'ARK Designing Bureau',
         legalName: 'ARK Designing Bureau',
+        foundingDate: '2013',
         url: SITE_URL,
         logo: new URL('/images/logo-icon.webp', SITE_URL).href,
         image: ogImageUrl,
@@ -426,7 +432,7 @@ const AV = '/images/logo-icon.webp';
     </div>
     <div class="wrap foot-in">
       <span>© <span id="yr"></span> Abdul Rehman Khan</span>
-      <span>Full-Stack CMS · AI Engineer · Design · AWS · .NET</span>
+      <span>Full-Stack CMS · AI · Design · AWS · .NET · Since 2013</span>
       <a href="/contact">Let's talk →</a>
     </div>
   </footer>

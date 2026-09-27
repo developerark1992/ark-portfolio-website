@@ -2,30 +2,22 @@
 import Base from '../layouts/Base.astro';
 import IconChip from '../components/IconChip.astro';
 import { groups } from '../data/tech.mjs';
+import { experience, YEARS_EXPERIENCE, CAREER_START, CAREER_TAGLINE } from '../data/experience.mjs';
 import '../styles/ci-home.css';
 
 const skillAccents = {
   cyan: '#22d3ee',
   violet: '#a78bfa',
 };
-
-const experience = [
-  { when:'2026 — Present', role:'Senior CMS Developer / DevOps Specialist', co:'Chameleon Ideas Inc.', d:'Production websites, deployments, hosting and client delivery.' },
-  { when:'2024 — 2026', role:'Senior Software Developer / Team Lead', co:'Websity Digital', d:'Led CMS & web delivery — WordPress, WooCommerce, Webflow, Shopify, AWS.' },
-  { when:'2022 — 2024', role:'Senior CMS & Web Developer', co:'Krystosoft', d:'International clients — WordPress, Shopify, custom PHP/JS, mentoring.' },
-  { when:'2022 — 2022', role:'Full-Stack & CMS Developer', co:'Novatex / Nextac / Logicose', d:'Full-stack & CMS delivery — WordPress, PHP, MySQL, responsive builds.' },
-  { when:'2021 — 2022', role:'Software Developer', co:'Mystic Advertising', d:'WordPress & Shopify — theme customization, Elementor, e-commerce.' },
-  { when:'2020 — 2021', role:'Frontend Web Developer', co:'Nisshinbo Holdings', d:'ASP.NET MVC & front-end components for production interfaces.' },
-];
 ---
-<Base active="about" title="About Abdul Rehman Khan — Full-Stack CMS & AI Engineer" description="Abdul Rehman Khan is a full-stack CMS & AI engineer — one-person operator for all major CMS platforms, Astro, Next.js, .NET, design, AWS and AI. USA, Canada, UAE, UK and worldwide." keywords="Abdul Rehman Khan, full-stack CMS engineer, AI engineer, Astro Next.js .NET AWS, one man army developer">
+<Base active="about" title="About Abdul Rehman Khan — Full-Stack CMS & AI Engineer" description={`Abdul Rehman Khan is a full-stack CMS & AI engineer with ${YEARS_EXPERIENCE} years experience since ${CAREER_START} — one-person operator for all major CMS platforms, Astro, Next.js, .NET, design, AWS and AI. USA, Canada, UAE, UK and worldwide.`} keywords="Abdul Rehman Khan, full-stack CMS engineer since 2013, AI engineer, Astro Next.js .NET AWS, one man army developer">
   <section>
     <div class="wrap about-hero">
-      <div class="about-photo reveal"><img src="/images/photo.webp?v=8" alt="Abdul Rehman Khan — full-stack CMS and AI engineer" width="620" height="740" loading="lazy" decoding="async" /></div>
+      <div class="about-photo reveal"><img src="/images/photo.webp?v=8" alt="Abdul Rehman Khan — full-stack CMS and AI engineer since 2013" width="620" height="740" loading="lazy" decoding="async" /></div>
       <div class="reveal">
-        <p class="eyebrow">About me</p>
+        <p class="eyebrow">About me · {CAREER_TAGLINE}</p>
         <h1 class="sec-title" style="font-size:clamp(30px,4.6vw,48px);">A one-man technical army — CMS, full-stack, design, cloud and AI.</h1>
-        <p class="sec-lead" style="margin:18px 0 24px;">Based in Karachi, working remotely with the <b>United States, Canada, the UAE, the UK</b> and clients in every other country. In 8+ years I've engineered across <b>every major CMS</b> — WordPress, Shopify, Webflow, Wix, Squarespace, Framer — plus <b>Astro, Next.js, React, .NET</b>, product design, <b>AWS</b>/WHM hosting, and <b>AI engineering</b> (Claude, ChatGPT, n8n agents).</p>
+        <p class="sec-lead" style="margin:18px 0 24px;">Based in Karachi, working remotely with the <b>United States, Canada, the UAE, the UK</b> and clients in every other country. <b>Since {CAREER_START}</b> ({YEARS_EXPERIENCE} years) I've engineered across <b>every major CMS</b> — WordPress, Shopify, Webflow, Wix, Squarespace, Framer — plus <b>Astro, Next.js, React, .NET</b>, product design, <b>AWS</b>/WHM hosting, and <b>AI engineering</b> (Claude, ChatGPT, n8n agents).</p>
         <p class="sec-lead">Most clients hire a CMS specialist, a full-stack engineer, a designer, a cloud admin and an AI consultant. I'm all of them — one accountable operator, fewer hand-offs, and a product that still stands after launch day.</p>
         <div class="hero-cta" style="margin-top:26px;">
           <a class="btn primary" href="/Abdul-Rehman-Khan-CV.pdf" download>Download résumé ↓</a>
@@ -37,7 +29,8 @@ const experience = [
 
   <section>
     <div class="wrap">
-      <div class="reveal" style="margin-bottom:20px;"><p class="eyebrow">Career journey</p><h2 class="sec-title">Where I've worked</h2></div>
+      <div class="reveal" style="margin-bottom:20px;"><p class="eyebrow">Career journey · {CAREER_START}–present</p><h2 class="sec-title">Where I've worked</h2>
+      <p class="sec-lead" style="margin-top:8px;">{YEARS_EXPERIENCE} years from founding freelance years to senior CMS, full-stack, cloud and AI delivery.</p></div>
       <div class="journey">
         {experience.map((e) => (
           <div class="jitem reveal"><div class="when">{e.when}</div><h3>{e.role}</h3><div class="co">{e.co}</div><p>{e.d}</p></div>
