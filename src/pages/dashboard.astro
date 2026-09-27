@@ -183,5 +183,7 @@ import Base from '../layouts/Base.astro';
       gate();
     }
     document.addEventListener('astro:page-load', initDash);
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initDash);
+    else initDash();
   </script>
 </Base>

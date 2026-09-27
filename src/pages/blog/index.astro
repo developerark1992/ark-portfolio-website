@@ -56,8 +56,9 @@ const fmt = (d) => new Date(d).toLocaleDateString('en-US', { day: 'numeric', mon
     </div>
   </section>
   <script is:inline>
-    document.addEventListener('astro:page-load', function(){
-      var wrap=document.getElementById('blogFilters'); if(!wrap) return;
+    function initBlogFilters(){
+      var wrap=document.getElementById('blogFilters'); if(!wrap||wrap.dataset.bound==='1') return;
+      wrap.dataset.bound='1';
       wrap.addEventListener('click', function(e){
         var b=e.target.closest('.filt'); if(!b) return;
         wrap.querySelectorAll('.filt').forEach(function(x){x.classList.toggle('active',x===b);});
@@ -66,6 +67,9 @@ const fmt = (d) => new Date(d).toLocaleDateString('en-US', { day: 'numeric', mon
           c.style.display=(f==='all'||c.getAttribute('data-cat')===f)?'':'none';
         });
       });
-    });
+    }
+    document.addEventListener('astro:page-load', initBlogFilters);
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initBlogFilters);
+    else initBlogFilters();
   </script>
 </Base>

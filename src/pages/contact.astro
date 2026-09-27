@@ -107,10 +107,12 @@ const trust = [
   </section>
 
   <script is:inline define:vars={{ WA, EMAIL, CALENDLY }}>
-    document.addEventListener('astro:page-load', function(){
+    function initContactPage(){
       // ---- form ----
       var f=document.getElementById('contactForm');
-      if(f){
+      if(f && f.dataset.bound!=='1'){
+        f.dataset.bound='1';
+
         var g=function(id){var el=document.getElementById(id);return el?el.value.trim():'';};
         var brief=function(){return 'Name: '+g('cf-name')+'\nEmail: '+g('cf-email')+'\nPhone: '+(g('cf-phone')||'-')+'\nCompany: '+(g('cf-company')||'-')+'\nProject type: '+g('cf-type')+'\nBudget: '+g('cf-budget')+'\nTimeline: '+g('cf-timeline')+'\n\nBrief:\n'+g('cf-msg');};
         var statusEl=document.getElementById('cfStatus'), btn=document.getElementById('cfSubmit');
@@ -136,7 +138,9 @@ const trust = [
       // ---- Calendly inline widget (iframe fallback always present) ----
       var wrap=document.querySelector('.calendly-inline-widget');
       var box=document.querySelector('.calendly-wrap');
-      if(wrap){
+      if(wrap && box && box.dataset.calBound!=='1'){
+        box.dataset.calBound='1';
+
         function sizeCal(){
           var h=window.matchMedia('(max-width:720px)').matches?640:700;
           wrap.style.height=h+'px';
@@ -164,6 +168,9 @@ const trust = [
           if(window.Calendly) initCal();
         }
       }
-    });
+    }
+    document.addEventListener('astro:page-load', initContactPage);
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initContactPage);
+    else initContactPage();
   </script>
 </Base>

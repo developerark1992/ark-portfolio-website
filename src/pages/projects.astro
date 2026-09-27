@@ -59,7 +59,7 @@ const cats = [['all', 'All', projects.length]].concat(
   </section>
 
   <script is:inline define:vars={{ PROJECTS: projects }}>
-    document.addEventListener('astro:page-load', function () {
+    function initProjectsPage() {
       var grid = document.getElementById('allProjects');
       if (!grid || grid.dataset.pagerReady === 'capsule-v3') return;
       grid.dataset.pagerReady = 'capsule-v3';
@@ -194,6 +194,9 @@ const cats = [['all', 'All', projects.length]].concat(
       });
 
       reset();
-    });
+    }
+    document.addEventListener('astro:page-load', initProjectsPage);
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initProjectsPage);
+    else initProjectsPage();
   </script>
 </Base>

@@ -310,5 +310,8 @@
       if (!window.__arkSiteBound) {
         window.__arkSiteBound = true;
         document.addEventListener('astro:page-load', initPage);
+        // Hard loads have no ClientRouter — still boot site JS
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initPage);
+        else initPage();
       }
     })();
