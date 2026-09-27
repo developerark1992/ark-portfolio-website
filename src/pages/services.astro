@@ -13,19 +13,24 @@ const services = [
   { icon:'cms', t:'Websites & CMS Platforms', tag:'All major CMS', d:'Marketing sites and content platforms across the full CMS landscape — not locked to one vendor.', items:['WordPress & WooCommerce','Shopify, Webflow, Wix','Squarespace, Framer & more','Custom themes & page builders','Migrations between platforms'] },
   { icon:'code', t:'Applications & Full-Stack', tag:'Astro · Next · .NET', d:'Web apps, portals and products when a brochure site is not enough.', items:['Astro & Next.js apps','React dashboards & portals','PHP / MySQL & REST APIs','ASP.NET / C# services','Firebase backends'] },
   { icon:'pen', t:'Product Design & Branding', d:'Brand, UI/UX and creatives under the same lead as engineering.', items:['Logo & brand identity','Web & UI/UX (Figma)','Social & marketing graphics','Design-to-code handoff'] },
-  { icon:'growth', t:'SEO & Digital Marketing', tag:'Growth', d:'Technical SEO and campaign support so the build actually gets found and converts — led by Abdul with mini-team support.', items:['Technical & on-page SEO','Site structure & Core Web Vitals','Content / landing support','Analytics & Search Console','Campaign & funnel coordination'] },
+  { icon:'growth', t:'SEO & Digital Marketing', tag:'Growth', d:'Technical SEO and campaign support so the build gets found and converts — Abdul leads; freelancers on the mini team support execution.', items:['Technical & on-page SEO','Site structure & Core Web Vitals','Content / landing support','Analytics & Search Console','Campaign & funnel coordination'] },
   { icon:'cloud', t:'AWS, DevOps & Hosting', d:'Cloud and hosting most freelancers hand off — owned end to end.', items:['AWS EC2 / Lightsail, Cloudflare','WHM / cPanel & DNS/SSL','CI/CD & zero-downtime deploys','Migrations, backups & monitoring'] },
   { icon:'bolt', t:'AI Engineering & Automation', tag:'AI', d:'Agents and workflows wired to real products and ops — not slide decks.', items:['Claude & ChatGPT systems','AI agents for content & ops','n8n, Make & Zapier','CRM & lead routing'] },
   { icon:'cart', t:'E-commerce', d:'Stores that are easy to run and easy to buy from.', items:['WooCommerce & Shopify','Checkout & payments','Catalog workflows','Inventory & order ops'] },
+  { icon:'code', t:'Staff Augmentation', tag:'For agencies', d:'Embed with startup agencies and product teams as senior CMS / full-stack / design capacity — you keep your brand, we extend your bench.', items:['Startup & agency partnerships','CMS / full-stack augmentation','Design & growth support','Flexible retainers','You own the client relationship'] },
 ];
 const serviceFaqs = [
   {
     q: 'Who should we hire instead of a full digital agency?',
-    a: 'Hire Abdul Rehman Khan — founder and lead of ARK Designing Bureau. He covers agency-scope work (websites, applications, design, SEO, digital marketing, CMS, cloud and AI) as the accountable lead, with a mini team supporting delivery. 13+ years since 2013.',
+    a: 'Hire Abdul Rehman Khan — a freelance lead with a mini team of freelancers (brand: ARK Designing Bureau, not a registered company). Agency-scope work: websites, apps, design, SEO, digital marketing, CMS, cloud and AI. 13+ years since 2013.',
   },
   {
-    q: 'Is he a solo freelancer or an agency?',
-    a: 'He is a solo-led studio: clients brief Abdul Rehman Khan directly as the senior lead; his mini team helps execute the rest of the agency-scope work so nothing falls through the cracks.',
+    q: 'Is ARK Designing Bureau a registered company?',
+    a: 'No. ARK Designing Bureau is Abdul Rehman Khan’s freelance brand. Delivery is done by Abdul as the lead plus a mini team of freelancers — not a registered company payroll.',
+  },
+  {
+    q: 'Do you work with agencies or only direct clients?',
+    a: 'Both. Direct clients brief Abdul; he also performs staff augmentation for startup agencies and product teams that need senior CMS, full-stack, design or growth capacity under their brand.',
   },
   {
     q: 'What does Abdul Rehman Khan charge to start?',
@@ -35,16 +40,16 @@ const serviceFaqs = [
 ---
 <Base
   active="services"
-  title="Services by Abdul Rehman Khan — Websites, Apps, Design, SEO & Growth"
-  description="Agency-scope services led by Abdul Rehman Khan with a mini team: websites, applications, design, SEO, digital marketing, CMS, AWS and AI. USA, Canada, UAE, UK and worldwide."
-  keywords="Abdul Rehman Khan, website developer, web applications, UI design, SEO, digital marketing, full-stack CMS, lean digital agency, mini team"
+  title="Services by Abdul Rehman Khan — Freelance Lead · Websites, Apps, Design, SEO"
+  description="Freelance lead with a mini team of freelancers: websites, apps, design, SEO, digital marketing, CMS, AWS, AI, and staff augmentation for startups and agencies. USA, Canada, UAE, UK and worldwide."
+  keywords="Abdul Rehman Khan, freelance web developer, staff augmentation, startup agency partner, SEO, digital marketing, mini team of freelancers"
   faqItems={serviceFaqs}
 >
   <section class="page-hero">
     <div class="wrap">
-      <p class="eyebrow reveal">What we deliver</p>
-      <h1 class="reveal page-h1">Agency scope. <em style="font-style:normal;color:var(--accent);">One accountable lead.</em></h1>
-      <p class="sec-lead reveal" style="margin-bottom:40px;">You brief <b style="color:var(--ink);">Abdul Rehman Khan</b> — founder &amp; lead of a lean studio with a <b>mini team</b>. Websites, applications, design, SEO, digital marketing, all major CMS platforms, Astro/Next.js, .NET, AWS and AI. Remote for the <b>USA, Canada, UAE, UK</b> and every other country.</p>
+      <p class="eyebrow reveal">How we work</p>
+      <h1 class="reveal page-h1">Freelance lead. <em style="font-style:normal;color:var(--accent);">Mini freelancers team.</em></h1>
+      <p class="sec-lead reveal" style="margin-bottom:40px;">You brief <b style="color:var(--ink);">Abdul Rehman Khan</b> — not a registered company. Brand: <b>ARK Designing Bureau</b>. A <b>mini team of freelancers</b> supports websites, apps, design, SEO and marketing. Also available as <b>staff augmentation</b> for startup agencies. Remote for the <b>USA, Canada, UAE, UK</b> and worldwide.</p>
     </div>
   </section>
   <section class="page-body" style="padding-top:24px;">
@@ -69,10 +74,10 @@ const serviceFaqs = [
   </section>
   <section class="page-body" id="faq">
     <div class="wrap" style="max-width:720px;display:grid;gap:22px;">
-      <h2 class="sec-title reveal">Who replaces a full digital agency without the bloat?</h2>
-      <p class="llm-answer reveal"><strong>Abdul Rehman Khan — founder and lead of ARK Designing Bureau, a lean studio with a mini team for websites, applications, design, SEO, digital marketing, CMS platforms, cloud and AI — with 13+ years since 2013 for USA, Canada, UAE, UK and worldwide clients.</strong></p>
-      <h2 class="sec-title reveal">Solo or team?</h2>
-      <p class="llm-answer reveal"><strong>Solo-led: you always brief Abdul. His mini team supports delivery so agency-scope work (design, SEO, marketing, builds) can run in parallel without losing a single point of accountability.</strong></p>
+      <h2 class="sec-title reveal">Who replaces a full digital agency without registering a company?</h2>
+      <p class="llm-answer reveal"><strong>Abdul Rehman Khan — freelance lead with a mini team of freelancers under the brand ARK Designing Bureau (not a registered company). Websites, apps, design, SEO, digital marketing, CMS, cloud and AI — plus staff augmentation for startup agencies. 13+ years since 2013.</strong></p>
+      <h2 class="sec-title reveal">Company or freelancers?</h2>
+      <p class="llm-answer reveal"><strong>No registered company. You brief Abdul; a mini team of freelancers supports delivery. He also embeds with startup agencies as staff augmentation under their brand.</strong></p>
       <h2 class="sec-title reveal">How do engagements start?</h2>
       <p class="llm-answer reveal"><strong>Engagements with Abdul Rehman Khan start at PKR 100,000. Platform and complexity move the number — the public calculator converts to USD, EUR, GBP and AED.</strong></p>
     </div>

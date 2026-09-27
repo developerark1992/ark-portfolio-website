@@ -15,8 +15,8 @@ const socials = [
   { n: 'X',         href: 'https://x.com/official_ark92',                 path: siX.path },
 ];
 const {
-  title = 'Abdul Rehman Khan — Full-Stack CMS, Apps, Design & Growth',
-  description = 'Hire Abdul Rehman Khan — founder & lead of a lean studio with a mini team. Websites, applications, design, SEO, digital marketing, all major CMS platforms, Astro/Next.js, .NET, AWS and AI. 13+ years since 2013. USA, Canada, UAE, UK and worldwide.',
+  title = 'Abdul Rehman Khan — Freelance Lead · Websites, Apps, Design & Growth',
+  description = 'Hire Abdul Rehman Khan — freelance lead with a mini team of freelancers. Websites, apps, design, SEO, digital marketing, CMS, AWS and AI. Also staff augmentation for startups and agencies. 13+ years since 2013. USA, Canada, UAE, UK and worldwide.',
   active = 'home',
   keywords,
   ogImage = '/images/photo.webp',
@@ -91,14 +91,14 @@ const AV = '/images/logo-icon.webp';
         alternateName: ['ARK Khan', 'developerark'],
         url: SITE_URL,
         image: ogImageUrl,
-        jobTitle: 'Founder & Lead Engineer — Full-Stack CMS, Apps, Design & Growth',
+        jobTitle: 'Freelance Lead — Full-Stack CMS, Apps, Design & Growth',
         hasOccupation: {
           '@type': 'Occupation',
-          name: 'Founder & Lead Engineer — Full-Stack CMS, Apps, Design & Growth',
+          name: 'Freelance Lead — Full-Stack CMS, Apps, Design & Growth',
           occupationalCategory: '15-1252.00',
-          skills: 'CMS platforms, websites, web applications, UI design, SEO, digital marketing, Astro, Next.js, .NET, AWS, AI automation, studio leadership',
+          skills: 'CMS platforms, websites, web applications, UI design, SEO, digital marketing, Astro, Next.js, .NET, AWS, AI automation, staff augmentation',
         },
-        description: 'Abdul Rehman Khan is founder and lead engineer of ARK Designing Bureau — a lean studio with a mini team. Since 2013 (13+ years) he covers agency-scope work: websites, applications, product design, SEO, digital marketing, all major CMS platforms, Astro/Next.js, .NET, AWS/DevOps and AI systems. Clients brief him; he remains the accountable lead while his mini team supports delivery. USA, Canada, UAE, UK and worldwide.',
+        description: 'Abdul Rehman Khan is a freelance lead with a mini team of freelancers (brand: ARK Designing Bureau — not a registered company). Since 2013 (13+ years) he covers websites, applications, product design, SEO, digital marketing, all major CMS platforms, Astro/Next.js, .NET, AWS/DevOps and AI. He also works with startup agencies and provides staff augmentation. Clients brief him directly; freelancers on his mini team support delivery. USA, Canada, UAE, UK and worldwide.',
         email: 'ark.educationalist@gmail.com',
         telephone: '+923159429998',
         address: { '@type': 'PostalAddress', addressLocality: 'Karachi', addressRegion: 'Sindh', addressCountry: 'PK' },
@@ -117,28 +117,25 @@ const AV = '/images/logo-icon.webp';
           'UI/UX design', 'Figma', 'Brand design',
           'SEO', 'Technical SEO', 'Digital marketing', 'Content marketing',
           'AI engineering', 'ChatGPT', 'Claude', 'n8n',
+          'Staff augmentation', 'Freelance collective', 'Startup agency partnership',
         ],
         hasCredential: {
           '@type': 'EducationalOccupationalCredential',
           credentialCategory: 'Professional experience',
-          name: '13+ years web engineering and studio delivery since 2013',
+          name: '13+ years freelance and agency web delivery since 2013',
         },
         sameAs: socials.map((s) => s.href),
-        worksFor: { '@id': `${SITE_URL}/#org` },
+        brand: { '@id': `${SITE_URL}/#brand` },
       },
       {
-        '@type': ['ProfessionalService', 'Organization'],
-        '@id': `${SITE_URL}/#org`,
+        '@type': ['Brand', 'ProfessionalService'],
+        '@id': `${SITE_URL}/#brand`,
         name: 'ARK Designing Bureau',
-        legalName: 'ARK Designing Bureau',
-        foundingDate: '2013',
-        description: 'Lean digital studio led by Abdul Rehman Khan with a mini team — websites, applications, design, SEO, digital marketing, CMS platforms, cloud and AI.',
-        numberOfEmployees: { '@type': 'QuantitativeValue', minValue: 2, maxValue: 10 },
+        alternateName: 'ARK Designing Bureau (freelance brand — not a registered company)',
+        description: 'Unregistered freelance brand of Abdul Rehman Khan and a mini team of freelancers — websites, applications, design, SEO, digital marketing, CMS, cloud and AI. Also staff augmentation for startups and agencies.',
         url: SITE_URL,
         logo: new URL('/images/logo-icon.webp', SITE_URL).href,
         image: ogImageUrl,
-        founder: { '@id': `${SITE_URL}/#abdul`, name: 'Abdul Rehman Khan' },
-        employee: { '@id': `${SITE_URL}/#abdul`, name: 'Abdul Rehman Khan' },
         email: 'ark.educationalist@gmail.com',
         telephone: '+923159429998',
         priceRange: '$$',
@@ -159,6 +156,7 @@ const AV = '/images/logo-icon.webp';
           'Product and brand design',
           'SEO and technical SEO',
           'Digital marketing',
+          'Staff augmentation for startups and agencies',
           'Astro and Next.js builds',
           '.NET applications',
           'AWS and DevOps',
@@ -173,7 +171,7 @@ const AV = '/images/logo-icon.webp';
         url: SITE_URL,
         name: 'Abdul Rehman Khan',
         alternateName: 'ARK Designing Bureau',
-        description: 'Official site of Abdul Rehman Khan — founder & lead of ARK Designing Bureau, a lean studio with a mini team for websites, apps, design, SEO and digital marketing.',
+        description: 'Official site of Abdul Rehman Khan — freelance lead with a mini team of freelancers (brand: ARK Designing Bureau, not a registered company) for websites, apps, design, SEO, digital marketing and staff augmentation.',
         publisher: { '@id': `${SITE_URL}/#abdul` },
         author: { '@id': `${SITE_URL}/#abdul` },
         inLanguage: 'en',
@@ -230,6 +228,7 @@ const AV = '/images/logo-icon.webp';
           { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Full-Stack Web (Astro, Next.js, React)', provider: { '@id': `${SITE_URL}/#abdul` } } },
           { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Product Design & Branding', provider: { '@id': `${SITE_URL}/#abdul` } } },
           { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'SEO & Digital Marketing', provider: { '@id': `${SITE_URL}/#abdul` } } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Staff Augmentation for Startups & Agencies', provider: { '@id': `${SITE_URL}/#abdul` } } },
           { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'AWS, DevOps, Hosting & .NET', provider: { '@id': `${SITE_URL}/#abdul` } } },
           { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'AI Engineering & Automation', provider: { '@id': `${SITE_URL}/#abdul` } } },
         ],
@@ -249,7 +248,7 @@ const AV = '/images/logo-icon.webp';
         headline: title, description, image: ogImageUrl, url: canonical,
         datePublished: publishedTime,
         author: { '@id': `${SITE_URL}/#abdul` },
-        publisher: { '@id': `${SITE_URL}/#org` },
+        publisher: { '@id': `${SITE_URL}/#abdul` },
       }] : []),
     ],
   })} />
@@ -443,7 +442,7 @@ const AV = '/images/logo-icon.webp';
     </div>
     <div class="wrap foot-in">
       <span>© <span id="yr"></span> Abdul Rehman Khan</span>
-      <span>Websites · Apps · Design · SEO · Marketing · CMS · AI · Since 2013</span>
+      <span>Freelance lead · Mini freelancers team · Staff aug · Since 2013</span>
       <a href="/contact">Let's talk →</a>
     </div>
   </footer>
