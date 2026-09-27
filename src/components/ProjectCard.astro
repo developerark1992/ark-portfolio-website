@@ -31,7 +31,7 @@ const tags = [
   rel={p.live ? 'noopener noreferrer' : undefined}
 >
   <div class="wkb-shot">
-    <img src={thumb} alt="" loading={eager ? 'eager' : 'lazy'} decoding="async" width="640" height="420" sizes="(max-width: 720px) 100vw, (max-width: 1200px) 70vw, 640px" draggable="false" fetchpriority={eager && index === 0 ? 'high' : undefined} />
+    <img src={thumb} alt={`${p.title} website`} loading={eager ? 'eager' : 'lazy'} decoding="async" width="640" height="420" sizes="(max-width: 720px) 100vw, (max-width: 1200px) 70vw, 640px" draggable="false" fetchpriority={eager && index === 0 ? 'high' : undefined} />
   </div>
   <div class="wkb-body">
     <span class="wkb-index ci-label">{n}</span>
