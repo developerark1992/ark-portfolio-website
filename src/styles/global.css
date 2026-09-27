@@ -585,12 +585,31 @@ section.page-body > .wrap{display:flex;flex-direction:column;align-items:stretch
 .trust-strip .ts.wide b{font-size:15px;color:var(--ink);}
 .trust-strip .ts span{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-faint);}
 .trust-strip .ts.wide span{text-transform:none;letter-spacing:0;font-size:12px;}
-.calendly-wrap{border:1px solid var(--glass-line);border-radius:var(--r-lg);overflow:hidden;background:var(--bg-2);min-height:min(660px,70dvh);}
-@media (max-width:720px){
-  .calendly-wrap{min-height:min(520px,65dvh);}
-  .calendly-wrap .calendly-inline-widget{height:min(520px,65dvh) !important;}
+.calendly-wrap{
+  border:1px solid var(--glass-line);
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  background:var(--surface-solid,#fff);
+  height:700px;
+  max-width:100%;
 }
-.calendly-inline-widget{width:100%;}
+.calendly-inline-widget{
+  width:100% !important;
+  height:700px !important;
+  min-width:0 !important;
+}
+.calendly-inline-widget iframe{
+  width:100% !important;
+  height:100% !important;
+  min-height:700px !important;
+  border:0 !important;
+  display:block;
+}
+@media (max-width:720px){
+  .calendly-wrap,
+  .calendly-inline-widget{height:640px !important;}
+  .calendly-inline-widget iframe{min-height:640px !important;}
+}
 
 /* calculator */
 .calc-grid{display:grid;grid-template-columns:1.35fr .65fr;gap:40px;align-items:start;}
