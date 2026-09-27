@@ -173,27 +173,37 @@
     0 0 48px -20px color-mix(in srgb,var(--accent) 35%,transparent);
   transform-origin:center top;
 }
-/* Desktop sticky stack: short slots + last-child auto = stack look without huge gap before next section */
+/* Desktop sticky stack: gap between cards; last card not sticky so Platforms never gets covered */
 @media (min-width:981px){
+  #skills{
+    padding-bottom:clamp(2.75rem,5vw,4.5rem);
+  }
+  #platforms{
+    position:relative;
+    z-index:4;
+    isolation:isolate;
+  }
   .svc-deck:not(.skill-deck){
-    display:block;gap:0;
+    display:flex;
+    flex-direction:column;
+    gap:1.35rem;
   }
   .svc-deck:not(.skill-deck) .svc-slot{
-    position:sticky;top:0;
-    height:min(40vh,18.5rem);
-    padding-bottom:.85rem;
-    box-sizing:content-box;
+    position:sticky;
+    top:calc(5.25rem + var(--i,0) * 1.15rem);
+    height:auto;
+    padding-bottom:0;
     z-index:calc(1 + var(--i,0));
   }
   .svc-deck:not(.skill-deck) .svc-slot:last-child{
-    height:auto;
-    padding-bottom:0;
+    position:relative;
+    top:auto;
   }
   .svc-deck:not(.skill-deck) .svc-card{
-    top:calc(5rem + var(--i,0) * 1.15rem);
+    top:0;
   }
   .svc-deck:not(.skill-deck) .svc-card-link{
-    min-height:min(36vh,16.5rem);
+    min-height:0;
   }
 }
 .svc-card::before{
