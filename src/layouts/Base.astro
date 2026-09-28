@@ -127,7 +127,7 @@ const AV = '/images/logo-icon.webp';
       .fx-hero{min-height:auto;overflow:visible;overflow-x:clip;}
       .fx-hero-grid{grid-template-columns:1fr;gap:28px;}
       .fx-hero-copy,.fx-hero-photo{order:0;}
-      .fx-hero-photo{justify-self:center;width:min(100%,380px);}
+      .fx-hero-photo{justify-self:stretch;width:100%;max-width:none;margin-inline:0;}
     }
   </style>
   {active === 'home' && (
@@ -542,6 +542,32 @@ const AV = '/images/logo-icon.webp';
 
   <script is:inline>
     (function () {
+      /* Menu works even if site.js is delayed/blocked — critical on mobile. */
+      function bootMenu() {
+        var b = document.getElementById('burger');
+        var n = document.getElementById('navlinks');
+        var scrim = document.getElementById('navScrim');
+        var closeBtn = document.getElementById('navClose');
+        if (!b || !n || b.dataset.menuBound === '1') return;
+        b.dataset.menuBound = '1';
+        function setOpen(open) {
+          n.classList.toggle('open', open);
+          b.classList.toggle('is-open', open);
+          b.setAttribute('aria-expanded', open ? 'true' : 'false');
+          document.body.classList.toggle('nav-open', open);
+          if (scrim) {
+            if (open) { scrim.hidden = false; requestAnimationFrame(function () { scrim.classList.add('show'); }); }
+            else { scrim.classList.remove('show'); scrim.hidden = true; }
+          }
+        }
+        b.addEventListener('click', function (e) { e.preventDefault(); setOpen(!n.classList.contains('open')); });
+        if (closeBtn) closeBtn.addEventListener('click', function () { setOpen(false); });
+        if (scrim) scrim.addEventListener('click', function () { setOpen(false); });
+        n.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setOpen(false); }); });
+      }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootMenu);
+      else bootMenu();
+
       var ua = navigator.userAgent || '';
       var bot = document.documentElement.classList.contains('pre-skip') ||
         !!(navigator.webdriver) ||
@@ -550,7 +576,7 @@ const AV = '/images/logo-icon.webp';
         /Chrome\/\d+\.0\.0\.0/.test(ua);
       if (bot) return;
       var s = document.createElement('script');
-      s.src = '/js/site.js?v=20260928i';
+      s.src = '/js/site.js?v=20260928j';
       s.defer = true;
       document.body.appendChild(s);
     })();

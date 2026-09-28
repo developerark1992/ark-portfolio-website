@@ -31,6 +31,7 @@
   --ci-ease:cubic-bezier(.22,1,.36,1);
   background:var(--ci-paper);
   color:var(--ci-ink);
+  isolation:isolate;
 }
 
 .site-ci .wrap{max-width:var(--maxw);}

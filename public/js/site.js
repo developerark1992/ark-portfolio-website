@@ -13,6 +13,8 @@
         var scrim=document.getElementById('navScrim');
         var closeBtn=document.getElementById('navClose');
         if(!b||!n)return;
+        if(b.dataset.menuBound==='1')return;
+        b.dataset.menuBound='1';
 
         function setOpen(open){
           n.classList.toggle('open',open);
@@ -26,9 +28,13 @@
           }
         }
 
-        b.onclick=function(){setOpen(!n.classList.contains('open'));};
-        if(closeBtn) closeBtn.onclick=function(){setOpen(false);};
-        if(scrim) scrim.onclick=function(){setOpen(false);};
+        b.addEventListener('click',function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          setOpen(!n.classList.contains('open'));
+        });
+        if(closeBtn) closeBtn.addEventListener('click',function(){setOpen(false);});
+        if(scrim) scrim.addEventListener('click',function(){setOpen(false);});
         n.querySelectorAll('a').forEach(function(a){
           a.addEventListener('click',function(){setOpen(false);});
         });
