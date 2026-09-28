@@ -7,3 +7,4 @@ dist/
 mega-cache/
 .env
 .env.*
+gerda-snippets/
