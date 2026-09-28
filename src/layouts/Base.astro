@@ -127,7 +127,12 @@ const AV = '/images/logo-icon.webp';
       .fx-hero{min-height:auto;overflow:visible;overflow-x:clip;}
       .fx-hero-grid{grid-template-columns:1fr;gap:28px;}
       .fx-hero-copy,.fx-hero-photo{order:0;}
-      .fx-hero-photo{justify-self:stretch;width:100%;max-width:none;margin-inline:0;}
+      .fx-hero-photo{justify-self:stretch;width:100%;max-width:none;margin-inline:0;padding:0 4px;}
+      .fx-photo-frame{border-radius:18px;}
+    }
+    @media (max-width:720px){
+      .fx-hero .wrap{padding-left:16px;padding-right:16px;}
+      .fx-photo-frame{border-radius:18px;}
     }
   </style>
   {active === 'home' && (
