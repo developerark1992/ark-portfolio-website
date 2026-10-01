@@ -204,6 +204,7 @@ import BrandLogo from '../components/BrandLogo.astro';
     <p id="dashUnconfigured" class="crm-unconfigured" hidden>
       Dashboard needs <code>PUBLIC_SUPABASE_URL</code>, <code>PUBLIC_SUPABASE_ANON_KEY</code>, and for CRM capture <code>SUPABASE_SERVICE_ROLE_KEY</code> on Vercel. Run <code>supabase/crm.sql</code> in the SQL editor.
     </p>
+    <p id="crmWriteWarn" class="crm-unconfigured" hidden></p>
   </div>
 
   <script>
@@ -706,6 +707,13 @@ import BrandLogo from '../components/BrandLogo.astro';
           try { tab = localStorage.getItem('arkCrmTab') || 'overview'; } catch {}
           setTab(tab);
           refreshAll();
+          fetch('/api/crm-health').then((r) => r.json()).then((h) => {
+            const w = $('crmWriteWarn');
+            if (!w) return;
+            if (h && h.ok) { w.hidden = true; return; }
+            w.hidden = false;
+            w.textContent = (h && h.hint) || (h && h.error) || 'CRM write check failed — leads will not appear until SUPABASE_SERVICE_ROLE_KEY is fixed on Vercel.';
+          }).catch(() => {});
           if (!window.__arkCrmPoll) {
             window.__arkCrmPoll = setInterval(function () {
               if (document.visibilityState === 'visible') {

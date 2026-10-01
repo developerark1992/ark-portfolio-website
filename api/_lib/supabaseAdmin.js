@@ -1,11 +1,19 @@
 import { createClient } from '@supabase/supabase-js';
 
+function clean(v) {
+  return String(v || '')
+    .trim()
+    .replace(/^["']|["']$/g, '')
+    .replace(/\s+/g, '');
+}
+
 export function getAdmin() {
-  const url = process.env.PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
-  const key =
+  const url = clean(process.env.PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL);
+  const key = clean(
     process.env.SUPABASE_SERVICE_ROLE_KEY ||
-    process.env.SUPABASE_SERVICE_KEY ||
-    process.env.SUPABASE_SERVICE_ROLE;
+      process.env.SUPABASE_SERVICE_KEY ||
+      process.env.SUPABASE_SERVICE_ROLE
+  );
   if (!url || !key) return null;
   return createClient(url, key, {
     auth: { persistSession: false, autoRefreshToken: false },
@@ -13,8 +21,8 @@ export function getAdmin() {
 }
 
 export async function requireUser(req) {
-  const url = process.env.PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
-  const anon = process.env.PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+  const url = clean(process.env.PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL);
+  const anon = clean(process.env.PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY);
   if (!url || !anon) return { error: 'not-configured', status: 503 };
 
   const auth = String(req.headers.authorization || '');

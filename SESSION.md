@@ -81,7 +81,9 @@ After adding `SUPABASE_SERVICE_ROLE_KEY`, redeploy.
 
 1. [x] Run `supabase/crm.sql` in Supabase SQL Editor (Success / no rows = OK).
 2. [ ] Run `supabase/crm-visitors.sql` (visitor signup + Activity notifications).
-3. [x] Add `SUPABASE_SERVICE_ROLE_KEY` on Vercel (Production).
+3. [ ] Fix `SUPABASE_SERVICE_ROLE_KEY` on Vercel — live API currently returns `Invalid API key`.
+      Use **Legacy** `service_role` secret (not anon, not `sb_secret_`). Redeploy after save.
+      Verify: open `/api/crm-health` → should show `"ok":true`.
 4. [ ] Confirm redirect URL for password reset:  
       Supabase → Authentication → URL Configuration → Redirect URLs →  
       `https://arkdesigningbureau.com/dashboard`
