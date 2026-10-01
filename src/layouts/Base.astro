@@ -678,22 +678,30 @@ const AV = '/images/logo-icon.webp';
         function renderFloats() {
           if (!floatsEl) return;
           floatsEl.innerHTML = '';
-          var list = window.matchMedia('(max-width:720px)').matches ? FLOATS.slice(0, 3) : FLOATS;
+          var openChat = !chat.hidden;
+          floatsEl.classList.toggle('is-open', openChat);
+          var narrow = window.matchMedia('(max-width:720px)').matches;
+          var list = narrow && !openChat ? FLOATS.slice(0, 3) : FLOATS;
           list.forEach(function (c) {
             var b = document.createElement('button');
             b.type = 'button';
             b.className = 'ark-float' + (c.wa ? ' wa' : '');
             b.textContent = c.label;
             b.addEventListener('click', function () {
-              open();
-              setTimeout(function () {
+              if (chat.hidden) {
+                open();
+                setTimeout(function () {
+                  if (busy) return;
+                  handleUser(c.val || c.label, c.label);
+                }, 280);
+              } else {
                 if (busy) return;
                 handleUser(c.val || c.label, c.label);
-              }, 280);
+              }
             });
             floatsEl.appendChild(b);
           });
-          floatsEl.hidden = !chat.hidden;
+          floatsEl.hidden = false;
         }
         function botNow(html, chips) {
           untype();
@@ -780,20 +788,17 @@ const AV = '/images/logo-icon.webp';
         function open() {
           chat.hidden = false;
           launch.hidden = true;
-          if (floatsEl) floatsEl.hidden = true;
           if (!started) {
             started = true;
             bot('Hi — I’m Abdul’s assistant. Ask about his experience, get a quick price estimate, or leave a project enquiry. What would you like to know?', MENU, 220);
           }
+          renderFloats();
           setTimeout(function () { try { input.focus(); } catch (e) {} }, 250);
         }
         function close() {
           chat.hidden = true;
           launch.hidden = false;
-          if (floatsEl) {
-            floatsEl.hidden = false;
-            renderFloats();
-          }
+          renderFloats();
         }
 
         /* Expose for site.js / estimate page — prefer this if already booted. */
@@ -839,7 +844,7 @@ const AV = '/images/logo-icon.webp';
           });
         }
         window.addEventListener('resize', function () {
-          if (chat.hidden) renderFloats();
+          renderFloats();
         }, { passive: true });
       }
 
@@ -852,7 +857,7 @@ const AV = '/images/logo-icon.webp';
 
       /* Always load site.js for calculator / lightbox — chat already works inline. */
       var s = document.createElement('script');
-      s.src = '/js/site.js?v=20261001d';
+      s.src = '/js/site.js?v=20261001e';
       s.defer = true;
       document.body.appendChild(s);
     })();
