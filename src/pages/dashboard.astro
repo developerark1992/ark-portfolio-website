@@ -76,6 +76,21 @@ import BrandLogo from '../components/BrandLogo.astro';
               <h2>Top pages (7 days)</h2>
               <div id="ovPages" class="crm-mini-list"></div>
             </div>
+            <div class="crm-card">
+              <h2>Data retention</h2>
+              <p class="crm-empty" style="margin:0 0 10px;">Weekly job emails Excel CSVs of expired rows, then deletes them. Leads are kept forever.</p>
+              <ul class="crm-empty" style="margin:0 0 12px;padding-left:18px;line-height:1.6;">
+                <li>Page views · 90 days</li>
+                <li>Chat transcripts · 18 months</li>
+                <li>Activity / email logs · 12 months</li>
+                <li>Inactive visitor accounts · 24 months</li>
+              </ul>
+              <div class="crm-drawer-actions" style="gap:8px;">
+                <button type="button" class="crm-btn ghost" id="retentionDry">Preview purge</button>
+                <button type="button" class="crm-btn primary" id="retentionRun">Email dump &amp; purge</button>
+              </div>
+              <p class="crm-msg" id="retentionMsg" style="margin-top:8px;"></p>
+            </div>
           </div>
         </section>
 
@@ -515,6 +530,41 @@ import BrandLogo from '../components/BrandLogo.astro';
       if ($('crmScrim')) $('crmScrim').onclick = () => setNavOpen(false);
       $('crmRefresh').onclick = () => refreshAll();
       $('logout').onclick = async () => { await supabase.auth.signOut(); location.reload(); };
+
+      async function runRetention(dry) {
+        const msg = $('retentionMsg');
+        if (msg) msg.textContent = dry ? 'Checking…' : 'Exporting & purging…';
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) { if (msg) msg.textContent = 'Sign in required.'; return; }
+        const url = '/api/crm-retention' + (dry ? '?dry=1' : '');
+        const r = await fetch(url, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${session.access_token}`, 'content-type': 'application/json' },
+          body: JSON.stringify({ dry: dry ? '1' : '0' }),
+        });
+        const d = await r.json().catch(() => ({}));
+        if (!msg) return;
+        if (!d.ok) {
+          msg.textContent = d.detail || d.error || 'Retention failed';
+          return;
+        }
+        if (dry) {
+          const c = d.wouldPurge || d.counts || {};
+          const parts = Object.entries(c).filter(([, n]) => n).map(([k, n]) => `${k}: ${n}`);
+          msg.textContent = parts.length ? `Would purge — ${parts.join(', ')}` : 'Nothing past retention yet.';
+        } else if (d.purged === false) {
+          msg.textContent = d.message || 'Nothing to purge.';
+        } else {
+          msg.textContent = `Emailed CSV dump${d.attachments ? ` (${d.attachments.length} files)` : ''} and deleted expired rows. Check your inbox.`;
+          refreshAll();
+        }
+      }
+      if ($('retentionDry')) $('retentionDry').onclick = () => runRetention(true);
+      if ($('retentionRun')) $('retentionRun').onclick = () => {
+        if (!confirm('Email CSV archives of expired CRM rows to your inbox, then delete them from the live database? Leads are never auto-deleted.')) return;
+        runRetention(false);
+      };
+
       $('leadSearch').oninput = renderLeads;
       $('leadStatusFilter').onchange = renderLeads;
       $('ldClose').onclick = () => { $('leadDrawer').hidden = true; };

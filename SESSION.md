@@ -99,12 +99,20 @@ After fixing, verify: `/api/crm-health` → `"ok":true`.
 - **End** button ends the session and stores the transcript (close / leave page also flushes transcript).
 - Signed-up visitors skip the form next time; dashboard **Activity** shows return visits.
 
+### Data retention (free tier)
+- Weekly Vercel Cron (`0 4 * * 0` UTC) → `/api/crm-retention`
+- Emails Excel-ready **CSV dumps** to `CONTACT_TO` / `GMAIL_USER`, then deletes expired rows
+- Leads are **never** auto-deleted
+- Dashboard Overview → **Preview purge** / **Email dump & purge** (manual)
+- Env: `CRON_SECRET` (optional Bearer for manual curl); retention windows overridable via `CRM_RETENTION_*`
+
 ---
 
 ## Key files
 
 ```
 api/chat-lead.js
+api/crm-retention.js            # weekly dump + purge
 api/track.js
 api/dash-mail.js
 api/_lib/supabaseAdmin.js
