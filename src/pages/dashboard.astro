@@ -13,7 +13,7 @@ import BrandLogo from '../components/BrandLogo.astro';
         <p class="crm-kicker">Command center</p>
         <h1>Sign in</h1>
         <p class="crm-login-lead">Leads, chat transcripts, visitors and outreach — one place.</p>
-        <label class="crm-field"><span>Email</span><input id="li-email" type="email" required autocomplete="username" placeholder="you@email.com" /></label>
+        <label class="crm-field"><span>Email</span><input id="li-email" type="email" required autocomplete="username" placeholder="ark.educationalist@gmail.com" value="ark.educationalist@gmail.com" /></label>
         <label class="crm-field"><span>Password</span><input id="li-pass" type="password" required autocomplete="current-password" placeholder="••••••••" /></label>
         <div class="crm-login-actions">
           <button class="crm-btn primary" type="submit">Enter dashboard</button>
@@ -657,22 +657,29 @@ import BrandLogo from '../components/BrandLogo.astro';
           $('li-email').focus();
           return;
         }
-        const { error } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: location.origin + '/dashboard',
-        });
+        /* Canonical production URL — must match Supabase Auth Redirect URLs allowlist */
+        const redirectTo = 'https://www.arkdesigningbureau.com/dashboard';
+        const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
         if (error) {
           $('loginErr').textContent = error.message;
           return;
         }
         $('loginOk').hidden = false;
-        $('loginOk').textContent = 'Check your inbox for a reset link. After you set a new password, come back here to sign in.';
+        $('loginOk').textContent = 'If an account exists for that email, a reset link was sent. Check inbox + spam. You can also sign in with your current password.';
       };
 
       /* If arriving from a recovery link, show a set-password form */
       async function maybeRecovery() {
-        const hash = location.hash || '';
-        const params = new URLSearchParams(hash.replace(/^#/, ''));
-        if (params.get('type') !== 'recovery') return false;
+        const hashParams = new URLSearchParams((location.hash || '').replace(/^#/, ''));
+        const q = new URLSearchParams(location.search || '');
+
+        if (q.has('code')) {
+          try { await supabase.auth.exchangeCodeForSession(location.href); } catch {}
+        }
+
+        const isRecovery = hashParams.get('type') === 'recovery' || q.get('type') === 'recovery';
+        if (!isRecovery) return false;
+
         $('crmLogin').hidden = false;
         $('crmApp').hidden = true;
         $('loginForm').innerHTML = `

@@ -8,3 +8,5 @@ mega-cache/
 .env
 .env.*
 gerda-snippets/
+.vercel
+.env*

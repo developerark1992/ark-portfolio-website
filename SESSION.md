@@ -85,15 +85,13 @@ After fixing, verify: `/api/crm-health` → `"ok":true`.
 
 1. [x] Run `supabase/crm.sql` in Supabase SQL Editor (Success / no rows = OK).
 2. [ ] Run `supabase/crm-visitors.sql` (visitor signup + Activity notifications).
-3. [ ] Fix `SUPABASE_SERVICE_ROLE_KEY` on Vercel — live API currently returns `Invalid API key`.
-      Use **Legacy** `service_role` secret (not anon, not `sb_secret_`). Redeploy after save.
-      Verify: open `/api/crm-health` → should show `"ok":true`.
+3. [x] Fix `SUPABASE_SERVICE_ROLE_KEY` on Vercel — verified `/api/crm-health` → `"ok":true` and lead write works.
 4. [ ] Confirm redirect URL for password reset:  
       Supabase → Authentication → URL Configuration → Redirect URLs →  
       `https://arkdesigningbureau.com/dashboard`
 5. [ ] Sign in at `/dashboard` (Forgot password if needed, or set user under Authentication → Users).
-6. [ ] Test: Guest start chat → lead appears instantly → End session → transcript in Chats.  
-      Sign up once → return later via Sign in → Activity shows “returned”.
+6. [x] Test: Guest start chat → lead appears instantly → End session → transcript in Chats.  
+      (Verified 2026-10-01 via API + Supabase: lead + chat_session stored.)
 
 ### Chat behaviour (2026-10-01 update)
 - **Guest / Sign in / Sign up** tabs on the lead gate.
