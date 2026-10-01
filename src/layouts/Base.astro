@@ -534,6 +534,7 @@ const AV = '/images/logo-icon.webp';
         <em class="ark-visitor-mini" id="arkVisitorMini" hidden></em>
       </div>
       <div class="ark-head-actions">
+        <button class="ark-end" id="arkEnd" type="button" hidden title="End session">End</button>
         <button class="ark-wa-btn" id="arkWa" type="button" aria-label="Message on WhatsApp" title="WhatsApp">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d={siWhatsapp.path} /></svg>
         </button>
@@ -545,20 +546,30 @@ const AV = '/images/logo-icon.webp';
     <div class="ark-gate" id="arkGate">
       <p class="ark-gate-kicker">Before we start</p>
       <h2 class="ark-gate-title">Your details</h2>
-      <p class="ark-gate-lead">Name, phone and email are required so Abdul can follow up on this chat.</p>
+      <p class="ark-gate-lead">Share your details once — or sign in if you already have a chat account.</p>
+      <div class="ark-gate-modes" id="arkGateModes">
+        <button type="button" class="is-on" data-mode="guest">Guest</button>
+        <button type="button" data-mode="signin">Sign in</button>
+        <button type="button" data-mode="signup">Sign up</button>
+      </div>
       <form class="ark-gate-form" id="arkGateForm" autocomplete="on">
-        <label class="ark-gate-field">
+        <label class="ark-gate-field ark-gate-guest ark-gate-signup">
           <span>Name *</span>
-          <input id="arkLeadName" name="name" type="text" required maxlength="120" autocomplete="name" placeholder="Your full name" />
+          <input id="arkLeadName" name="name" type="text" maxlength="120" autocomplete="name" placeholder="Your full name" />
         </label>
-        <label class="ark-gate-field">
+        <label class="ark-gate-field ark-gate-guest ark-gate-signup">
           <span>Phone *</span>
-          <input id="arkLeadPhone" name="phone" type="tel" required maxlength="40" autocomplete="tel" placeholder="+92 300 0000000" />
+          <input id="arkLeadPhone" name="phone" type="tel" maxlength="40" autocomplete="tel" placeholder="+92 300 0000000" />
         </label>
         <label class="ark-gate-field">
           <span>Email *</span>
           <input id="arkLeadEmail" name="email" type="email" required maxlength="160" autocomplete="email" placeholder="you@company.com" />
         </label>
+        <label class="ark-gate-field ark-gate-auth" hidden>
+          <span>Password *</span>
+          <input id="arkLeadPass" name="password" type="password" maxlength="80" autocomplete="current-password" placeholder="At least 6 characters" />
+        </label>
+        <p class="ark-gate-hint ark-gate-signup" hidden>Sign up once — next visits you only sign in.</p>
         <p class="ark-gate-err" id="arkGateErr" hidden></p>
         <button type="submit" class="ark-gate-go" id="arkGateGo">Start chat</button>
       </form>
@@ -642,7 +653,10 @@ const AV = '/images/logo-icon.webp';
         var leadNameEl = document.getElementById('arkLeadName');
         var leadPhoneEl = document.getElementById('arkLeadPhone');
         var leadEmailEl = document.getElementById('arkLeadEmail');
+        var leadPassEl = document.getElementById('arkLeadPass');
+        var gateModes = document.getElementById('arkGateModes');
         var visitorMini = document.getElementById('arkVisitorMini');
+        var endBtn = document.getElementById('arkEnd');
         if (!launch || !chat || !msgs || !chipsEl || !form || !input || !gate || !gateForm) return;
         if (launch.dataset.inlineBoot === '1') return;
         launch.dataset.inlineBoot = '1';
@@ -657,6 +671,7 @@ const AV = '/images/logo-icon.webp';
         var sessionId = '';
         var startNotified = false;
         var transcriptSent = false;
+        var gateMode = 'guest';
         var MENU = [
           { label: 'About Abdul', val: 'about' },
           { label: 'Recent work', val: 'work' },
@@ -680,7 +695,21 @@ const AV = '/images/logo-icon.webp';
         function phoneOk(v) {
           return String(v || '').replace(/\D/g, '').length >= 7;
         }
+        function loadAccount() {
+          try {
+            var raw = localStorage.getItem('arkVisitorAccount');
+            if (!raw) return null;
+            var o = JSON.parse(raw);
+            if (o && o.name && emailOk(o.email) && phoneOk(o.phone) && o.token) return o;
+          } catch (e) {}
+          return null;
+        }
+        function saveAccount(o) {
+          try { localStorage.setItem('arkVisitorAccount', JSON.stringify(o)); } catch (e) {}
+        }
         function loadLead() {
+          var acc = loadAccount();
+          if (acc) return { name: acc.name, email: acc.email, phone: acc.phone, token: acc.token };
           try {
             var raw = sessionStorage.getItem('arkChatLead');
             if (!raw) return null;
@@ -693,8 +722,14 @@ const AV = '/images/logo-icon.webp';
           lead = o;
           try { sessionStorage.setItem('arkChatLead', JSON.stringify(o)); } catch (e) {}
         }
-        function ensureSession() {
+        function ensureSession(forceNew) {
           try {
+            if (forceNew) {
+              sessionId = 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+              sessionStorage.setItem('arkChatSid', sessionId);
+              sessionStorage.removeItem('arkChatStartSent');
+              return;
+            }
             sessionId = sessionStorage.getItem('arkChatSid') || '';
             if (!sessionId) {
               sessionId = 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
@@ -703,6 +738,26 @@ const AV = '/images/logo-icon.webp';
           } catch (e) {
             sessionId = 'c' + Date.now().toString(36);
           }
+        }
+        function setGateMode(mode) {
+          gateMode = mode || 'guest';
+          if (gateModes) {
+            gateModes.querySelectorAll('button').forEach(function (b) {
+              b.classList.toggle('is-on', b.getAttribute('data-mode') === gateMode);
+            });
+          }
+          gate.querySelectorAll('.ark-gate-guest').forEach(function (el) { el.hidden = gateMode === 'signin'; });
+          gate.querySelectorAll('.ark-gate-signup').forEach(function (el) { el.hidden = gateMode !== 'signup'; });
+          gate.querySelectorAll('.ark-gate-auth').forEach(function (el) { el.hidden = gateMode === 'guest'; });
+          if (gateGo) {
+            gateGo.textContent = gateMode === 'signin' ? 'Sign in & chat' : (gateMode === 'signup' ? 'Create account & chat' : 'Start chat');
+          }
+          if (leadPassEl) {
+            leadPassEl.required = gateMode !== 'guest';
+            leadPassEl.autocomplete = gateMode === 'signup' ? 'new-password' : 'current-password';
+          }
+          if (leadNameEl) leadNameEl.required = gateMode !== 'signin';
+          if (leadPhoneEl) leadPhoneEl.required = gateMode !== 'signin';
         }
         function setGateErr(msg) {
           if (!gateErr) return;
@@ -721,6 +776,7 @@ const AV = '/images/logo-icon.webp';
           if (msgs) msgs.hidden = !ready;
           if (suggestEl) suggestEl.hidden = !ready;
           if (form) form.hidden = !ready;
+          if (endBtn) endBtn.hidden = !ready;
           chat.classList.toggle('is-gated', !ready);
         }
         function pushLog(role, text) {
@@ -730,7 +786,7 @@ const AV = '/images/logo-icon.webp';
           transcriptSent = false;
         }
         function postLead(action) {
-          if (!lead) return;
+          if (!lead) return Promise.resolve({ ok: false });
           var payload = {
             action: action || 'start',
             name: lead.name,
@@ -738,44 +794,56 @@ const AV = '/images/logo-icon.webp';
             phone: lead.phone,
             page: location.href,
             sessionId: sessionId,
-            messages: action === 'transcript' ? transcript : []
+            messages: (action === 'transcript' || action === 'end') ? transcript : []
           };
           var body = JSON.stringify(payload);
-          try {
-            if (action === 'transcript' && navigator.sendBeacon) {
+          if ((action === 'transcript' || action === 'end') && navigator.sendBeacon) {
+            try {
               var blob = new Blob([body], { type: 'application/json' });
               if (navigator.sendBeacon('/api/chat-lead', blob)) {
                 transcriptSent = true;
-                return;
+                return Promise.resolve({ ok: true });
               }
-            }
-          } catch (e) {}
-          fetch('/api/chat-lead', {
+            } catch (e) {}
+          }
+          return fetch('/api/chat-lead', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
             body: body,
             keepalive: true
           }).then(function (r) { return r.json(); }).then(function (d) {
-            if (action === 'start' && d && d.ok) startNotified = true;
-            if (action === 'transcript' && d && d.ok) transcriptSent = true;
-          }).catch(function () {});
+            if ((action === 'start' || action === 'return') && d && d.ok) startNotified = true;
+            if ((action === 'transcript' || action === 'end') && d && d.ok) transcriptSent = true;
+            return d || { ok: false };
+          }).catch(function () { return { ok: false }; });
         }
-        function notifyStart() {
-          if (!lead) return;
+        function notifyStart(forceReturn) {
+          if (!lead) return Promise.resolve({ ok: false });
           try {
-            if (sessionStorage.getItem('arkChatStartSent') === sessionId) {
+            if (!forceReturn && sessionStorage.getItem('arkChatStartSent') === sessionId) {
               startNotified = true;
-              return;
+              return Promise.resolve({ ok: true, skipped: true });
             }
           } catch (e) {}
-          if (startNotified) return;
+          if (startNotified && !forceReturn) return Promise.resolve({ ok: true, skipped: true });
           startNotified = true;
           try { sessionStorage.setItem('arkChatStartSent', sessionId); } catch (e) {}
-          postLead('start');
+          return postLead(forceReturn ? 'return' : 'start');
         }
-        function flushTranscript() {
-          if (!lead || transcriptSent || !transcript.length) return;
-          postLead('transcript');
+        function flushTranscript(asEnd) {
+          if (!lead || transcriptSent || !transcript.length) return Promise.resolve({ ok: true, skipped: true });
+          return postLead(asEnd ? 'end' : 'transcript');
+        }
+        function resetConversation() {
+          started = false;
+          busy = false;
+          aiHist = [];
+          transcript = [];
+          transcriptSent = false;
+          startNotified = false;
+          msgs.innerHTML = '';
+          chipsEl.innerHTML = '';
+          ensureSession(true);
         }
         function scroll() { msgs.scrollTop = msgs.scrollHeight; }
         function me(t) {
@@ -1011,14 +1079,18 @@ const AV = '/images/logo-icon.webp';
           askAI(shown);
         }
 
-        function beginChat() {
+        function beginChat(opts) {
+          opts = opts || {};
           setChatReady(true);
           showVisitor(lead.name);
-          notifyStart();
+          if (!opts.skipNotify) notifyStart(!!opts.returning);
           if (!started) {
             started = true;
             var hi = firstName(lead.name);
-            bot('Hi <b>' + esc(hi) + '</b> — I’m Abdul’s assistant. Ask about his experience, get a quick price estimate, or leave a project enquiry. What would you like to know?', MENU, 220, 'Quick questions');
+            var welcome = opts.returning
+              ? 'Welcome back, <b>' + esc(hi) + '</b> — good to see you again. What would you like to know today?'
+              : 'Hi <b>' + esc(hi) + '</b> — I’m Abdul’s assistant. Ask about his experience, get a quick price estimate, or leave a project enquiry. What would you like to know?';
+            bot(welcome, MENU, 220, 'Quick questions');
           }
           setTimeout(function () { try { input.focus(); } catch (e) {} }, 250);
         }
@@ -1026,13 +1098,42 @@ const AV = '/images/logo-icon.webp';
         function open() {
           chat.hidden = false;
           launch.hidden = true;
-          ensureSession();
+          ensureSession(false);
+          setGateMode(gateMode || 'guest');
           lead = loadLead();
+          if (lead && lead.token) {
+            if (leadNameEl) leadNameEl.value = lead.name;
+            if (leadPhoneEl) leadPhoneEl.value = lead.phone;
+            if (leadEmailEl) leadEmailEl.value = lead.email;
+            saveLead(lead);
+            if (gateGo) { gateGo.disabled = true; gateGo.textContent = 'Signing in…'; }
+            fetch('/api/visitor-auth', {
+              method: 'POST',
+              headers: { 'content-type': 'application/json' },
+              body: JSON.stringify({ action: 'session', token: lead.token, page: location.href, sessionId: sessionId })
+            }).then(function (r) { return r.json(); }).then(function (d) {
+              if (gateGo) { gateGo.disabled = false; gateGo.textContent = 'Start chat'; }
+              if (d && d.ok && d.visitor) {
+                saveAccount(d.visitor);
+                saveLead({ name: d.visitor.name, email: d.visitor.email, phone: d.visitor.phone, token: d.visitor.token });
+                beginChat({ returning: true, skipNotify: true });
+              } else {
+                try { localStorage.removeItem('arkVisitorAccount'); } catch (e) {}
+                setChatReady(false);
+                setGateMode('signin');
+                setTimeout(function () { try { if (leadEmailEl) leadEmailEl.focus(); } catch (e) {} }, 200);
+              }
+            }).catch(function () {
+              if (gateGo) { gateGo.disabled = false; }
+              beginChat({ returning: !!lead.token, skipNotify: false });
+            });
+            return;
+          }
           if (lead) {
             if (leadNameEl) leadNameEl.value = lead.name;
             if (leadPhoneEl) leadPhoneEl.value = lead.phone;
             if (leadEmailEl) leadEmailEl.value = lead.email;
-            beginChat();
+            beginChat({ returning: false });
           } else {
             setChatReady(false);
             showVisitor('');
@@ -1040,29 +1141,113 @@ const AV = '/images/logo-icon.webp';
           }
         }
         function close() {
-          flushTranscript();
+          flushTranscript(false);
           chat.hidden = true;
           launch.hidden = false;
+        }
+        function endSession() {
+          if (!lead) { close(); return; }
+          if (endBtn) { endBtn.disabled = true; endBtn.textContent = 'Ending…'; }
+          flushTranscript(true).finally(function () {
+            resetConversation();
+            setChatReady(false);
+            showVisitor('');
+            chat.hidden = true;
+            launch.hidden = false;
+            if (endBtn) { endBtn.disabled = false; endBtn.textContent = 'End'; }
+            /* Keep saved account so they can skip the form next time */
+            lead = loadLead();
+          });
         }
 
         window.arkOpenChat = open;
         window.arkCloseChat = close;
+
+        if (gateModes) {
+          gateModes.addEventListener('click', function (e) {
+            var b = e.target.closest('button[data-mode]');
+            if (b) setGateMode(b.getAttribute('data-mode'));
+          });
+        }
+        setGateMode('guest');
 
         gateForm.addEventListener('submit', function (e) {
           e.preventDefault();
           var name = (leadNameEl && leadNameEl.value || '').trim();
           var phone = (leadPhoneEl && leadPhoneEl.value || '').trim();
           var email = (leadEmailEl && leadEmailEl.value || '').trim();
+          var password = (leadPassEl && leadPassEl.value || '');
+          setGateErr('');
+
+          if (gateMode === 'signin') {
+            if (!emailOk(email)) { setGateErr('Enter your email.'); return; }
+            if (password.length < 6) { setGateErr('Enter your password.'); return; }
+            if (gateGo) { gateGo.disabled = true; gateGo.textContent = 'Signing in…'; }
+            ensureSession(false);
+            fetch('/api/visitor-auth', {
+              method: 'POST',
+              headers: { 'content-type': 'application/json' },
+              body: JSON.stringify({ action: 'login', email: email, password: password, page: location.href, sessionId: sessionId })
+            }).then(function (r) { return r.json(); }).then(function (d) {
+              if (gateGo) { gateGo.disabled = false; gateGo.textContent = 'Sign in & chat'; }
+              if (!d || !d.ok) {
+                setGateErr(d && d.error === 'bad-credentials' ? 'Wrong email or password.' : 'Sign-in failed. Try again or use Guest.');
+                return;
+              }
+              saveAccount(d.visitor);
+              saveLead({ name: d.visitor.name, email: d.visitor.email, phone: d.visitor.phone, token: d.visitor.token });
+              startNotified = true;
+              try { sessionStorage.setItem('arkChatStartSent', sessionId); } catch (err) {}
+              beginChat({ returning: true, skipNotify: true });
+            }).catch(function () {
+              if (gateGo) { gateGo.disabled = false; gateGo.textContent = 'Sign in & chat'; }
+              setGateErr('Network error — try again.');
+            });
+            return;
+          }
+
+          if (gateMode === 'signup') {
+            if (!name) { setGateErr('Please enter your name.'); return; }
+            if (!phoneOk(phone)) { setGateErr('Please enter a valid phone number.'); return; }
+            if (!emailOk(email)) { setGateErr('Please enter a valid email.'); return; }
+            if (password.length < 6) { setGateErr('Password must be at least 6 characters.'); return; }
+            if (gateGo) { gateGo.disabled = true; gateGo.textContent = 'Creating…'; }
+            ensureSession(false);
+            fetch('/api/visitor-auth', {
+              method: 'POST',
+              headers: { 'content-type': 'application/json' },
+              body: JSON.stringify({ action: 'signup', name: name, email: email, phone: phone, password: password, page: location.href, sessionId: sessionId })
+            }).then(function (r) { return r.json(); }).then(function (d) {
+              if (gateGo) { gateGo.disabled = false; gateGo.textContent = 'Create account & chat'; }
+              if (!d || !d.ok) {
+                setGateErr(d && d.error === 'exists' ? 'Account already exists — use Sign in.' : 'Signup failed. You can still use Guest.');
+                return;
+              }
+              saveAccount(d.visitor);
+              saveLead({ name: d.visitor.name, email: d.visitor.email, phone: d.visitor.phone, token: d.visitor.token });
+              startNotified = true;
+              try { sessionStorage.setItem('arkChatStartSent', sessionId); } catch (err) {}
+              beginChat({ returning: false, skipNotify: true });
+            }).catch(function () {
+              if (gateGo) { gateGo.disabled = false; gateGo.textContent = 'Create account & chat'; }
+              setGateErr('Network error — try again.');
+            });
+            return;
+          }
+
+          /* Guest — capture lead instantly then start */
           if (!name) { setGateErr('Please enter your name.'); if (leadNameEl) leadNameEl.focus(); return; }
           if (!phoneOk(phone)) { setGateErr('Please enter a valid phone number.'); if (leadPhoneEl) leadPhoneEl.focus(); return; }
           if (!emailOk(email)) { setGateErr('Please enter a valid email address.'); if (leadEmailEl) leadEmailEl.focus(); return; }
-          setGateErr('');
-          if (gateGo) { gateGo.disabled = true; gateGo.textContent = 'Starting…'; }
+          if (gateGo) { gateGo.disabled = true; gateGo.textContent = 'Saving lead…'; }
+          ensureSession(false);
           saveLead({ name: name, phone: phone, email: email });
           startNotified = false;
-          try { sessionStorage.removeItem('arkChatStartSent'); } catch (e) {}
-          if (gateGo) { gateGo.disabled = false; gateGo.textContent = 'Start chat'; }
-          beginChat();
+          try { sessionStorage.removeItem('arkChatStartSent'); } catch (err) {}
+          notifyStart(false).then(function () {
+            if (gateGo) { gateGo.disabled = false; gateGo.textContent = 'Start chat'; }
+            beginChat({ returning: false, skipNotify: true });
+          });
         });
 
         if (suggestToggle) {
@@ -1079,6 +1264,7 @@ const AV = '/images/logo-icon.webp';
           else open();
         });
         if (closeBtn) closeBtn.addEventListener('click', close);
+        if (endBtn) endBtn.addEventListener('click', endSession);
         var waBtn = document.getElementById('arkWa');
         if (waBtn) {
           waBtn.addEventListener('click', function () {
@@ -1103,9 +1289,9 @@ const AV = '/images/logo-icon.webp';
         }
         if (!window.__arkChatFlush) {
           window.__arkChatFlush = true;
-          window.addEventListener('pagehide', flushTranscript);
+          window.addEventListener('pagehide', function () { flushTranscript(false); });
           document.addEventListener('visibilitychange', function () {
-            if (document.visibilityState === 'hidden') flushTranscript();
+            if (document.visibilityState === 'hidden') flushTranscript(false);
           });
         }
       }

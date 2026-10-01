@@ -53,6 +53,20 @@ function transcriptHtml(lines, visitorName) {
   }).join('');
 }
 
+async function addEvent(db, leadId, eventType, title, detail) {
+  if (!db || !leadId) return;
+  try {
+    await db.from('lead_events').insert({
+      lead_id: leadId,
+      event_type: eventType,
+      title,
+      detail: detail || '',
+    });
+  } catch {
+    /* table may not exist until crm-visitors.sql is run */
+  }
+}
+
 async function upsertLead(db, d) {
   if (!db) return null;
   const email = d.email.toLowerCase();
@@ -79,11 +93,11 @@ async function upsertLead(db, d) {
 
   if (leadId) {
     await db.from('leads').update(row).eq('id', leadId);
-    return leadId;
+    return { id: leadId, isNew: false };
   }
   const { data, error } = await db.from('leads').insert({ ...row, status: 'new' }).select('id').single();
   if (error) return null;
-  return data?.id || null;
+  return { id: data?.id || null, isNew: true };
 }
 
 async function upsertSession(db, d, leadId, lines) {
@@ -156,24 +170,64 @@ export default async function handler(req, res) {
 
     const db = getAdmin();
     let leadId = null;
+    let isNewLead = false;
     try {
-      leadId = await upsertLead(db, d);
-      await upsertSession(db, d, leadId, d.action === 'transcript' ? lines : []);
+      const up = await upsertLead(db, d);
+      leadId = up && up.id;
+      isNewLead = !!(up && up.isNew);
+      await upsertSession(db, d, leadId, (d.action === 'transcript' || d.action === 'end') ? lines : []);
+      if (d.action === 'start' || d.action === 'return') {
+        await addEvent(
+          db,
+          leadId,
+          d.action === 'return' ? 'returned' : (isNewLead ? 'new_lead' : 'chat_started'),
+          d.action === 'return'
+            ? `${d.name} signed in / returned`
+            : (isNewLead ? `${d.name} became a lead` : `${d.name} started a chat`),
+          `${d.email} · ${d.phone}`
+        );
+      }
+      if (d.action === 'transcript' || d.action === 'end') {
+        await addEvent(
+          db,
+          leadId,
+          'transcript',
+          `${d.name} ended a chat session`,
+          `${lines.length} messages saved`
+        );
+      }
     } catch {
       /* CRM optional — email still tries */
     }
 
     const tx = transporter();
     if (!tx) {
-      res.status(200).json({ ok: !!leadId || !!db, stored: !!leadId, emailed: false, error: tx ? null : 'mail-not-configured' });
+      res.status(200).json({ ok: !!leadId, stored: !!leadId, emailed: false, leadId, error: 'mail-not-configured' });
       return;
     }
 
     const to = process.env.CONTACT_TO || tx.user;
 
-    if (d.action === 'transcript') {
+    if (d.action === 'return') {
+      await tx.mail.sendMail({
+        from: `"${NAME} — Chat" <${tx.user}>`,
+        to,
+        replyTo: `"${d.name}" <${d.email}>`,
+        subject: `Returning visitor — ${d.name}`,
+        text: `Existing visitor returned to chat on ${SITE}\n\n${leadBlock(d)}`,
+        html: `<div style="font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;max-width:560px;margin:0 auto;padding:20px;">
+          <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#0EA895;font-weight:700;">Returning visitor</div>
+          <h1 style="font-size:22px;margin:8px 0 16px;color:#0B1620;">${esc(d.name)} signed in again</h1>
+          <p style="font-size:14px;color:#5b6b7a;line-height:1.6;">${esc(d.email)} · ${esc(d.phone)}<br>${esc(d.page || SITE)}</p>
+        </div>`,
+      });
+      res.status(200).json({ ok: true, stored: !!leadId, emailed: true, leadId, returning: true });
+      return;
+    }
+
+    if (d.action === 'transcript' || d.action === 'end') {
       if (!lines.length) {
-        res.status(200).json({ ok: true, skipped: true, stored: !!leadId });
+        res.status(200).json({ ok: true, skipped: true, stored: !!leadId, leadId });
         return;
       }
       await tx.mail.sendMail({
@@ -194,7 +248,7 @@ export default async function handler(req, res) {
           <p style="margin-top:20px;"><a href="mailto:${encodeURIComponent(d.email)}" style="display:inline-block;background:#0EA895;color:#fff;text-decoration:none;padding:12px 18px;border-radius:999px;font-weight:600;">Reply to ${esc(d.name.split(' ')[0])} →</a></p>
         </div>`,
       });
-      res.status(200).json({ ok: true, stored: !!leadId, emailed: true });
+      res.status(200).json({ ok: true, stored: !!leadId, emailed: true, leadId });
       return;
     }
 

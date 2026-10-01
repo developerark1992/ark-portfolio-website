@@ -118,3 +118,5 @@ create policy "auth full page_views" on public.page_views
 drop policy if exists "auth full email_logs" on public.email_logs;
 create policy "auth full email_logs" on public.email_logs
   for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
+
+-- Also see supabase/crm-visitors.sql for visitor accounts + lead_events (run that next).

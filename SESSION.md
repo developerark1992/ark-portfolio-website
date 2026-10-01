@@ -80,12 +80,20 @@ After adding `SUPABASE_SERVICE_ROLE_KEY`, redeploy.
 ## One-time setup checklist
 
 1. [x] Run `supabase/crm.sql` in Supabase SQL Editor (Success / no rows = OK).
-2. [x] Add `SUPABASE_SERVICE_ROLE_KEY` on Vercel (Production).
-3. [ ] Confirm redirect URL for password reset:  
+2. [ ] Run `supabase/crm-visitors.sql` (visitor signup + Activity notifications).
+3. [x] Add `SUPABASE_SERVICE_ROLE_KEY` on Vercel (Production).
+4. [ ] Confirm redirect URL for password reset:  
       Supabase → Authentication → URL Configuration → Redirect URLs →  
       `https://arkdesigningbureau.com/dashboard`
-4. [ ] Sign in at `/dashboard` (Forgot password if needed, or set user under Authentication → Users).
-5. [ ] Test: open site chat → fill name/phone/email → ask something → close chat → check **Leads** + **Chats** + inbox.
+5. [ ] Sign in at `/dashboard` (Forgot password if needed, or set user under Authentication → Users).
+6. [ ] Test: Guest start chat → lead appears instantly → End session → transcript in Chats.  
+      Sign up once → return later via Sign in → Activity shows “returned”.
+
+### Chat behaviour (2026-10-01 update)
+- **Guest / Sign in / Sign up** tabs on the lead gate.
+- Guest details are **saved to Leads immediately** on Start.
+- **End** button ends the session and stores the transcript (close / leave page also flushes transcript).
+- Signed-up visitors skip the form next time; dashboard **Activity** shows return visits.
 
 ---
 
