@@ -1246,7 +1246,7 @@ const AV = '/images/logo-icon.webp';
           if (!name) { setGateErr('Please enter your name.'); if (leadNameEl) leadNameEl.focus(); return; }
           if (!phoneOk(phone)) { setGateErr('Please enter a valid phone number.'); if (leadPhoneEl) leadPhoneEl.focus(); return; }
           if (!emailOk(email)) { setGateErr('Please enter a valid email address.'); if (leadEmailEl) leadEmailEl.focus(); return; }
-          if (gateGo) { gateGo.disabled = true; gateGo.textContent = 'Saving lead…'; }
+          if (gateGo) { gateGo.disabled = true; gateGo.textContent = 'Starting chat…'; }
           ensureSession(false);
           saveLead({ name: name, phone: phone, email: email });
           startNotified = false;
