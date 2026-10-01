@@ -11,8 +11,12 @@ import Base from '../layouts/Base.astro';
         <p class="crm-login-lead">Leads, chat transcripts, visitors and outreach — one place.</p>
         <label class="crm-field"><span>Email</span><input id="li-email" type="email" required autocomplete="username" placeholder="you@email.com" /></label>
         <label class="crm-field"><span>Password</span><input id="li-pass" type="password" required autocomplete="current-password" placeholder="••••••••" /></label>
-        <button class="crm-btn primary" type="submit">Enter dashboard</button>
+        <div class="crm-login-actions">
+          <button class="crm-btn primary" type="submit">Enter dashboard</button>
+          <button class="crm-link-btn" type="button" id="forgotPass">Forgot password? Email me a reset link</button>
+        </div>
         <p class="crm-err" id="loginErr"></p>
+        <p class="crm-ok" id="loginOk" hidden></p>
       </form>
     </div>
 
@@ -190,6 +194,7 @@ import Base from '../layouts/Base.astro';
       const root = document.getElementById('crmRoot');
       if (!root || root.dataset.bound === '1') return;
       root.dataset.bound = '1';
+      document.body.classList.add('crm-mode');
       const $ = (id) => document.getElementById(id);
       if (!supabaseConfigured || !supabase) {
         $('dashUnconfigured').hidden = false;
@@ -573,6 +578,8 @@ import Base from '../layouts/Base.astro';
 
       $('loginForm').onsubmit = async (e) => {
         e.preventDefault();
+        $('loginErr').textContent = '';
+        $('loginOk').hidden = true;
         const { error } = await supabase.auth.signInWithPassword({
           email: $('li-email').value.trim(),
           password: $('li-pass').value,
@@ -581,7 +588,56 @@ import Base from '../layouts/Base.astro';
         gate();
       };
 
+      $('forgotPass').onclick = async () => {
+        const email = $('li-email').value.trim();
+        $('loginErr').textContent = '';
+        $('loginOk').hidden = true;
+        if (!email) {
+          $('loginErr').textContent = 'Enter your email above, then tap forgot password.';
+          $('li-email').focus();
+          return;
+        }
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: location.origin + '/dashboard',
+        });
+        if (error) {
+          $('loginErr').textContent = error.message;
+          return;
+        }
+        $('loginOk').hidden = false;
+        $('loginOk').textContent = 'Check your inbox for a reset link. After you set a new password, come back here to sign in.';
+      };
+
+      /* If arriving from a recovery link, show a set-password form */
+      async function maybeRecovery() {
+        const hash = location.hash || '';
+        const params = new URLSearchParams(hash.replace(/^#/, ''));
+        if (params.get('type') !== 'recovery') return false;
+        $('crmLogin').hidden = false;
+        $('crmApp').hidden = true;
+        $('loginForm').innerHTML = `
+          <p class="crm-kicker">ARK command center</p>
+          <h1>Set new password</h1>
+          <p class="crm-login-lead">Choose a new password for your dashboard.</p>
+          <label class="crm-field"><span>New password</span><input id="np-pass" type="password" required minlength="8" autocomplete="new-password" placeholder="At least 8 characters" /></label>
+          <button class="crm-btn primary" type="submit">Save password</button>
+          <p class="crm-err" id="loginErr"></p>
+          <p class="crm-ok" id="loginOk" hidden></p>`;
+        $('loginForm').onsubmit = async (ev) => {
+          ev.preventDefault();
+          const pass = $('np-pass').value;
+          const { error } = await supabase.auth.updateUser({ password: pass });
+          if (error) { $('loginErr').textContent = error.message; return; }
+          history.replaceState(null, '', location.pathname);
+          $('loginOk').hidden = false;
+          $('loginOk').textContent = 'Password updated. Loading dashboard…';
+          setTimeout(() => location.href = '/dashboard', 700);
+        };
+        return true;
+      }
+
       async function gate() {
+        if (await maybeRecovery()) return;
         const { data: { session } } = await supabase.auth.getSession();
         if (session) {
           $('crmLogin').hidden = true;

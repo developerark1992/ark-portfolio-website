@@ -1,8 +1,15 @@
 -- ============================================================================
 -- ARK CRM — leads, chat transcripts, page visits, outreach logs
--- Run in Supabase → SQL Editor AFTER schema.sql (blog tables).
+-- Run in Supabase → SQL Editor (standalone — creates helper if missing).
 -- Needs SUPABASE_SERVICE_ROLE_KEY on Vercel for API writes.
 -- ============================================================================
+
+create or replace function public.touch_updated_at() returns trigger as $$
+begin
+  new.updated_at = now();
+  return new;
+end;
+$$ language plpgsql;
 
 create table if not exists public.leads (
   id           uuid primary key default gen_random_uuid(),
