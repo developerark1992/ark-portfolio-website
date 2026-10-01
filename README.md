@@ -45,5 +45,16 @@ Healthcare ~ Galaxy Pharma ~ https://galaxypharma.com.png
 - **Résumé:** replace `public/Abdul-Rehman-Khan-CV.pdf`
 - **Photo / avatar:** `public/images/photo.webp`, `public/images/avatar.webp`
 
+## Command center (`/dashboard`)
+Modern admin for **leads**, **chat transcripts**, **page visitors**, **email outreach**, and **blog**.
+
+1. Keep existing Supabase auth env vars: `PUBLIC_SUPABASE_URL`, `PUBLIC_SUPABASE_ANON_KEY`
+2. In Supabase → SQL Editor, run `supabase/crm.sql`
+3. On Vercel, add `SUPABASE_SERVICE_ROLE_KEY` (Project Settings → API → service_role)
+4. Keep Gmail mail vars for replies/broadcasts: `GMAIL_USER`, `GMAIL_APP_PASSWORD`, optional `CONTACT_TO`
+5. Open `/dashboard` and sign in with your Supabase user
+
+Chat starts still email you, and also store leads/transcripts in Supabase for the dashboard.
+
 ## Stack
 Astro 5 (static output, view transitions), vanilla JS, WebP images, sharp for the sync pipeline. No runtime framework — near-zero JS shipped.

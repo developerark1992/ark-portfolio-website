@@ -1099,16 +1099,45 @@ const AV = '/images/logo-icon.webp';
         }
       }
 
+      function bootTracker() {
+        try {
+          if (location.pathname.indexOf('/dashboard') === 0) return;
+          var vid = localStorage.getItem('arkVid');
+          if (!vid) {
+            vid = 'v' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+            localStorage.setItem('arkVid', vid);
+          }
+          var sid = sessionStorage.getItem('arkChatSid') || sessionStorage.getItem('arkVidSid');
+          if (!sid) {
+            sid = 's' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+            sessionStorage.setItem('arkVidSid', sid);
+          }
+          var payload = JSON.stringify({
+            visitorId: vid,
+            sessionId: sid,
+            path: location.pathname + location.search,
+            referrer: document.referrer || '',
+            title: document.title || ''
+          });
+          if (navigator.sendBeacon) {
+            navigator.sendBeacon('/api/track', new Blob([payload], { type: 'application/json' }));
+          } else {
+            fetch('/api/track', { method: 'POST', headers: { 'content-type': 'application/json' }, body: payload, keepalive: true }).catch(function () {});
+          }
+        } catch (e) {}
+      }
+
       function bootCritical() {
         bootMenu();
         bootChat();
+        bootTracker();
       }
       if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootCritical);
       else bootCritical();
 
       /* Always load site.js for calculator / lightbox — chat already works inline. */
       var s = document.createElement('script');
-      s.src = '/js/site.js?v=20261001h';
+      s.src = '/js/site.js?v=20261001i';
       s.defer = true;
       document.body.appendChild(s);
     })();

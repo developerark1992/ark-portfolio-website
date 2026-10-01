@@ -2,188 +2,604 @@
 export const prerender = false;
 import Base from '../layouts/Base.astro';
 ---
-<Base active="" title="Dashboard — Abdul Rehman Khan" description="Admin dashboard">
-  <section class="dash">
-    <div class="wrap">
-      <!-- login -->
-      <div id="dashLogin" class="dash-login" hidden>
-        <div class="dash-card">
-          <p class="eyebrow" style="justify-content:center;">Admin</p>
-          <h1 style="font-size:26px;text-align:center;margin-bottom:6px;">Dashboard login</h1>
-          <p class="sec-lead" style="text-align:center;font-size:14px;margin:0 auto 22px;">Sign in to manage your blog.</p>
-          <form id="loginForm">
-            <div class="field"><label for="li-email">Email</label><input id="li-email" type="email" required placeholder="you@email.com" /></div>
-            <div class="field"><label for="li-pass">Password</label><input id="li-pass" type="password" required placeholder="••••••••" /></div>
-            <button class="btn primary" style="width:100%;justify-content:center;" type="submit">Sign in →</button>
-            <p class="form-note" id="loginErr" style="color:var(--amber);"></p>
-          </form>
-        </div>
-      </div>
-
-      <!-- app -->
-      <div id="dashApp" hidden>
-        <div class="dash-bar">
-          <div><p class="eyebrow" style="margin:0;">Blog dashboard</p><h1 style="font-size:26px;">Your posts</h1></div>
-          <div class="dash-bar-actions">
-            <button class="btn ghost" id="manageCats">Categories</button>
-            <button class="btn primary" id="newPost">＋ New post</button>
-            <button class="btn ghost" id="logout">Log out</button>
-          </div>
-        </div>
-        <div id="postList" class="dash-list"></div>
-      </div>
-
-      <!-- editor drawer -->
-      <div id="editor" class="dash-editor" hidden>
-        <div class="dash-editor-inner">
-          <div class="dash-editor-head"><h2 id="editorTitle">New post</h2><button class="lb-x" id="editorClose" style="position:static;">×</button></div>
-          <div class="field"><label for="p-title">Title *</label><input id="p-title" placeholder="Post title" /></div>
-          <div class="field"><label for="p-slug">Slug *</label><input id="p-slug" placeholder="post-url-slug" /></div>
-          <div class="field"><label for="p-desc">Description / excerpt</label><textarea id="p-desc" style="min-height:64px;"></textarea></div>
-          <div class="field-row">
-            <div class="field"><label for="p-cat">Category</label><select id="p-cat"></select></div>
-            <div class="field"><label for="p-cover">Cover image URL (optional)</label><input id="p-cover" placeholder="https://…" /></div>
-          </div>
-          <div class="field"><label for="p-body">Body (Markdown)</label><textarea id="p-body" style="min-height:280px;font-family:var(--mono);font-size:13px;"></textarea></div>
-          <details class="dash-seo"><summary>SEO settings</summary>
-            <div class="field"><label for="p-mtitle">Meta title <span class="dash-hint">(defaults to the post title)</span></label><input id="p-mtitle" placeholder="Custom title for Google / social" /></div>
-            <div class="field"><label for="p-mdesc">Meta description <span class="dash-hint">(defaults to the description)</span></label><textarea id="p-mdesc" style="min-height:60px;"></textarea></div>
-            <div class="field"><label for="p-keywords">Keywords <span class="dash-hint">(comma-separated)</span></label><input id="p-keywords" placeholder="wordpress, hosting, seo…" /></div>
-          </details>
-          <label class="dash-check"><input type="checkbox" id="p-pub" /> Published</label>
-          <div class="hero-cta" style="gap:10px;margin-top:8px;">
-            <button class="btn primary" id="savePost">Save post</button>
-            <button class="btn ghost" id="cancelPost">Cancel</button>
-            <span class="form-note" id="saveMsg"></span>
-          </div>
-        </div>
-      </div>
-
-      <!-- categories drawer -->
-      <div id="catDrawer" class="dash-editor" hidden>
-        <div class="dash-editor-inner" style="max-width:460px;">
-          <div class="dash-editor-head"><h2>Categories</h2><button class="lb-x" id="catClose" style="position:static;">×</button></div>
-          <div id="catList" class="dash-cats"></div>
-          <div class="field-row" style="margin-top:12px;">
-            <div class="field" style="flex:1;"><label for="c-name">New category</label><input id="c-name" placeholder="e.g. Case studies" /></div>
-          </div>
-          <button class="btn primary" id="addCat">Add category</button>
-        </div>
-      </div>
-
-      <p id="dashUnconfigured" class="sec-lead" hidden style="text-align:center;padding:60px 0;">Dashboard isn't configured yet — set <code>PUBLIC_SUPABASE_URL</code> and <code>PUBLIC_SUPABASE_ANON_KEY</code> in Vercel.</p>
+<Base active="" title="Command center — ARK" description="Manage leads, chat transcripts, visitors, outreach and blog.">
+  <section class="crm" id="crmRoot" data-page="dashboard">
+    <div id="crmLogin" class="crm-login" hidden>
+      <form class="crm-login-card" id="loginForm">
+        <p class="crm-kicker">ARK command center</p>
+        <h1>Sign in</h1>
+        <p class="crm-login-lead">Leads, chat transcripts, visitors and outreach — one place.</p>
+        <label class="crm-field"><span>Email</span><input id="li-email" type="email" required autocomplete="username" placeholder="you@email.com" /></label>
+        <label class="crm-field"><span>Password</span><input id="li-pass" type="password" required autocomplete="current-password" placeholder="••••••••" /></label>
+        <button class="crm-btn primary" type="submit">Enter dashboard</button>
+        <p class="crm-err" id="loginErr"></p>
+      </form>
     </div>
+
+    <div id="crmApp" class="crm-shell" hidden>
+      <aside class="crm-nav">
+        <div class="crm-brand">
+          <strong>ARK</strong>
+          <span>Command center</span>
+        </div>
+        <nav class="crm-tabs" id="crmTabs">
+          <button type="button" data-tab="overview" class="is-on">Overview</button>
+          <button type="button" data-tab="leads">Leads</button>
+          <button type="button" data-tab="chats">Chats</button>
+          <button type="button" data-tab="visitors">Visitors</button>
+          <button type="button" data-tab="outreach">Outreach</button>
+          <button type="button" data-tab="blog">Blog</button>
+        </nav>
+        <button type="button" class="crm-logout" id="logout">Log out</button>
+      </aside>
+
+      <main class="crm-main">
+        <header class="crm-top">
+          <div>
+            <h1 id="crmTitle">Overview</h1>
+            <p id="crmSub">Live snapshot of traffic and conversations</p>
+          </div>
+          <button type="button" class="crm-btn ghost" id="crmRefresh">Refresh</button>
+        </header>
+
+        <!-- Overview -->
+        <section class="crm-panel is-on" data-panel="overview">
+          <div class="crm-stats" id="crmStats"></div>
+          <div class="crm-grid-2">
+            <div class="crm-card">
+              <h2>Recent leads</h2>
+              <div id="ovLeads" class="crm-mini-list"></div>
+            </div>
+            <div class="crm-card">
+              <h2>Top pages (7 days)</h2>
+              <div id="ovPages" class="crm-mini-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Leads -->
+        <section class="crm-panel" data-panel="leads">
+          <div class="crm-toolbar">
+            <input id="leadSearch" class="crm-search" type="search" placeholder="Search name, email, phone…" />
+            <select id="leadStatusFilter" class="crm-select">
+              <option value="">All statuses</option>
+              <option value="new">New</option>
+              <option value="contacted">Contacted</option>
+              <option value="qualified">Qualified</option>
+              <option value="won">Won</option>
+              <option value="archived">Archived</option>
+            </select>
+          </div>
+          <div id="leadList" class="crm-table-wrap"></div>
+        </section>
+
+        <!-- Chats -->
+        <section class="crm-panel" data-panel="chats">
+          <div class="crm-split">
+            <div class="crm-card crm-chat-list" id="chatList"></div>
+            <div class="crm-card crm-chat-thread" id="chatThread">
+              <p class="crm-empty">Select a chat to read the transcript.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Visitors -->
+        <section class="crm-panel" data-panel="visitors">
+          <div class="crm-toolbar">
+            <p class="crm-hint">Anonymous page views — linked to leads when they start a chat in the same browser session.</p>
+          </div>
+          <div id="visitList" class="crm-table-wrap"></div>
+        </section>
+
+        <!-- Outreach -->
+        <section class="crm-panel" data-panel="outreach">
+          <div class="crm-grid-2">
+            <form class="crm-card crm-mail" id="replyForm">
+              <h2>Direct reply</h2>
+              <p class="crm-hint">Email one lead from the dashboard.</p>
+              <label class="crm-field"><span>To email</span><input id="mailTo" type="email" required placeholder="lead@email.com" /></label>
+              <label class="crm-field"><span>Name</span><input id="mailName" type="text" placeholder="Lead name" /></label>
+              <input type="hidden" id="mailLeadId" />
+              <label class="crm-field"><span>Subject</span><input id="mailSubject" type="text" required placeholder="Following up on your chat" /></label>
+              <label class="crm-field"><span>Message</span><textarea id="mailBody" required rows="8" placeholder="Hi — thanks for chatting on the site…"></textarea></label>
+              <button class="crm-btn primary" type="submit">Send reply</button>
+              <p class="crm-msg" id="mailMsg"></p>
+            </form>
+            <form class="crm-card crm-mail" id="broadcastForm">
+              <h2>Email marketing</h2>
+              <p class="crm-hint">Send to all leads, or leave blank recipients to use everyone (max 100).</p>
+              <label class="crm-field"><span>Subject</span><input id="bcSubject" type="text" required placeholder="A quick note from ARK" /></label>
+              <label class="crm-field"><span>Message</span><textarea id="bcBody" required rows="8" placeholder="Share an update, offer, or case study…"></textarea></label>
+              <button class="crm-btn primary" type="submit">Send broadcast</button>
+              <p class="crm-msg" id="bcMsg"></p>
+              <div id="mailLog" class="crm-mini-list" style="margin-top:18px;"></div>
+            </form>
+          </div>
+        </section>
+
+        <!-- Blog (existing) -->
+        <section class="crm-panel" data-panel="blog">
+          <div class="crm-toolbar">
+            <button class="crm-btn ghost" id="manageCats" type="button">Categories</button>
+            <button class="crm-btn primary" id="newPost" type="button">New post</button>
+          </div>
+          <div id="postList" class="crm-table-wrap"></div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Lead detail drawer -->
+    <div id="leadDrawer" class="crm-drawer" hidden>
+      <div class="crm-drawer-panel">
+        <div class="crm-drawer-head">
+          <h2 id="ldName">Lead</h2>
+          <button type="button" class="crm-x" id="ldClose">×</button>
+        </div>
+        <div id="ldBody"></div>
+        <div class="crm-drawer-actions">
+          <button type="button" class="crm-btn primary" id="ldReply">Reply by email</button>
+          <a class="crm-btn ghost" id="ldWa" target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Blog editor (kept) -->
+    <div id="editor" class="crm-drawer" hidden>
+      <div class="crm-drawer-panel wide">
+        <div class="crm-drawer-head"><h2 id="editorTitle">New post</h2><button type="button" class="crm-x" id="editorClose">×</button></div>
+        <div class="crm-field"><span>Title *</span><input id="p-title" /></div>
+        <div class="crm-field"><span>Slug *</span><input id="p-slug" /></div>
+        <div class="crm-field"><span>Description</span><textarea id="p-desc" rows="2"></textarea></div>
+        <div class="crm-row-2">
+          <div class="crm-field"><span>Category</span><select id="p-cat"></select></div>
+          <div class="crm-field"><span>Cover URL</span><input id="p-cover" /></div>
+        </div>
+        <div class="crm-field"><span>Body (Markdown)</span><textarea id="p-body" rows="12" style="font-family:var(--mono);font-size:13px;"></textarea></div>
+        <details class="crm-seo"><summary>SEO</summary>
+          <div class="crm-field"><span>Meta title</span><input id="p-mtitle" /></div>
+          <div class="crm-field"><span>Meta description</span><textarea id="p-mdesc" rows="2"></textarea></div>
+          <div class="crm-field"><span>Keywords</span><input id="p-keywords" /></div>
+        </details>
+        <label class="crm-check"><input type="checkbox" id="p-pub" /> Published</label>
+        <div class="crm-drawer-actions">
+          <button type="button" class="crm-btn primary" id="savePost">Save</button>
+          <button type="button" class="crm-btn ghost" id="cancelPost">Cancel</button>
+          <span class="crm-msg" id="saveMsg"></span>
+        </div>
+      </div>
+    </div>
+
+    <div id="catDrawer" class="crm-drawer" hidden>
+      <div class="crm-drawer-panel">
+        <div class="crm-drawer-head"><h2>Categories</h2><button type="button" class="crm-x" id="catClose">×</button></div>
+        <div id="catList" class="crm-mini-list"></div>
+        <div class="crm-field" style="margin-top:12px;"><span>New category</span><input id="c-name" placeholder="e.g. Case studies" /></div>
+        <button type="button" class="crm-btn primary" id="addCat">Add</button>
+      </div>
+    </div>
+
+    <p id="dashUnconfigured" class="crm-unconfigured" hidden>
+      Dashboard needs <code>PUBLIC_SUPABASE_URL</code>, <code>PUBLIC_SUPABASE_ANON_KEY</code>, and for CRM capture <code>SUPABASE_SERVICE_ROLE_KEY</code> on Vercel. Run <code>supabase/crm.sql</code> in the SQL editor.
+    </p>
   </section>
 
   <script>
     import { supabase, supabaseConfigured } from '../lib/supabase.ts';
 
-    function initDash(){
-      const root = document.getElementById('dashApp'); if(!root) return; // not the dashboard page
+    function initCrm() {
+      const root = document.getElementById('crmRoot');
+      if (!root || root.dataset.bound === '1') return;
+      root.dataset.bound = '1';
       const $ = (id) => document.getElementById(id);
-      if(!supabaseConfigured){ $('dashUnconfigured').hidden = false; return; }
+      if (!supabaseConfigured || !supabase) {
+        $('dashUnconfigured').hidden = false;
+        return;
+      }
 
-      const login = $('dashLogin'), app = $('dashApp'), editor = $('editor'), catDrawer = $('catDrawer');
-      const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-      let cats = [], editingId = null, slugTouched = false;
+      const titles = {
+        overview: ['Overview', 'Live snapshot of traffic and conversations'],
+        leads: ['Leads', 'Everyone who shared details in chat'],
+        chats: ['Chats', 'Full transcripts from the on-site assistant'],
+        visitors: ['Visitors', 'Who browsed the site and which pages'],
+        outreach: ['Outreach', 'Reply directly or send a campaign'],
+        blog: ['Blog', 'Publish and manage posts'],
+      };
 
-      async function refresh(){
+      let cats = [];
+      let editingId = null;
+      let slugTouched = false;
+      let leadsCache = [];
+      let activeLead = null;
+      let token = '';
+
+      const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+      const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      const fmt = (d) => {
+        try { return new Date(d).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' }); }
+        catch { return '—'; }
+      };
+      const ago = (d) => {
+        const ms = Date.now() - new Date(d).getTime();
+        const m = Math.floor(ms / 60000);
+        if (m < 1) return 'just now';
+        if (m < 60) return m + 'm ago';
+        const h = Math.floor(m / 60);
+        if (h < 48) return h + 'h ago';
+        return Math.floor(h / 24) + 'd ago';
+      };
+
+      async function authHeaders() {
+        const { data: { session } } = await supabase.auth.getSession();
+        token = session?.access_token || '';
+        return token ? { Authorization: 'Bearer ' + token, 'content-type': 'application/json' } : { 'content-type': 'application/json' };
+      }
+
+      function setTab(tab) {
+        document.querySelectorAll('.crm-tabs button').forEach((b) => b.classList.toggle('is-on', b.dataset.tab === tab));
+        document.querySelectorAll('.crm-panel').forEach((p) => p.classList.toggle('is-on', p.dataset.panel === tab));
+        const t = titles[tab] || titles.overview;
+        $('crmTitle').textContent = t[0];
+        $('crmSub').textContent = t[1];
+        try { localStorage.setItem('arkCrmTab', tab); } catch {}
+      }
+
+      async function loadOverview() {
+        const since = new Date(Date.now() - 7 * 864e5).toISOString();
+        const [
+          { count: leadCount },
+          { count: newLeads },
+          { count: chatCount },
+          { count: viewCount },
+          { data: recentLeads },
+          { data: views },
+        ] = await Promise.all([
+          supabase.from('leads').select('*', { count: 'exact', head: true }),
+          supabase.from('leads').select('*', { count: 'exact', head: true }).eq('status', 'new'),
+          supabase.from('chat_sessions').select('*', { count: 'exact', head: true }),
+          supabase.from('page_views').select('*', { count: 'exact', head: true }).gte('created_at', since),
+          supabase.from('leads').select('id,name,email,status,created_at').order('created_at', { ascending: false }).limit(6),
+          supabase.from('page_views').select('path').gte('created_at', since).limit(500),
+        ]);
+
+        const pages = {};
+        (views || []).forEach((v) => { pages[v.path] = (pages[v.path] || 0) + 1; });
+        const top = Object.entries(pages).sort((a, b) => b[1] - a[1]).slice(0, 6);
+
+        $('crmStats').innerHTML = [
+          ['Leads', leadCount || 0],
+          ['New', newLeads || 0],
+          ['Chats', chatCount || 0],
+          ['Views (7d)', viewCount || 0],
+        ].map(([l, v]) => `<div class="crm-stat"><span>${l}</span><b>${v}</b></div>`).join('');
+
+        $('ovLeads').innerHTML = (recentLeads || []).length
+          ? recentLeads.map((l) => `<button type="button" class="crm-mini-row" data-open-lead="${l.id}"><b>${esc(l.name)}</b><span>${esc(l.email)} · ${ago(l.created_at)}</span></button>`).join('')
+          : '<p class="crm-empty">No leads yet — they appear when someone starts chat.</p>';
+
+        $('ovPages').innerHTML = top.length
+          ? top.map(([p, n]) => `<div class="crm-mini-row static"><b>${esc(p)}</b><span>${n} views</span></div>`).join('')
+          : '<p class="crm-empty">No page views tracked yet.</p>';
+      }
+
+      function filteredLeads() {
+        const q = ($('leadSearch').value || '').trim().toLowerCase();
+        const st = $('leadStatusFilter').value;
+        return leadsCache.filter((l) => {
+          if (st && l.status !== st) return false;
+          if (!q) return true;
+          return [l.name, l.email, l.phone, l.notes].join(' ').toLowerCase().includes(q);
+        });
+      }
+
+      function renderLeads() {
+        const rows = filteredLeads();
+        if (!rows.length) {
+          $('leadList').innerHTML = '<p class="crm-empty">No matching leads.</p>';
+          return;
+        }
+        $('leadList').innerHTML = `<table class="crm-table"><thead><tr><th>Lead</th><th>Contact</th><th>Status</th><th>When</th><th></th></tr></thead><tbody>
+          ${rows.map((l) => `<tr>
+            <td><b>${esc(l.name)}</b><div class="crm-sub">${esc((l.last_message || '').slice(0, 60))}</div></td>
+            <td>${esc(l.email)}<div class="crm-sub">${esc(l.phone || '')}</div></td>
+            <td><span class="crm-pill ${esc(l.status)}">${esc(l.status)}</span></td>
+            <td>${ago(l.created_at)}</td>
+            <td><button type="button" class="crm-link" data-open-lead="${l.id}">Open</button></td>
+          </tr>`).join('')}
+        </tbody></table>`;
+      }
+
+      async function loadLeads() {
+        const { data } = await supabase.from('leads').select('*').order('created_at', { ascending: false }).limit(200);
+        leadsCache = data || [];
+        renderLeads();
+      }
+
+      async function openLead(id) {
+        const { data } = await supabase.from('leads').select('*').eq('id', id).single();
+        if (!data) return;
+        activeLead = data;
+        $('ldName').textContent = data.name;
+        $('ldBody').innerHTML = `
+          <div class="crm-kv"><span>Email</span><b><a href="mailto:${esc(data.email)}">${esc(data.email)}</a></b></div>
+          <div class="crm-kv"><span>Phone</span><b><a href="tel:${esc(data.phone)}">${esc(data.phone || '—')}</a></b></div>
+          <div class="crm-kv"><span>Source</span><b>${esc(data.source)}</b></div>
+          <div class="crm-kv"><span>Page</span><b>${esc(data.page || '—')}</b></div>
+          <div class="crm-kv"><span>Created</span><b>${fmt(data.created_at)}</b></div>
+          <label class="crm-field"><span>Status</span>
+            <select id="ldStatus" class="crm-select">
+              ${['new','contacted','qualified','won','archived'].map((s) => `<option value="${s}" ${data.status===s?'selected':''}>${s}</option>`).join('')}
+            </select>
+          </label>
+          <label class="crm-field"><span>Notes</span><textarea id="ldNotes" rows="4">${esc(data.notes || '')}</textarea></label>
+          <button type="button" class="crm-btn ghost" id="ldSave">Save changes</button>
+          ${data.last_message ? `<div class="crm-note"><span>Last message</span><p>${esc(data.last_message)}</p></div>` : ''}`;
+        const phoneDigits = String(data.phone || '').replace(/\D/g, '');
+        $('ldWa').href = phoneDigits ? `https://wa.me/${phoneDigits}` : '#';
+        $('leadDrawer').hidden = false;
+        $('ldSave').onclick = async () => {
+          await supabase.from('leads').update({
+            status: $('ldStatus').value,
+            notes: $('ldNotes').value.trim(),
+          }).eq('id', data.id);
+          await loadLeads();
+          await loadOverview();
+        };
+      }
+
+      async function loadChats() {
+        const { data } = await supabase.from('chat_sessions').select('*').order('updated_at', { ascending: false }).limit(80);
+        const list = data || [];
+        $('chatList').innerHTML = list.length
+          ? list.map((c) => `<button type="button" class="crm-mini-row" data-chat="${esc(c.session_id)}">
+              <b>${esc(c.visitor_name || 'Visitor')}</b>
+              <span>${esc(c.visitor_email || '')} · ${c.message_count || 0} msgs · ${ago(c.updated_at)}</span>
+            </button>`).join('')
+          : '<p class="crm-empty">No chats stored yet.</p>';
+      }
+
+      async function openChat(sessionId) {
+        const [{ data: session }, { data: messages }] = await Promise.all([
+          supabase.from('chat_sessions').select('*').eq('session_id', sessionId).maybeSingle(),
+          supabase.from('chat_messages').select('*').eq('session_id', sessionId).order('created_at', { ascending: true }),
+        ]);
+        const s = session || {};
+        $('chatThread').innerHTML = `
+          <div class="crm-thread-head">
+            <div><b>${esc(s.visitor_name || 'Visitor')}</b><span>${esc(s.visitor_email || '')} · ${esc(s.visitor_phone || '')}</span></div>
+            <button type="button" class="crm-btn ghost" data-reply-chat="${esc(s.lead_id || '')}" data-email="${esc(s.visitor_email || '')}" data-name="${esc(s.visitor_name || '')}">Reply</button>
+          </div>
+          <div class="crm-thread">
+            ${(messages || []).map((m) => `<div class="crm-bubble ${m.role}"><em>${m.role === 'user' ? esc(s.visitor_name || 'Visitor') : 'Assistant'}</em><p>${esc(m.body)}</p></div>`).join('') || '<p class="crm-empty">No messages in this session.</p>'}
+          </div>`;
+      }
+
+      async function loadVisitors() {
+        const { data } = await supabase.from('page_views').select('*').order('created_at', { ascending: false }).limit(150);
+        const rows = data || [];
+        if (!rows.length) {
+          $('visitList').innerHTML = '<p class="crm-empty">No visits yet. Tracking starts after deploy + CRM SQL.</p>';
+          return;
+        }
+        $('visitList').innerHTML = `<table class="crm-table"><thead><tr><th>Path</th><th>Visitor</th><th>Referrer</th><th>When</th></tr></thead><tbody>
+          ${rows.map((v) => `<tr>
+            <td><b>${esc(v.path)}</b><div class="crm-sub">${esc(v.title || '')}</div></td>
+            <td class="mono">${esc((v.visitor_id || '').slice(0, 10))}…</td>
+            <td>${esc((v.referrer || '—').replace(/^https?:\/\//, '').slice(0, 40))}</td>
+            <td>${ago(v.created_at)}</td>
+          </tr>`).join('')}
+        </tbody></table>`;
+      }
+
+      async function loadMailLog() {
+        const { data } = await supabase.from('email_logs').select('*').order('created_at', { ascending: false }).limit(12);
+        $('mailLog').innerHTML = (data || []).length
+          ? '<h3 style="font-size:13px;margin:0 0 8px;">Recent sends</h3>' + data.map((e) => `<div class="crm-mini-row static"><b>${esc(e.subject)}</b><span>${esc(e.to_email)} · ${esc(e.kind)} · ${ago(e.created_at)}</span></div>`).join('')
+          : '';
+      }
+
+      /* Blog (existing behaviour) */
+      async function refreshBlog() {
         const [{ data: c }, { data: p }] = await Promise.all([
           supabase.from('categories').select('*').order('name'),
-          supabase.from('posts').select('id,slug,title,published,created_at,categories(name)').order('created_at',{ascending:false}),
+          supabase.from('posts').select('id,slug,title,published,created_at,categories(name)').order('created_at', { ascending: false }),
         ]);
         cats = c || [];
-        renderCatSelect(); renderPosts(p || []); renderCatList();
-      }
-      function renderCatSelect(){
-        $('p-cat').innerHTML = cats.map((c)=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');
-      }
-      function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,(c)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
-      function renderPosts(posts){
-        if(!posts.length){ $('postList').innerHTML = '<p class="sec-lead">No posts yet — create your first one.</p>'; return; }
-        $('postList').innerHTML = posts.map((p)=>`
-          <div class="dash-row" data-id="${p.id}">
-            <div class="dash-row-main">
-              <span class="dash-status ${p.published?'on':'off'}">${p.published?'Published':'Draft'}</span>
-              <div><b>${esc(p.title)}</b><span class="dash-row-meta">${(p.categories&&p.categories.name)||'—'} · ${new Date(p.created_at).toLocaleDateString()}</span></div>
-            </div>
-            <div class="dash-row-actions">
-              <a class="dash-mini" href="/blog/${p.slug}" target="_blank" rel="noopener">View</a>
-              <button class="dash-mini" data-edit="${p.id}">Edit</button>
-              <button class="dash-mini danger" data-del="${p.id}">Delete</button>
-            </div>
-          </div>`).join('');
-      }
-      function renderCatList(){
-        $('catList').innerHTML = cats.map((c)=>`<div class="dash-cat-row"><span>${esc(c.name)}</span><button class="dash-mini danger" data-delcat="${c.id}">Delete</button></div>`).join('') || '<p class="form-note">No categories yet.</p>';
+        $('p-cat').innerHTML = cats.map((x) => `<option value="${x.id}">${esc(x.name)}</option>`).join('');
+        $('catList').innerHTML = cats.map((x) => `<div class="crm-mini-row static"><b>${esc(x.name)}</b><button type="button" class="crm-link danger" data-delcat="${x.id}">Delete</button></div>`).join('') || '<p class="crm-empty">No categories.</p>';
+        const posts = p || [];
+        $('postList').innerHTML = posts.length
+          ? `<table class="crm-table"><thead><tr><th>Post</th><th>Status</th><th>When</th><th></th></tr></thead><tbody>
+            ${posts.map((post) => `<tr>
+              <td><b>${esc(post.title)}</b><div class="crm-sub">${esc((post.categories && post.categories.name) || '—')}</div></td>
+              <td><span class="crm-pill ${post.published ? 'won' : 'archived'}">${post.published ? 'Published' : 'Draft'}</span></td>
+              <td>${ago(post.created_at)}</td>
+              <td><a class="crm-link" href="/blog/${post.slug}" target="_blank" rel="noopener">View</a>
+                  <button type="button" class="crm-link" data-edit="${post.id}">Edit</button>
+                  <button type="button" class="crm-link danger" data-del="${post.id}">Delete</button></td>
+            </tr>`).join('')}
+          </tbody></table>`
+          : '<p class="crm-empty">No posts yet.</p>';
       }
 
-      function openEditor(post){
-        editingId = post ? post.id : null; slugTouched = !!post;
+      function openEditor(post) {
+        editingId = post ? post.id : null;
+        slugTouched = !!post;
         $('editorTitle').textContent = post ? 'Edit post' : 'New post';
-        $('p-title').value = post?post.title:''; $('p-slug').value = post?post.slug:'';
-        $('p-desc').value = post?(post.description||''):''; $('p-body').value = post?(post.body||''):'';
-        $('p-cover').value = post?(post.cover||''):''; $('p-pub').checked = post?post.published:false;
-        $('p-mtitle').value = post?(post.meta_title||''):''; $('p-mdesc').value = post?(post.meta_description||''):''; $('p-keywords').value = post?(post.keywords||''):'';
-        if(post&&post.category_id) $('p-cat').value = post.category_id;
-        $('saveMsg').textContent=''; editor.hidden=false; document.body.style.overflow='hidden';
+        $('p-title').value = post ? post.title : '';
+        $('p-slug').value = post ? post.slug : '';
+        $('p-desc').value = post ? (post.description || '') : '';
+        $('p-body').value = post ? (post.body || '') : '';
+        $('p-cover').value = post ? (post.cover || '') : '';
+        $('p-pub').checked = post ? post.published : false;
+        $('p-mtitle').value = post ? (post.meta_title || '') : '';
+        $('p-mdesc').value = post ? (post.meta_description || '') : '';
+        $('p-keywords').value = post ? (post.keywords || '') : '';
+        if (post && post.category_id) $('p-cat').value = post.category_id;
+        $('saveMsg').textContent = '';
+        $('editor').hidden = false;
       }
-      function closeEditor(){ editor.hidden=true; document.body.style.overflow=''; }
 
-      // events
-      $('p-title').addEventListener('input', function(){ if(!slugTouched) $('p-slug').value = slugify(this.value); });
-      $('p-slug').addEventListener('input', function(){ slugTouched = true; });
-      $('newPost').onclick = ()=>openEditor(null);
-      $('editorClose').onclick = $('cancelPost').onclick = closeEditor;
-      $('manageCats').onclick = ()=>{ catDrawer.hidden=false; document.body.style.overflow='hidden'; };
-      $('catClose').onclick = ()=>{ catDrawer.hidden=true; document.body.style.overflow=''; };
-      $('logout').onclick = async ()=>{ await supabase.auth.signOut(); location.reload(); };
+      async function refreshAll() {
+        await Promise.all([loadOverview(), loadLeads(), loadChats(), loadVisitors(), loadMailLog(), refreshBlog()]);
+      }
 
-      $('postList').addEventListener('click', async (e)=>{
-        const ed=e.target.getAttribute('data-edit'), del=e.target.getAttribute('data-del');
-        if(ed){ const { data } = await supabase.from('posts').select('*').eq('id',ed).single(); openEditor(data); }
-        if(del){ if(confirm('Delete this post?')){ await supabase.from('posts').delete().eq('id',del); refresh(); } }
+      /* Events */
+      $('crmTabs').addEventListener('click', (e) => {
+        const b = e.target.closest('button[data-tab]');
+        if (b) setTab(b.dataset.tab);
       });
-      $('catList').addEventListener('click', async (e)=>{
-        const id=e.target.getAttribute('data-delcat');
-        if(id && confirm('Delete this category?')){ await supabase.from('categories').delete().eq('id',id); refresh(); }
-      });
-      $('addCat').onclick = async ()=>{
-        const name=$('c-name').value.trim(); if(!name) return;
-        await supabase.from('categories').insert({ name, slug: slugify(name) });
-        $('c-name').value=''; refresh();
-      };
-      $('savePost').onclick = async ()=>{
-        const rec = {
-          title:$('p-title').value.trim(), slug:slugify($('p-slug').value.trim()||$('p-title').value.trim()),
-          description:$('p-desc').value.trim(), body:$('p-body').value, cover:$('p-cover').value.trim()||null,
-          category_id:$('p-cat').value||null, published:$('p-pub').checked,
-          meta_title:$('p-mtitle').value.trim()||null, meta_description:$('p-mdesc').value.trim()||null, keywords:$('p-keywords').value.trim()||null,
-        };
-        if(!rec.title||!rec.slug){ $('saveMsg').textContent='Title and slug are required.'; $('saveMsg').style.color='var(--amber)'; return; }
-        $('saveMsg').style.color=''; $('saveMsg').textContent='Saving…';
-        const q = editingId ? supabase.from('posts').update(rec).eq('id',editingId) : supabase.from('posts').insert(rec);
-        const { error } = await q;
-        if(error){ $('saveMsg').style.color='var(--amber)'; $('saveMsg').textContent=error.message; return; }
-        closeEditor(); refresh();
+      $('crmRefresh').onclick = () => refreshAll();
+      $('logout').onclick = async () => { await supabase.auth.signOut(); location.reload(); };
+      $('leadSearch').oninput = renderLeads;
+      $('leadStatusFilter').onchange = renderLeads;
+      $('ldClose').onclick = () => { $('leadDrawer').hidden = true; };
+      $('ldReply').onclick = () => {
+        if (!activeLead) return;
+        $('mailTo').value = activeLead.email;
+        $('mailName').value = activeLead.name;
+        $('mailLeadId').value = activeLead.id;
+        $('mailSubject').value = 'Following up — Abdul Rehman Khan';
+        $('leadDrawer').hidden = true;
+        setTab('outreach');
       };
 
-      $('loginForm').onsubmit = async (e)=>{
+      document.addEventListener('click', async (e) => {
+        const openLeadBtn = e.target.closest('[data-open-lead]');
+        if (openLeadBtn) openLead(openLeadBtn.getAttribute('data-open-lead'));
+        const chatBtn = e.target.closest('[data-chat]');
+        if (chatBtn) openChat(chatBtn.getAttribute('data-chat'));
+        const replyChat = e.target.closest('[data-reply-chat]');
+        if (replyChat) {
+          $('mailLeadId').value = replyChat.getAttribute('data-reply-chat') || '';
+          $('mailTo').value = replyChat.getAttribute('data-email') || '';
+          $('mailName').value = replyChat.getAttribute('data-name') || '';
+          $('mailSubject').value = 'Following up — Abdul Rehman Khan';
+          setTab('outreach');
+        }
+        const ed = e.target.getAttribute('data-edit');
+        const del = e.target.getAttribute('data-del');
+        const delcat = e.target.getAttribute('data-delcat');
+        if (ed) {
+          const { data } = await supabase.from('posts').select('*').eq('id', ed).single();
+          openEditor(data);
+        }
+        if (del && confirm('Delete this post?')) {
+          await supabase.from('posts').delete().eq('id', del);
+          refreshBlog();
+        }
+        if (delcat && confirm('Delete this category?')) {
+          await supabase.from('categories').delete().eq('id', delcat);
+          refreshBlog();
+        }
+      });
+
+      $('replyForm').onsubmit = async (e) => {
         e.preventDefault();
-        const { error } = await supabase.auth.signInWithPassword({ email:$('li-email').value.trim(), password:$('li-pass').value });
-        if(error){ $('loginErr').textContent = error.message; return; }
+        $('mailMsg').textContent = 'Sending…';
+        const headers = await authHeaders();
+        const r = await fetch('/api/dash-mail', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            kind: 'reply',
+            to: $('mailTo').value.trim(),
+            name: $('mailName').value.trim(),
+            leadId: $('mailLeadId').value || null,
+            subject: $('mailSubject').value.trim(),
+            body: $('mailBody').value.trim(),
+          }),
+        });
+        const d = await r.json();
+        $('mailMsg').textContent = d.ok ? 'Sent ✓' : ('Failed: ' + (d.error || 'error'));
+        if (d.ok) { $('mailBody').value = ''; loadMailLog(); loadLeads(); }
+      };
+
+      $('broadcastForm').onsubmit = async (e) => {
+        e.preventDefault();
+        if (!confirm('Send this email to your leads (up to 100)?')) return;
+        $('bcMsg').textContent = 'Sending…';
+        const headers = await authHeaders();
+        const r = await fetch('/api/dash-mail', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            kind: 'broadcast',
+            subject: $('bcSubject').value.trim(),
+            body: $('bcBody').value.trim(),
+          }),
+        });
+        const d = await r.json();
+        $('bcMsg').textContent = d.ok ? `Sent to ${d.sent} leads ✓` : ('Failed: ' + (d.error || 'error'));
+        if (d.ok) loadMailLog();
+      };
+
+      $('newPost').onclick = () => openEditor(null);
+      $('editorClose').onclick = $('cancelPost').onclick = () => { $('editor').hidden = true; };
+      $('manageCats').onclick = () => { $('catDrawer').hidden = false; };
+      $('catClose').onclick = () => { $('catDrawer').hidden = true; };
+      $('p-title').addEventListener('input', function () { if (!slugTouched) $('p-slug').value = slugify(this.value); });
+      $('p-slug').addEventListener('input', () => { slugTouched = true; });
+      $('addCat').onclick = async () => {
+        const name = $('c-name').value.trim();
+        if (!name) return;
+        await supabase.from('categories').insert({ name, slug: slugify(name) });
+        $('c-name').value = '';
+        refreshBlog();
+      };
+      $('savePost').onclick = async () => {
+        const rec = {
+          title: $('p-title').value.trim(),
+          slug: slugify($('p-slug').value.trim() || $('p-title').value.trim()),
+          description: $('p-desc').value.trim(),
+          body: $('p-body').value,
+          cover: $('p-cover').value.trim() || null,
+          category_id: $('p-cat').value || null,
+          published: $('p-pub').checked,
+          meta_title: $('p-mtitle').value.trim() || null,
+          meta_description: $('p-mdesc').value.trim() || null,
+          keywords: $('p-keywords').value.trim() || null,
+        };
+        if (!rec.title || !rec.slug) {
+          $('saveMsg').textContent = 'Title and slug required.';
+          return;
+        }
+        $('saveMsg').textContent = 'Saving…';
+        const q = editingId ? supabase.from('posts').update(rec).eq('id', editingId) : supabase.from('posts').insert(rec);
+        const { error } = await q;
+        if (error) { $('saveMsg').textContent = error.message; return; }
+        $('editor').hidden = true;
+        refreshBlog();
+      };
+
+      $('loginForm').onsubmit = async (e) => {
+        e.preventDefault();
+        const { error } = await supabase.auth.signInWithPassword({
+          email: $('li-email').value.trim(),
+          password: $('li-pass').value,
+        });
+        if (error) { $('loginErr').textContent = error.message; return; }
         gate();
       };
 
-      async function gate(){
-        const { data:{ session } } = await supabase.auth.getSession();
-        if(session){ login.hidden=true; app.hidden=false; refresh(); }
-        else { login.hidden=false; app.hidden=true; }
+      async function gate() {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+          $('crmLogin').hidden = true;
+          $('crmApp').hidden = false;
+          let tab = 'overview';
+          try { tab = localStorage.getItem('arkCrmTab') || 'overview'; } catch {}
+          setTab(tab);
+          refreshAll();
+        } else {
+          $('crmLogin').hidden = false;
+          $('crmApp').hidden = true;
+        }
       }
       gate();
     }
-    document.addEventListener('astro:page-load', initDash);
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initDash);
-    else initDash();
+
+    document.addEventListener('astro:page-load', initCrm);
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initCrm);
+    else initCrm();
   </script>
 </Base>
