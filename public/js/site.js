@@ -139,14 +139,23 @@
       }
 
       /* ---------- chatbot ---------- */
+      /* Skip if Base.astro inline boot already owns the widget (avoids double handlers / empty panel). */
       function initChat(){
-        var launch=document.getElementById('arkLaunch'),chat=document.getElementById('arkChat'),
-            msgs=document.getElementById('arkMsgs'),chipsEl=document.getElementById('arkChips'),
-            form=document.getElementById('arkForm'),input=document.getElementById('arkInput'),
-            closeBtn=document.getElementById('arkClose');
+        var launch=document.getElementById('arkLaunch'),chat=document.getElementById('arkChat');
         if(!launch||!chat)return;
+        if(launch.dataset.inlineBoot==='1'){
+          /* Keep estimate-page hooks working with the inline open. */
+          if(!window.arkOpenChat){
+            window.arkOpenChat=function(){chat.hidden=false;launch.hidden=true;};
+          }
+          return;
+        }
         if(launch.dataset.ready==='1')return;
         launch.dataset.ready='1';
+        var msgs=document.getElementById('arkMsgs'),chipsEl=document.getElementById('arkChips'),
+            form=document.getElementById('arkForm'),input=document.getElementById('arkInput'),
+            closeBtn=document.getElementById('arkClose');
+        if(!msgs||!chipsEl||!form||!input||!closeBtn)return;
         var started=false,mode='menu',step=0,data={},waStep=0,waData={};
         function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
         function scroll(){msgs.scrollTop=msgs.scrollHeight;}

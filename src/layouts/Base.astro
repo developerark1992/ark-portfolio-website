@@ -584,38 +584,202 @@ const AV = '/images/logo-icon.webp';
         n.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setOpen(false); }); });
       }
 
-      /* Chat must open even if site.js is delayed/blocked — same pattern as menu. */
+      /*
+        Self-contained chat boot — greeting, suggestion chips, scripted answers, and AI.
+        site.js may enhance later; this must work even if site.js is late/blocked.
+      */
       function bootChat() {
         var launch = document.getElementById('arkLaunch');
         var chat = document.getElementById('arkChat');
         var closeBtn = document.getElementById('arkClose');
         var form = document.getElementById('arkForm');
-        if (!launch || !chat || launch.dataset.inlineBoot === '1') return;
+        var msgs = document.getElementById('arkMsgs');
+        var chipsEl = document.getElementById('arkChips');
+        var input = document.getElementById('arkInput');
+        if (!launch || !chat || !msgs || !chipsEl || !form || !input) return;
+        if (launch.dataset.inlineBoot === '1') return;
         launch.dataset.inlineBoot = '1';
 
-        function openFallback() {
+        var AV = document.body.getAttribute('data-av') || '/images/logo-icon.webp';
+        var WA = document.body.getAttribute('data-wa') || '923159429998';
+        var started = false;
+        var busy = false;
+        var aiHist = [];
+        var MENU = [
+          { label: 'About Abdul', val: 'about' },
+          { label: 'Recent work', val: 'work' },
+          { label: 'Services', val: 'services' },
+          { label: 'Price estimate', val: 'estimate' },
+          { label: 'Request a quote', val: 'quote' },
+          { label: 'WhatsApp Abdul', val: 'whatsapp', wa: true }
+        ];
+
+        function esc(s) {
+          return String(s).replace(/[&<>"]/g, function (c) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+          });
+        }
+        function scroll() { msgs.scrollTop = msgs.scrollHeight; }
+        function me(t) {
+          var r = document.createElement('div');
+          r.className = 'ark-row me';
+          r.innerHTML = '<div class="ark-bub">' + esc(t) + '</div>';
+          msgs.appendChild(r);
+          scroll();
+        }
+        function untype() {
+          var t = document.getElementById('arkT');
+          if (t) t.remove();
+        }
+        function typing() {
+          untype();
+          var r = document.createElement('div');
+          r.className = 'ark-row bot';
+          r.id = 'arkT';
+          r.innerHTML = '<img src="' + AV + '" alt=""><div class="ark-bub"><span class="ark-typing"><i></i><i></i><i></i></span></div>';
+          msgs.appendChild(r);
+          scroll();
+        }
+        function setChips(list) {
+          chipsEl.innerHTML = '';
+          (list || []).forEach(function (c) {
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'ark-chip' + (c.wa ? ' wa' : '') + (c.send ? ' send' : '');
+            b.textContent = c.label;
+            b.addEventListener('click', function () {
+              if (busy) return;
+              if (c.onClick) c.onClick();
+              else handleUser(c.val || c.label, c.label);
+            });
+            chipsEl.appendChild(b);
+          });
+        }
+        function botNow(html, chips) {
+          untype();
+          var r = document.createElement('div');
+          r.className = 'ark-row bot';
+          r.innerHTML = '<img src="' + AV + '" alt=""><div class="ark-bub">' + html + '</div>';
+          msgs.appendChild(r);
+          setChips(chips || MENU);
+          scroll();
+        }
+        function bot(html, chips, delay) {
+          typing();
+          setTimeout(function () { botNow(html, chips); }, delay || 420);
+        }
+        function fmtAI(t) {
+          return esc(t).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
+        }
+        function scripted(intent) {
+          if (intent === 'about') {
+            return bot('<b>Abdul Rehman Khan</b> is a <b>freelance lead</b> with a <b>mini team of freelancers</b> under the brand <b>ARK Designing Bureau</b> (not a registered company). <b>13+ years since 2013</b>. Websites, apps, design, SEO, marketing, CMS, AWS and AI — plus staff augmentation for agencies.', MENU);
+          }
+          if (intent === 'work') {
+            return bot('He has shipped <b>90+ projects</b> across CMS and custom stacks. Open the <b>Projects</b> page to browse live work, or ask for a quote if you have a brief ready.', [{ label: 'Request a quote', val: 'quote' }, { label: 'Services', val: 'services' }].concat(MENU.slice(0, 1)));
+          }
+          if (intent === 'services') {
+            return bot('Abdul covers <b>CMS &amp; e-commerce</b>, <b>Astro/Next.js</b>, <b>.NET</b>, <b>AWS/DevOps</b>, <b>design</b>, <b>SEO/marketing</b>, and <b>AI automation</b>. One lead, freelancers supporting delivery.', MENU);
+          }
+          if (intent === 'estimate') {
+            bot('Opening the live cost calculator…', []);
+            setTimeout(function () { close(); window.location.href = '/estimate'; }, 550);
+            return;
+          }
+          if (intent === 'quote' || intent === 'Request a quote' || intent === 'Get a quote') {
+            return bot('Great — the fastest path is a short brief. Tap <b>WhatsApp Abdul</b> to message him directly, or email <b>ark.educationalist@gmail.com</b>. You can also use the contact form on this site.', [{ label: 'WhatsApp Abdul', val: 'whatsapp', wa: true }, { label: 'Price estimate', val: 'estimate' }].concat(MENU.slice(0, 2)));
+          }
+          if (intent === 'whatsapp' || intent === 'WhatsApp Abdul') {
+            var url = 'https://wa.me/' + WA + '?text=' + encodeURIComponent('Hi Abdul — I found you via arkdesigningbureau.com and want to discuss a project.');
+            return bot('Perfect — WhatsApp opens with a ready message. Say hello and share a short brief.', [{ label: 'Open WhatsApp', wa: true, onClick: function () { window.open(url, '_blank', 'noopener'); } }].concat(MENU.slice(0, 3)));
+          }
+          return bot('I can help with Abdul’s background, services, pricing, or connect you on WhatsApp. Pick a suggestion or type a question.', MENU);
+        }
+        function askAI(text) {
+          busy = true;
+          aiHist.push({ role: 'user', text: text });
+          typing();
+          fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ message: text, history: aiHist })
+          })
+            .then(function (r) { return r.json(); })
+            .then(function (d) {
+              busy = false;
+              if (d && d.ok && d.reply) {
+                aiHist.push({ role: 'model', text: d.reply });
+                botNow(fmtAI(d.reply), MENU);
+              } else {
+                untype();
+                scripted('menu');
+              }
+            })
+            .catch(function () {
+              busy = false;
+              untype();
+              scripted('menu');
+            });
+        }
+        function handleUser(val, label) {
+          var shown = label || val;
+          me(shown);
+          var key = String(val || '').toLowerCase();
+          if (/about/.test(key)) return scripted('about');
+          if (/work|project/.test(key)) return scripted('work');
+          if (/service/.test(key)) return scripted('services');
+          if (/estimate|price|pricing|cost/.test(key)) return scripted('estimate');
+          if (/quote|hire|enquiry|inquiry/.test(key)) return scripted('quote');
+          if (/whatsapp|wa\b/.test(key)) return scripted('whatsapp');
+          /* Known chip values */
+          if (val === 'about' || val === 'work' || val === 'services' || val === 'estimate' || val === 'quote' || val === 'whatsapp') {
+            return scripted(val);
+          }
+          askAI(shown);
+        }
+
+        function open() {
           chat.hidden = false;
           launch.hidden = true;
-          var input = document.getElementById('arkInput');
-          if (input) setTimeout(function () { try { input.focus(); } catch (e) {} }, 100);
+          if (!started) {
+            started = true;
+            bot('Hi — I’m Abdul’s assistant. Ask about his experience, get a quick price estimate, or leave a project enquiry. What would you like to know?', MENU, 220);
+          }
+          setTimeout(function () { try { input.focus(); } catch (e) {} }, 250);
         }
-        function closeFallback() {
+        function close() {
           chat.hidden = true;
           launch.hidden = false;
         }
 
+        /* Expose for site.js / estimate page — prefer this if already booted. */
+        window.arkOpenChat = open;
+        window.arkCloseChat = close;
+
         launch.addEventListener('click', function () {
           if (typeof window.arkOpenChat === 'function') window.arkOpenChat();
-          else openFallback();
+          else open();
         });
-        if (closeBtn) {
-          closeBtn.addEventListener('click', function () { closeFallback(); });
+        if (closeBtn) closeBtn.addEventListener('click', close);
+        var waBtn = document.getElementById('arkWa');
+        if (waBtn) {
+          waBtn.addEventListener('click', function () {
+            if (chat.hidden) open();
+            handleUser('whatsapp', 'WhatsApp Abdul');
+          });
         }
-        /* Prevent native GET ?message= navigation if site.js has not bound yet. */
-        if (form && form.dataset.inlineSubmit !== '1') {
-          form.dataset.inlineSubmit = '1';
-          form.addEventListener('submit', function (e) {
-            e.preventDefault();
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          if (busy) return;
+          var t = input.value.trim();
+          if (!t) return;
+          input.value = '';
+          handleUser(t, t);
+        });
+        if (!window.__arkEsc) {
+          window.__arkEsc = true;
+          document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && chat && !chat.hidden) close();
           });
         }
       }
@@ -627,14 +791,9 @@ const AV = '/images/logo-icon.webp';
       if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootCritical);
       else bootCritical();
 
-      /* Always load site.js for real visitors — chatbot/calculator need it.
-         Only skip pure lab UAs (not webdriver / short UA / pre-skip — those false-positive). */
-      var ua = navigator.userAgent || '';
-      var labOnly = /Lighthouse|Chrome-Lighthouse|PageSpeed|GTMetrix|Pingdom|Speed Insights|HeadlessChrome/i.test(ua) ||
-        /Chrome\/\d+\.0\.0\.0/.test(ua);
-      if (labOnly) return;
+      /* Always load site.js for calculator / lightbox — chat already works inline. */
       var s = document.createElement('script');
-      s.src = '/js/site.js?v=20261001b';
+      s.src = '/js/site.js?v=20261001c';
       s.defer = true;
       document.body.appendChild(s);
     })();

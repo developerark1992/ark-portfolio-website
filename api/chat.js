@@ -1,71 +1,160 @@
-// Vercel serverless function — proxies chat to Google Gemini.
-// The API key lives ONLY in the GEMINI_API_KEY environment variable (set in
-// Vercel → Settings → Environment Variables). It is never shipped to the browser.
-// If the key is missing or the call fails, we return ok:false so the client
-// falls back to its built-in scripted assistant.
-
-// Ordered fallback list — first that responds wins. Override the primary with GEMINI_MODEL.
-const MODELS = [process.env.GEMINI_MODEL, 'gemini-flash-lite-latest', 'gemini-flash-latest', 'gemini-2.0-flash'].filter(Boolean);
+// Vercel serverless — chat proxy for the on-site assistant.
+// Prefers free Groq (GROQ_API_KEY), then Google Gemini (GEMINI_API_KEY).
+// Keys live only in Vercel env vars — never in the browser.
+// If every provider fails, return ok:false so the client uses scripted replies.
 
 const SYSTEM = `You are the assistant on Abdul Rehman Khan's portfolio site (arkdesigningbureau.com).
-Always refer to him as Abdul Rehman Khan — a senior CMS expert and software engineer, not a generic freelancer. He is based in Karachi, Pakistan, with 8+ years of experience and 90+ projects shipped.
-He builds websites on ANY platform — WordPress, WooCommerce, Shopify, Webflow, Wix, Squarespace, Framer — plus custom Astro / Next.js / React.
-He also handles DevOps & hosting (WHM/cPanel, AWS, Cloudflare, domains, DNS/SSL, migrations, CI/CD), graphic design & branding, and AI + workflow automation (Claude, ChatGPT, n8n, Make, Zapier).
-He works remotely with clients in every country. Primary markets are the United States, Canada, the UAE and the UK. Quotes can be in USD, CAD, AED or GBP.
-Pricing: projects start around PKR 100,000 and scale up with scope; give ballparks only and point people to the cost calculator (/estimate) for a live estimate, or to book a free 30-min strategy call (/contact).
-Contact: WhatsApp/phone +92 315 9429998, email ark.educationalist@gmail.com, Calendly at /contact.
-Rules: Be warm, concise (2-4 sentences), and helpful. Never invent facts, fake clients, or specific prices beyond the ranges above. When someone shows buying intent, encourage them to book a strategy call or send a project brief. Answer in the user's language.`;
+Always refer to him as Abdul Rehman Khan — freelance lead with a mini team of freelancers under the brand ARK Designing Bureau (not a registered company). Based in Karachi, Pakistan. Building since 2013 (13+ years). 90+ projects shipped.
+He builds websites on ANY major CMS — WordPress, WooCommerce, Shopify, Webflow, Wix, Squarespace, Framer — plus Astro / Next.js / React, .NET, AWS, design, SEO/digital marketing, and AI automation (Claude, ChatGPT, n8n, Make, Zapier). Also staff augmentation for startup agencies.
+He works remotely worldwide. Primary markets: United States, Canada, UAE, UK. Quotes in USD, CAD, AED, GBP, or PKR.
+Pricing: projects start around PKR 100,000 and scale with scope — give ballparks only; point people to /estimate for a live calculator or /contact for a free 30-min strategy call.
+Contact: WhatsApp +92 315 9429998, email ark.educationalist@gmail.com.
+Rules: Warm, concise (2-4 sentences), helpful. Never invent clients or exact prices. On buying intent, suggest a strategy call or project brief. Answer in the user's language.`;
+
+const GROQ_MODELS = [process.env.GROQ_MODEL, 'llama-3.3-70b-versatile', 'llama-3.1-8b-instant'].filter(Boolean);
+const GEMINI_MODELS = [process.env.GEMINI_MODEL, 'gemini-flash-lite-latest', 'gemini-flash-latest', 'gemini-2.0-flash'].filter(Boolean);
+
+function sleep(ms) {
+  return new Promise((r) => setTimeout(r, ms));
+}
+
+function normalizeBody(req) {
+  let body = req.body;
+  if (typeof body === 'string') body = JSON.parse(body || '{}');
+  return body || {};
+}
+
+function buildTurns(body) {
+  const history = Array.isArray(body.history) ? body.history : [];
+  const message = String(body.message || '').slice(0, 2000);
+  const turns = [];
+  for (const m of history.slice(-8)) {
+    if (!m || !m.text) continue;
+    turns.push({ role: m.role === 'user' ? 'user' : 'assistant', text: String(m.text).slice(0, 2000) });
+  }
+  // Avoid duplicating the latest user turn when the client already pushed it into history.
+  const last = turns[turns.length - 1];
+  if (!(last && last.role === 'user' && last.text === message) && message) {
+    turns.push({ role: 'user', text: message });
+  }
+  return { message, turns };
+}
+
+async function askGroq(key, turns) {
+  const messages = [{ role: 'system', content: SYSTEM }];
+  for (const t of turns) {
+    messages.push({ role: t.role === 'user' ? 'user' : 'assistant', content: t.text });
+  }
+  let last = { status: 0, detail: '', model: '' };
+  for (const model of GROQ_MODELS) {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          authorization: `Bearer ${key}`,
+        },
+        body: JSON.stringify({
+          model,
+          temperature: 0.6,
+          max_tokens: 400,
+          messages,
+        }),
+      });
+      if (r.ok) {
+        const data = await r.json();
+        const reply = String(data.choices?.[0]?.message?.content || '').trim();
+        if (reply) return { ok: true, reply, model: `groq:${model}` };
+        last = { status: 200, detail: 'empty', model };
+        break;
+      }
+      last = { status: r.status, detail: (await r.text().catch(() => '')).slice(0, 200), model };
+      if ((r.status === 429 || r.status === 503) && attempt === 0) {
+        await sleep(700);
+        continue;
+      }
+      break;
+    }
+  }
+  return { ok: false, ...last };
+}
+
+async function askGemini(key, turns) {
+  const contents = turns.map((t) => ({
+    role: t.role === 'user' ? 'user' : 'model',
+    parts: [{ text: t.text }],
+  }));
+  const payload = JSON.stringify({
+    systemInstruction: { parts: [{ text: SYSTEM }] },
+    contents,
+    generationConfig: { temperature: 0.6, maxOutputTokens: 400 },
+  });
+  let last = { status: 0, detail: '', model: '' };
+  for (const model of GEMINI_MODELS) {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'x-goog-api-key': key },
+        body: payload,
+      });
+      if (r.ok) {
+        const data = await r.json();
+        const reply = (data.candidates?.[0]?.content?.parts || []).map((p) => p.text || '').join('').trim();
+        if (reply) return { ok: true, reply, model: `gemini:${model}` };
+        last = { status: 200, detail: 'empty', model };
+        break;
+      }
+      last = { status: r.status, detail: (await r.text().catch(() => '')).slice(0, 200), model };
+      if (r.status === 503 && attempt === 0) {
+        await sleep(800);
+        continue;
+      }
+      break;
+    }
+  }
+  return { ok: false, ...last };
+}
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') { res.status(405).json({ ok: false, error: 'method' }); return; }
-  const key = process.env.GEMINI_API_KEY;
-  if (!key) { res.status(200).json({ ok: false, error: 'no-key' }); return; }
+  if (req.method !== 'POST') {
+    res.status(405).json({ ok: false, error: 'method' });
+    return;
+  }
+
+  const groqKey = process.env.GROQ_API_KEY;
+  const geminiKey = process.env.GEMINI_API_KEY;
+  if (!groqKey && !geminiKey) {
+    res.status(200).json({ ok: false, error: 'no-key' });
+    return;
+  }
 
   try {
-    let body = req.body;
-    if (typeof body === 'string') body = JSON.parse(body || '{}');
-    body = body || {};
-    const history = Array.isArray(body.history) ? body.history : [];
-    const message = String(body.message || '').slice(0, 2000);
-    if (!message) { res.status(400).json({ ok: false, error: 'empty' }); return; }
-
-    // build Gemini "contents" from prior turns + the new message
-    const contents = [];
-    for (const m of history.slice(-8)) {
-      if (!m || !m.text) continue;
-      contents.push({ role: m.role === 'user' ? 'user' : 'model', parts: [{ text: String(m.text).slice(0, 2000) }] });
+    const body = normalizeBody(req);
+    const { message, turns } = buildTurns(body);
+    if (!message) {
+      res.status(400).json({ ok: false, error: 'empty' });
+      return;
     }
-    contents.push({ role: 'user', parts: [{ text: message }] });
 
-    const payload = JSON.stringify({
-      systemInstruction: { parts: [{ text: SYSTEM }] },
-      contents,
-      generationConfig: { temperature: 0.6, maxOutputTokens: 400 },
-    });
-    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-
-    let last = { status: 0, detail: '', model: '' };
-    // try each model; retry once on a transient 503 ("high demand")
-    for (const model of MODELS) {
-      for (let attempt = 0; attempt < 2; attempt++) {
-        const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
-          method: 'POST',
-          headers: { 'content-type': 'application/json', 'x-goog-api-key': key },
-          body: payload,
-        });
-        if (r.ok) {
-          const data = await r.json();
-          const reply = (data.candidates?.[0]?.content?.parts || []).map((p) => p.text || '').join('').trim();
-          if (reply) { res.status(200).json({ ok: true, reply, model }); return; }
-          last = { status: 200, detail: 'empty', model };
-          break; // empty reply → try next model
-        }
-        last = { status: r.status, detail: (await r.text().catch(() => '')).slice(0, 200), model };
-        if (r.status === 503 && attempt === 0) { await sleep(800); continue; } // transient overload → one retry
-        break; // 404 / 429 / other → move to next model
+    if (groqKey) {
+      const g = await askGroq(groqKey, turns);
+      if (g.ok) {
+        res.status(200).json({ ok: true, reply: g.reply, model: g.model });
+        return;
       }
     }
-    res.status(200).json({ ok: false, error: 'upstream', status: last.status, model: last.model, detail: last.detail });
+
+    if (geminiKey) {
+      const g = await askGemini(geminiKey, turns);
+      if (g.ok) {
+        res.status(200).json({ ok: true, reply: g.reply, model: g.model });
+        return;
+      }
+      res.status(200).json({ ok: false, error: 'upstream', status: g.status, model: g.model, detail: g.detail });
+      return;
+    }
+
+    res.status(200).json({ ok: false, error: 'upstream', detail: 'groq-failed-no-gemini' });
   } catch (e) {
     res.status(200).json({ ok: false, error: 'exception', detail: String(e).slice(0, 300) });
   }
