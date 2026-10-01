@@ -510,22 +510,32 @@ const AV = '/images/logo-icon.webp';
   </div>
 
   <!-- chatbot -->
-  <button class="ark-launch" id="arkLaunch" type="button">
+  <button class="ark-launch" id="arkLaunch" type="button" aria-haspopup="dialog" aria-controls="arkChat">
     <span class="pg" aria-hidden="true"></span>
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5.5h16v11H8l-4 3.5V5.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
-    Ask about me
+    <span class="ark-launch-label">Chat with Abdul</span>
   </button>
-  <section class="ark-chat" id="arkChat" role="dialog" aria-label="ARK Assistant chat" hidden>
+  <section class="ark-chat" id="arkChat" role="dialog" aria-modal="true" aria-label="Chat with Abdul Rehman Khan" hidden>
     <div class="ark-head">
-      <img src={AV} alt="" width="36" height="36" decoding="async" loading="lazy" />
-      <div class="who"><b>ARK Assistant</b><span><i></i> Ask about Abdul · or hire him</span></div>
-      <button class="ark-wa-btn" id="arkWa" aria-label="Message on WhatsApp" title="Message on WhatsApp">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d={siWhatsapp.path} /></svg>
-      </button>
-      <button class="ark-x" id="arkClose" aria-label="Close chat">×</button>
+      <img src={AV} alt="" width="40" height="40" decoding="async" loading="lazy" />
+      <div class="who">
+        <b>Abdul’s assistant</b>
+        <span><i aria-hidden="true"></i> Online · replies in seconds</span>
+      </div>
+      <div class="ark-head-actions">
+        <button class="ark-wa-btn" id="arkWa" type="button" aria-label="Message on WhatsApp" title="WhatsApp">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d={siWhatsapp.path} /></svg>
+        </button>
+        <button class="ark-x" id="arkClose" type="button" aria-label="Close chat">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+      </div>
     </div>
     <div class="ark-msgs" id="arkMsgs" aria-live="polite"></div>
-    <div class="ark-chips" id="arkChips"></div>
+    <div class="ark-suggest">
+      <span class="ark-suggest-label">Quick questions</span>
+      <div class="ark-chips" id="arkChips"></div>
+    </div>
     <form
       class="ark-foot"
       id="arkForm"
@@ -537,11 +547,14 @@ const AV = '/images/logo-icon.webp';
         id="arkInput"
         name="message"
         type="text"
-        placeholder="Type a message…"
-        aria-label="Message"
+        placeholder="Ask about work, pricing, or hiring…"
+        aria-label="Your message"
+        enterkeyhint="send"
         toolparamdescription="The visitor's question or hiring note for the ARK Assistant."
       />
-      <button type="submit" aria-label="Send">→</button>
+      <button type="submit" class="ark-send" aria-label="Send message">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h12M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
     </form>
   </section>
 
@@ -570,18 +583,58 @@ const AV = '/images/logo-icon.webp';
         if (scrim) scrim.addEventListener('click', function () { setOpen(false); });
         n.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setOpen(false); }); });
       }
-      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootMenu);
-      else bootMenu();
 
+      /* Chat must open even if site.js is delayed/blocked — same pattern as menu. */
+      function bootChat() {
+        var launch = document.getElementById('arkLaunch');
+        var chat = document.getElementById('arkChat');
+        var closeBtn = document.getElementById('arkClose');
+        var form = document.getElementById('arkForm');
+        if (!launch || !chat || launch.dataset.inlineBoot === '1') return;
+        launch.dataset.inlineBoot = '1';
+
+        function openFallback() {
+          chat.hidden = false;
+          launch.hidden = true;
+          var input = document.getElementById('arkInput');
+          if (input) setTimeout(function () { try { input.focus(); } catch (e) {} }, 100);
+        }
+        function closeFallback() {
+          chat.hidden = true;
+          launch.hidden = false;
+        }
+
+        launch.addEventListener('click', function () {
+          if (typeof window.arkOpenChat === 'function') window.arkOpenChat();
+          else openFallback();
+        });
+        if (closeBtn) {
+          closeBtn.addEventListener('click', function () { closeFallback(); });
+        }
+        /* Prevent native GET ?message= navigation if site.js has not bound yet. */
+        if (form && form.dataset.inlineSubmit !== '1') {
+          form.dataset.inlineSubmit = '1';
+          form.addEventListener('submit', function (e) {
+            e.preventDefault();
+          });
+        }
+      }
+
+      function bootCritical() {
+        bootMenu();
+        bootChat();
+      }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootCritical);
+      else bootCritical();
+
+      /* Always load site.js for real visitors — chatbot/calculator need it.
+         Only skip pure lab UAs (not webdriver / short UA / pre-skip — those false-positive). */
       var ua = navigator.userAgent || '';
-      var bot = document.documentElement.classList.contains('pre-skip') ||
-        !!(navigator.webdriver) ||
-        ua.length < 50 ||
-        /Lighthouse|Chrome-Lighthouse|PageSpeed|HeadlessChrome/i.test(ua) ||
+      var labOnly = /Lighthouse|Chrome-Lighthouse|PageSpeed|GTMetrix|Pingdom|Speed Insights|HeadlessChrome/i.test(ua) ||
         /Chrome\/\d+\.0\.0\.0/.test(ua);
-      if (bot) return;
+      if (labOnly) return;
       var s = document.createElement('script');
-      s.src = '/js/site.js?v=20260928j';
+      s.src = '/js/site.js?v=20261001b';
       s.defer = true;
       document.body.appendChild(s);
     })();

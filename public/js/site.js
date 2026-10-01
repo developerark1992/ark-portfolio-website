@@ -155,7 +155,7 @@
         function untype(){var t=document.getElementById('arkT');if(t)t.remove();}
         function bot(html,chips,delay){typing();setTimeout(function(){untype();var r=document.createElement('div');r.className='ark-row bot';r.innerHTML='<img src="'+AV+'" alt=""><div class="ark-bub">'+html+'</div>';msgs.appendChild(r);setChips(chips||[]);scroll();},delay||520);}
         function setChips(list){chipsEl.innerHTML='';list.forEach(function(c){var b=document.createElement('button');b.className='ark-chip'+(c.send?' send':'')+(c.wa?' wa':'');b.textContent=c.label;b.onclick=function(){c.onClick?c.onClick():pick(c.val||c.label,c.label);};chipsEl.appendChild(b);});}
-        var MENU=[{label:'About Abdul',val:'about'},{label:'His work',val:'work'},{label:'Services',val:'services'},{label:'Price estimate',val:'estimate'},{label:'Get a quote',val:'quote'},{label:'WhatsApp Abdul',val:'whatsapp',wa:true}];
+        var MENU=[{label:'About Abdul',val:'about'},{label:'Recent work',val:'work'},{label:'Services',val:'services'},{label:'Price estimate',val:'estimate'},{label:'Request a quote',val:'quote'},{label:'WhatsApp Abdul',val:'whatsapp',wa:true}];
         function answer(intent){
           if(intent==='about')return bot("<b>Abdul Rehman Khan</b> is a <b>freelance lead</b> with a <b>mini team of freelancers</b>. Brand: <b>ARK Designing Bureau</b> — <b>not a registered company</b>. <b>13+ years since 2013</b>. Websites, apps, design, SEO, digital marketing, CMS, AWS, AI. Also <b>staff augmentation</b> for startup agencies. You brief him; freelancers help ship.",MENU.concat([{label:'Start an enquiry',val:'quote'}]));
           if(intent==='work')return bot("He's shipped <b>90+ projects</b> — real estate (Prescott), health-tech &amp; pharma (Hepius, Galaxy Pharma), Shopify e-commerce, finance and agency sites across WordPress, Webflow, Wix &amp; custom stacks. Browse the <b>Projects</b> page — search or filter, and click any card for a full preview.",[{label:'Get a quote',val:'quote'},{label:'Services',val:'services'}]);
@@ -210,7 +210,7 @@
             .catch(function(){ untype(); answer('menu'); });
         }
         form.onsubmit=function(e){e.preventDefault();var t=input.value.trim();if(!t)return;input.value='';me(t);if(mode==='enquiry')record(t);else if(mode==='wa')waRecord(t);else{var g=guess(t);if(g)answer(g);else askAI(t);}};
-        function open(){chat.hidden=false;launch.hidden=true;if(!started){started=true;bot("👋 Hi! I'm <b>Abdul's assistant</b>. Ask about his work, get an instant price estimate, or send him a project enquiry.",MENU,260);}setTimeout(function(){input.focus();},300);}
+        function open(){chat.hidden=false;launch.hidden=true;if(!started){started=true;bot("Hi — I’m Abdul’s assistant. Ask about his experience, get a quick price estimate, or leave a project enquiry. What would you like to know?",MENU,260);}setTimeout(function(){input.focus();},300);}
         function close(){chat.hidden=true;launch.hidden=false;}
         window.arkOpenChat=open;
         launch.onclick=open;closeBtn.onclick=close;
@@ -299,14 +299,16 @@
         try { initMenu(); } catch (e) {}
         try { initLightbox(); } catch (e) {}
         try { initCalc(); } catch (e) {}
-        var later=function(){ try { initChat(); } catch (e) {} try { initStackCards(); } catch (e) {} };
+        /* Bind chatbot immediately — do not wait for idle (click-to-open was racing). */
+        try { initChat(); } catch (e) {}
+        var later=function(){ try { initStackCards(); } catch (e) {} };
         if('requestIdleCallback' in window) requestIdleCallback(later,{timeout:1800});
         else setTimeout(later,1);
         var launch=document.getElementById('arkLaunch');
         if(launch && !launch.dataset.idle){
           launch.dataset.idle='1';
           launch.addEventListener('click', function(){
-            later();
+            try { initChat(); } catch (e) {}
             if(window.arkOpenChat) window.arkOpenChat();
           }, {once:true});
         }
