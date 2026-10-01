@@ -1269,9 +1269,14 @@ const AV = '/images/logo-icon.webp';
           notifyStart(false).then(function (d) {
             if (gateGo) { gateGo.disabled = false; gateGo.textContent = 'Start chat'; }
             if (d && d.error === 'crm-not-configured') {
-              setGateErr('Lead storage is not configured yet — chat will still work.');
+              setGateErr('CRM not configured - add SUPABASE_SERVICE_ROLE_KEY on Vercel.');
             } else if (d && d.stored === false && d.error) {
-              setGateErr('Lead could not be saved (' + String(d.error).slice(0, 80) + '). — chat will still open.');
+              var err = String(d.error);
+              if (/api key/i.test(err)) {
+                setGateErr('Invalid Supabase service_role key on Vercel - fix env and redeploy.');
+              } else {
+                setGateErr('Lead not saved: ' + err.slice(0, 90));
+              }
             }
             beginChat({ returning: false, skipNotify: true });
           }).catch(function () {
