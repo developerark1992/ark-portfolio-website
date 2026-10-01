@@ -510,7 +510,6 @@ const AV = '/images/logo-icon.webp';
   </div>
 
   <!-- chatbot -->
-  <div class="ark-floats" id="arkFloats" aria-label="Quick questions" hidden></div>
   <button class="ark-launch" id="arkLaunch" type="button" aria-haspopup="dialog" aria-controls="arkChat">
     <span class="pg" aria-hidden="true"></span>
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5.5h16v11H8l-4 3.5V5.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
@@ -535,7 +534,7 @@ const AV = '/images/logo-icon.webp';
     <div class="ark-msgs" id="arkMsgs" aria-live="polite"></div>
     <div class="ark-suggest" id="arkSuggest">
       <button type="button" class="ark-suggest-toggle" id="arkSuggestToggle" aria-expanded="true" aria-controls="arkChips">
-        <span>Quick questions</span>
+        <span id="arkSuggestLabel">Quick questions</span>
         <svg class="ark-suggest-chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
       <div class="ark-chips" id="arkChips"></div>
@@ -589,8 +588,7 @@ const AV = '/images/logo-icon.webp';
       }
 
       /*
-        Self-contained chat boot — greeting, suggestion chips, scripted answers, and AI.
-        site.js may enhance later; this must work even if site.js is late/blocked.
+        Self-contained chat boot — greeting, contextual suggestion chips, scripted answers, AI.
       */
       function bootChat() {
         var launch = document.getElementById('arkLaunch');
@@ -600,9 +598,9 @@ const AV = '/images/logo-icon.webp';
         var msgs = document.getElementById('arkMsgs');
         var chipsEl = document.getElementById('arkChips');
         var input = document.getElementById('arkInput');
-        var floatsEl = document.getElementById('arkFloats');
         var suggestEl = document.getElementById('arkSuggest');
         var suggestToggle = document.getElementById('arkSuggestToggle');
+        var suggestLabel = document.getElementById('arkSuggestLabel');
         if (!launch || !chat || !msgs || !chipsEl || !form || !input) return;
         if (launch.dataset.inlineBoot === '1') return;
         launch.dataset.inlineBoot = '1';
@@ -619,15 +617,6 @@ const AV = '/images/logo-icon.webp';
           { label: 'Price estimate', val: 'estimate' },
           { label: 'Request a quote', val: 'quote' },
           { label: 'WhatsApp Abdul', val: 'whatsapp', wa: true }
-        ];
-        /* Outside bubbles — keep short so they don’t crowd the fold */
-        var FLOATS = [
-          { label: 'About Abdul', val: 'about' },
-          { label: 'Recent work', val: 'work' },
-          { label: 'Services', val: 'services' },
-          { label: 'Price estimate', val: 'estimate' },
-          { label: 'Request a quote', val: 'quote' },
-          { label: 'WhatsApp', val: 'whatsapp', wa: true }
         ];
 
         function esc(s) {
@@ -662,7 +651,11 @@ const AV = '/images/logo-icon.webp';
           suggestToggle.setAttribute('aria-expanded', min ? 'false' : 'true');
           try { sessionStorage.setItem('arkSuggestMin', min ? '1' : '0'); } catch (e) {}
         }
-        function setChips(list) {
+        function setSuggestTitle(title) {
+          if (suggestLabel) suggestLabel.textContent = title || 'Quick questions';
+        }
+        function setChips(list, title) {
+          setSuggestTitle(title || 'Quick questions');
           chipsEl.innerHTML = '';
           (list || []).forEach(function (c) {
             var b = document.createElement('button');
@@ -676,69 +669,150 @@ const AV = '/images/logo-icon.webp';
             });
             chipsEl.appendChild(b);
           });
+          /* New suggestions should be visible */
+          if (suggestEl && list && list.length) applySuggestMin(false);
         }
-        function renderFloats() {
-          if (!floatsEl) return;
-          floatsEl.innerHTML = '';
-          var openChat = !chat.hidden;
-          floatsEl.classList.toggle('is-open', openChat);
-          /* Only show brainstorm bubbles while the chat is open */
-          if (!openChat) {
-            floatsEl.hidden = true;
-            return;
+        /* Contextual follow-ups under the conversation based on what they asked */
+        function suggestFor(topic, text) {
+          var t = String(text || topic || '').toLowerCase();
+          if (topic === 'about' || /about|experience|who is|years|background|karachi/.test(t)) {
+            return {
+              title: 'Suggested next',
+              chips: [
+                { label: 'What services?', val: 'services' },
+                { label: 'See recent work', val: 'work' },
+                { label: 'Request a quote', val: 'quote' },
+                { label: 'WhatsApp Abdul', val: 'whatsapp', wa: true }
+              ]
+            };
           }
-          FLOATS.forEach(function (c) {
-            var b = document.createElement('button');
-            b.type = 'button';
-            b.className = 'ark-float' + (c.wa ? ' wa' : '');
-            b.textContent = c.label;
-            b.addEventListener('click', function () {
-              if (busy) return;
-              handleUser(c.val || c.label, c.label);
-            });
-            floatsEl.appendChild(b);
-          });
-          floatsEl.hidden = false;
+          if (topic === 'work' || /work|project|portfolio|shipped|case study|clients?/.test(t)) {
+            return {
+              title: 'Suggested next',
+              chips: [
+                { label: 'CMS platforms?', val: 'services' },
+                { label: 'Price estimate', val: 'estimate' },
+                { label: 'Request a quote', val: 'quote' },
+                { label: 'WhatsApp Abdul', val: 'whatsapp', wa: true }
+              ]
+            };
+          }
+          if (topic === 'services' || /service|wordpress|shopify|astro|next\.?js|aws|devops|cms|automation|design|seo/.test(t)) {
+            return {
+              title: 'Suggested next',
+              chips: [
+                { label: 'Price estimate', val: 'estimate' },
+                { label: 'See recent work', val: 'work' },
+                { label: 'Request a quote', val: 'quote' },
+                { label: 'WhatsApp Abdul', val: 'whatsapp', wa: true }
+              ]
+            };
+          }
+          if (topic === 'estimate' || /estimate|price|pricing|cost|budget|rate|how much/.test(t)) {
+            return {
+              title: 'Suggested next',
+              chips: [
+                { label: 'Open calculator', val: 'estimate' },
+                { label: 'Request a quote', val: 'quote' },
+                { label: 'What\'s included?', val: 'services' },
+                { label: 'WhatsApp Abdul', val: 'whatsapp', wa: true }
+              ]
+            };
+          }
+          if (topic === 'quote' || /quote|hire|enquiry|inquiry|brief|start a project/.test(t)) {
+            return {
+              title: 'Suggested next',
+              chips: [
+                { label: 'WhatsApp Abdul', val: 'whatsapp', wa: true },
+                { label: 'Price estimate', val: 'estimate' },
+                { label: 'About Abdul', val: 'about' },
+                { label: 'Services', val: 'services' }
+              ]
+            };
+          }
+          if (topic === 'whatsapp' || /whatsapp|wa\b|call|contact/.test(t)) {
+            var url = 'https://wa.me/' + WA + '?text=' + encodeURIComponent('Hi Abdul — I found you via arkdesigningbureau.com and want to discuss a project.');
+            return {
+              title: 'Suggested next',
+              chips: [
+                { label: 'Open WhatsApp', wa: true, onClick: function () { window.open(url, '_blank', 'noopener'); } },
+                { label: 'Price estimate', val: 'estimate' },
+                { label: 'Request a quote', val: 'quote' },
+                { label: 'Services', val: 'services' }
+              ]
+            };
+          }
+          /* Free-typed AI answers — tags from keywords in the question */
+          if (/wordpress|shopify|webflow|wix|framer/.test(t)) {
+            return {
+              title: 'Suggested next',
+              chips: [
+                { label: 'Other platforms?', val: 'services' },
+                { label: 'Price estimate', val: 'estimate' },
+                { label: 'See recent work', val: 'work' },
+                { label: 'Request a quote', val: 'quote' }
+              ]
+            };
+          }
+          if (/timeline|deadline|how long|availability|when/.test(t)) {
+            return {
+              title: 'Suggested next',
+              chips: [
+                { label: 'Request a quote', val: 'quote' },
+                { label: 'WhatsApp Abdul', val: 'whatsapp', wa: true },
+                { label: 'Price estimate', val: 'estimate' }
+              ]
+            };
+          }
+          return {
+            title: 'Suggested next',
+            chips: [
+              { label: 'Services', val: 'services' },
+              { label: 'Price estimate', val: 'estimate' },
+              { label: 'Request a quote', val: 'quote' },
+              { label: 'WhatsApp Abdul', val: 'whatsapp', wa: true }
+            ]
+          };
         }
-        function botNow(html, chips) {
+        function botNow(html, chips, title) {
           untype();
           var r = document.createElement('div');
           r.className = 'ark-row bot';
           r.innerHTML = '<img src="' + AV + '" alt=""><div class="ark-bub">' + html + '</div>';
           msgs.appendChild(r);
-          setChips(chips || MENU);
+          setChips(chips || MENU, title || 'Quick questions');
           scroll();
         }
-        function bot(html, chips, delay) {
+        function bot(html, chips, delay, title) {
           typing();
-          setTimeout(function () { botNow(html, chips); }, delay || 420);
+          setTimeout(function () { botNow(html, chips, title); }, delay || 420);
         }
         function fmtAI(t) {
           return esc(t).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
         }
         function scripted(intent) {
+          var next = suggestFor(intent);
           if (intent === 'about') {
-            return bot('<b>Abdul Rehman Khan</b> is a <b>freelance lead</b> with a <b>mini team of freelancers</b> under the brand <b>ARK Designing Bureau</b> (not a registered company). <b>13+ years since 2013</b>. Websites, apps, design, SEO, marketing, CMS, AWS and AI — plus staff augmentation for agencies.', MENU);
+            return bot('<b>Abdul Rehman Khan</b> is a <b>freelance lead</b> with a <b>mini team of freelancers</b> under the brand <b>ARK Designing Bureau</b> (not a registered company). <b>13+ years since 2013</b>. Websites, apps, design, SEO, marketing, CMS, AWS and AI — plus staff augmentation for agencies.', next.chips, 420, next.title);
           }
           if (intent === 'work') {
-            return bot('He has shipped <b>90+ projects</b> across CMS and custom stacks. Open the <b>Projects</b> page to browse live work, or ask for a quote if you have a brief ready.', [{ label: 'Request a quote', val: 'quote' }, { label: 'Services', val: 'services' }].concat(MENU.slice(0, 1)));
+            return bot('He has shipped <b>90+ projects</b> across CMS and custom stacks. Open the <b>Projects</b> page to browse live work, or ask for a quote if you have a brief ready.', next.chips, 420, next.title);
           }
           if (intent === 'services') {
-            return bot('Abdul covers <b>CMS &amp; e-commerce</b>, <b>Astro/Next.js</b>, <b>.NET</b>, <b>AWS/DevOps</b>, <b>design</b>, <b>SEO/marketing</b>, and <b>AI automation</b>. One lead, freelancers supporting delivery.', MENU);
+            return bot('Abdul covers <b>CMS &amp; e-commerce</b>, <b>Astro/Next.js</b>, <b>.NET</b>, <b>AWS/DevOps</b>, <b>design</b>, <b>SEO/marketing</b>, and <b>AI automation</b>. One lead, freelancers supporting delivery.', next.chips, 420, next.title);
           }
           if (intent === 'estimate') {
-            bot('Opening the live cost calculator…', []);
+            bot('Opening the live cost calculator…', [], 300, 'Quick questions');
             setTimeout(function () { close(); window.location.href = '/estimate'; }, 550);
             return;
           }
-          if (intent === 'quote' || intent === 'Request a quote' || intent === 'Get a quote') {
-            return bot('Great — the fastest path is a short brief. Tap <b>WhatsApp Abdul</b> to message him directly, or email <b>ark.educationalist@gmail.com</b>. You can also use the contact form on this site.', [{ label: 'WhatsApp Abdul', val: 'whatsapp', wa: true }, { label: 'Price estimate', val: 'estimate' }].concat(MENU.slice(0, 2)));
+          if (intent === 'quote') {
+            return bot('Great — the fastest path is a short brief. Tap <b>WhatsApp Abdul</b> to message him directly, or email <b>ark.educationalist@gmail.com</b>. You can also use the contact form on this site.', next.chips, 420, next.title);
           }
-          if (intent === 'whatsapp' || intent === 'WhatsApp Abdul') {
-            var url = 'https://wa.me/' + WA + '?text=' + encodeURIComponent('Hi Abdul — I found you via arkdesigningbureau.com and want to discuss a project.');
-            return bot('Perfect — WhatsApp opens with a ready message. Say hello and share a short brief.', [{ label: 'Open WhatsApp', wa: true, onClick: function () { window.open(url, '_blank', 'noopener'); } }].concat(MENU.slice(0, 3)));
+          if (intent === 'whatsapp') {
+            return bot('Perfect — WhatsApp opens with a ready message. Say hello and share a short brief.', next.chips, 420, next.title);
           }
-          return bot('I can help with Abdul’s background, services, pricing, or connect you on WhatsApp. Pick a suggestion or type a question.', MENU);
+          return bot('I can help with Abdul’s background, services, pricing, or connect you on WhatsApp. Pick a suggestion or type a question.', MENU, 420, 'Quick questions');
         }
         function askAI(text) {
           busy = true;
@@ -752,9 +826,10 @@ const AV = '/images/logo-icon.webp';
             .then(function (r) { return r.json(); })
             .then(function (d) {
               busy = false;
+              var next = suggestFor(null, text);
               if (d && d.ok && d.reply) {
                 aiHist.push({ role: 'model', text: d.reply });
-                botNow(fmtAI(d.reply), MENU);
+                botNow(fmtAI(d.reply), next.chips, next.title);
               } else {
                 untype();
                 scripted('menu');
@@ -787,18 +862,15 @@ const AV = '/images/logo-icon.webp';
           launch.hidden = true;
           if (!started) {
             started = true;
-            bot('Hi — I’m Abdul’s assistant. Ask about his experience, get a quick price estimate, or leave a project enquiry. What would you like to know?', MENU, 220);
+            bot('Hi — I’m Abdul’s assistant. Ask about his experience, get a quick price estimate, or leave a project enquiry. What would you like to know?', MENU, 220, 'Quick questions');
           }
-          renderFloats();
           setTimeout(function () { try { input.focus(); } catch (e) {} }, 250);
         }
         function close() {
           chat.hidden = true;
           launch.hidden = false;
-          renderFloats();
         }
 
-        /* Expose for site.js / estimate page — prefer this if already booted. */
         window.arkOpenChat = open;
         window.arkCloseChat = close;
 
@@ -810,9 +882,6 @@ const AV = '/images/logo-icon.webp';
             applySuggestMin(!(suggestEl && suggestEl.classList.contains('is-min')));
           });
         }
-
-        renderFloats();
-        /* closed by default — bubbles only appear after open() */
 
         launch.addEventListener('click', function () {
           if (typeof window.arkOpenChat === 'function') window.arkOpenChat();
@@ -840,9 +909,6 @@ const AV = '/images/logo-icon.webp';
             if (e.key === 'Escape' && chat && !chat.hidden) close();
           });
         }
-        window.addEventListener('resize', function () {
-          renderFloats();
-        }, { passive: true });
       }
 
       function bootCritical() {
@@ -854,7 +920,7 @@ const AV = '/images/logo-icon.webp';
 
       /* Always load site.js for calculator / lightbox — chat already works inline. */
       var s = document.createElement('script');
-      s.src = '/js/site.js?v=20261001f';
+      s.src = '/js/site.js?v=20261001g';
       s.defer = true;
       document.body.appendChild(s);
     })();
