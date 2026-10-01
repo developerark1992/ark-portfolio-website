@@ -553,11 +553,11 @@ const AV = '/images/logo-icon.webp';
         <button type="button" data-mode="signup">Sign up</button>
       </div>
       <form class="ark-gate-form" id="arkGateForm" autocomplete="on">
-        <label class="ark-gate-field ark-gate-guest ark-gate-signup">
+        <label class="ark-gate-field ark-gate-profile">
           <span>Name *</span>
           <input id="arkLeadName" name="name" type="text" maxlength="120" autocomplete="name" placeholder="Your full name" />
         </label>
-        <label class="ark-gate-field ark-gate-guest ark-gate-signup">
+        <label class="ark-gate-field ark-gate-profile">
           <span>Phone *</span>
           <input id="arkLeadPhone" name="phone" type="tel" maxlength="40" autocomplete="tel" placeholder="+92 300 0000000" />
         </label>
@@ -569,7 +569,7 @@ const AV = '/images/logo-icon.webp';
           <span>Password *</span>
           <input id="arkLeadPass" name="password" type="password" maxlength="80" autocomplete="current-password" placeholder="At least 6 characters" />
         </label>
-        <p class="ark-gate-hint ark-gate-signup" hidden>Sign up once — next visits you only sign in.</p>
+        <p class="ark-gate-hint ark-gate-signup-only" hidden>Sign up once — next visits you only sign in.</p>
         <p class="ark-gate-err" id="arkGateErr" hidden></p>
         <button type="submit" class="ark-gate-go" id="arkGateGo">Start chat</button>
       </form>
@@ -746,18 +746,20 @@ const AV = '/images/logo-icon.webp';
               b.classList.toggle('is-on', b.getAttribute('data-mode') === gateMode);
             });
           }
-          gate.querySelectorAll('.ark-gate-guest').forEach(function (el) { el.hidden = gateMode === 'signin'; });
-          gate.querySelectorAll('.ark-gate-signup').forEach(function (el) { el.hidden = gateMode !== 'signup'; });
-          gate.querySelectorAll('.ark-gate-auth').forEach(function (el) { el.hidden = gateMode === 'guest'; });
+          var showProfile = gateMode === 'guest' || gateMode === 'signup';
+          var showAuth = gateMode === 'signin' || gateMode === 'signup';
+          gate.querySelectorAll('.ark-gate-profile').forEach(function (el) { el.hidden = !showProfile; });
+          gate.querySelectorAll('.ark-gate-auth').forEach(function (el) { el.hidden = !showAuth; });
+          gate.querySelectorAll('.ark-gate-signup-only').forEach(function (el) { el.hidden = gateMode !== 'signup'; });
           if (gateGo) {
             gateGo.textContent = gateMode === 'signin' ? 'Sign in & chat' : (gateMode === 'signup' ? 'Create account & chat' : 'Start chat');
           }
           if (leadPassEl) {
-            leadPassEl.required = gateMode !== 'guest';
+            leadPassEl.required = showAuth;
             leadPassEl.autocomplete = gateMode === 'signup' ? 'new-password' : 'current-password';
           }
-          if (leadNameEl) leadNameEl.required = gateMode !== 'signin';
-          if (leadPhoneEl) leadPhoneEl.required = gateMode !== 'signin';
+          if (leadNameEl) leadNameEl.required = showProfile;
+          if (leadPhoneEl) leadPhoneEl.required = showProfile;
         }
         function setGateErr(msg) {
           if (!gateErr) return;
@@ -1244,7 +1246,13 @@ const AV = '/images/logo-icon.webp';
           saveLead({ name: name, phone: phone, email: email });
           startNotified = false;
           try { sessionStorage.removeItem('arkChatStartSent'); } catch (err) {}
-          notifyStart(false).then(function () {
+          notifyStart(false).then(function (d) {
+            if (gateGo) { gateGo.disabled = false; gateGo.textContent = 'Start chat'; }
+            if (d && d.ok === false && d.error && d.error !== 'mail-not-configured') {
+              setGateErr('Could not save lead — check connection and try again.');
+            }
+            beginChat({ returning: false, skipNotify: true });
+          }).catch(function () {
             if (gateGo) { gateGo.disabled = false; gateGo.textContent = 'Start chat'; }
             beginChat({ returning: false, skipNotify: true });
           });
