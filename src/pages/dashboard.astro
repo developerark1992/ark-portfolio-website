@@ -4,7 +4,7 @@ import Base from '../layouts/Base.astro';
 import BrandLogo from '../components/BrandLogo.astro';
 ---
 <Base active="" chrome={false} title="Command center — ARK" description="Manage leads, chat transcripts, visitors, outreach and blog.">
-  <section class="crm" id="crmRoot" data-page="dashboard">
+  <div class="crm" id="crmRoot" data-page="dashboard">
     <div id="crmLogin" class="crm-login" hidden>
       <form class="crm-login-card" id="loginForm">
         <div class="crm-login-brand">
@@ -200,7 +200,7 @@ import BrandLogo from '../components/BrandLogo.astro';
     <p id="dashUnconfigured" class="crm-unconfigured" hidden>
       Dashboard needs <code>PUBLIC_SUPABASE_URL</code>, <code>PUBLIC_SUPABASE_ANON_KEY</code>, and for CRM capture <code>SUPABASE_SERVICE_ROLE_KEY</code> on Vercel. Run <code>supabase/crm.sql</code> in the SQL editor.
     </p>
-  </section>
+  </div>
 
   <script>
     import { supabase, supabaseConfigured } from '../lib/supabase.ts';
