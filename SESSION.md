@@ -21,8 +21,11 @@
 | Direct reply + broadcast email | **Done** (`/api/dash-mail`) |
 | Site visit tracking | **Done** (`/api/track` + beacon in `Base.astro`) |
 | Free AI replies (Groq → Gemini) | **Done** (`/api/chat`) |
+| Home featured work | **Live** — Dr Umer Pain Relief, then BizHub, then the next two public projects |
+| Alora Supports | **Archived** — hidden on home and `/projects`; MEGA sync will not add it back |
+| Dr Umer screenshot | **Live** — fresh capture of https://drumerpainrelief.pk/ |
 
-Latest main tip (at handoff time): top-gap fix for dashboard (`section` padding removed). Hard-refresh after Vercel deploy.
+Latest main tip: `7f8f0ff` on `main`, deployed. Home: https://www.arkdesigningbureau.com/
 
 ---
 
@@ -99,6 +102,12 @@ After fixing, verify: `/api/crm-health` → `"ok":true`.
 - **End** button ends the session and stores the transcript (close / leave page also flushes transcript).
 - Signed-up visitors skip the form next time; dashboard **Activity** shows return visits.
 
+### Portfolio homepage (live 2026-10-01)
+- Home Recent work pins `dr-umer-pain-relief-clinic` then `bizhub` (`src/pages/index.astro`).
+- Links: https://drumerpainrelief.pk/ and https://bizhub.ae/
+- Dr Umer image replaced from the live homepage (`public/images/projects/dr-umer-pain-relief-clinic.webp`, thumb updated, `?v=2` cache bust).
+- Alora Supports has `"archived": true` in `src/data/projects.json`. Home and `/projects` skip archived rows. `scripts/sync-mega.mjs` marks archived slugs as seen.
+
 ### Data retention (free tier)
 - Weekly Vercel Cron (`0 4 * * 0` UTC) → `/api/crm-retention`
 - Emails Excel-ready **CSV dumps** to `CONTACT_TO` / `GMAIL_USER`, then deletes expired rows
@@ -117,6 +126,9 @@ api/track.js
 api/dash-mail.js
 api/_lib/supabaseAdmin.js
 supabase/crm.sql
+src/pages/index.astro            # home featured pins
+src/pages/projects.astro         # hides archived
+src/data/projects.json
 src/pages/dashboard.astro
 src/layouts/Base.astro          # chat + tracker + chrome={false} support
 src/styles/global.css           # .crm-* command center styles
@@ -140,7 +152,8 @@ README.md                       # Command center section
 ```bash
 git log -5 --oneline
 git status -sb
-# Live: hard-refresh https://arkdesigningbureau.com/dashboard
+# Live home: https://www.arkdesigningbureau.com/
+# Live dashboard: https://www.arkdesigningbureau.com/dashboard
 ```
 
 When continuing on another machine: clone/pull `main`, ensure Vercel env vars match, and keep `supabase/crm.sql` applied on the same Supabase project.
