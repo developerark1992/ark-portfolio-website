@@ -824,15 +824,22 @@ section.page-body > .wrap.svc-grid{
 .ark-suggest-chev{width:16px;height:16px;flex:0 0 auto;transition:transform .2s ease;opacity:.7;}
 .ark-suggest.is-min .ark-suggest-chev{transform:rotate(-90deg);}
 .ark-suggest.is-min .ark-chips{display:none;}
-.ark-chips{display:flex;flex-wrap:wrap;gap:8px;max-height:min(132px,28vh);overflow-y:auto;padding-bottom:2px;}
+.ark-chips{display:flex;flex-wrap:wrap;align-items:center;gap:7px 8px;max-height:min(148px,30vh);overflow-y:auto;padding:2px 0 4px;}
 .ark-chip.wa{background:#25D366;color:#04130f;border-color:#1ebe57;font-weight:650;}
 .ark-chip.wa:hover{background:#1ebe57;color:#04130f;}
 .ark-wa-btn{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:10px;background:#25D366;color:#04140c;flex:0 0 auto;border:none;cursor:pointer;transition:transform .15s ease,filter .15s;}
 .ark-wa-btn:hover{filter:brightness(.96);transform:translateY(-1px);}
 .ark-wa-btn svg{width:18px;height:18px;fill:currentColor;}
-.ark-chip{font-family:var(--sans);font-size:12.5px;font-weight:550;color:var(--ink);background:#fff;border:1px solid var(--glass-line);border-radius:999px;padding:8px 13px;cursor:pointer;transition:background .15s,border-color .15s,color .15s,transform .15s;box-shadow:0 1px 2px rgba(15,23,42,.03);}
-.ark-chip:hover{background:var(--accent-soft);border-color:color-mix(in srgb,var(--accent) 40%,var(--glass-line));color:var(--accent);transform:translateY(-1px);}
+.ark-chip{font-family:var(--sans);font-size:12.5px;font-weight:550;color:var(--ink);background:#fff;border:1px solid var(--glass-line);border-radius:999px;padding:8px 13px;cursor:pointer;transition:background .15s,border-color .15s,color .15s,transform .15s;box-shadow:0 1px 2px rgba(15,23,42,.03);animation:arkChipIn .35s cubic-bezier(.16,1,.3,1) both;}
+.ark-chip:nth-child(1){animation-delay:.02s;}
+.ark-chip:nth-child(2){animation-delay:.06s;transform:translateY(2px);}
+.ark-chip:nth-child(3){animation-delay:.1s;transform:translateY(-1px);}
+.ark-chip:nth-child(4){animation-delay:.14s;transform:translateY(3px);}
+.ark-chip:nth-child(5){animation-delay:.18s;transform:translateY(-2px);}
+.ark-chip:nth-child(6){animation-delay:.22s;transform:translateY(1px);}
+.ark-chip:hover{background:var(--accent-soft);border-color:color-mix(in srgb,var(--accent) 40%,var(--glass-line));color:var(--accent);transform:translateY(-2px)!important;}
 .ark-chip.send{background:var(--accent);color:var(--on-accent);border-color:var(--accent);}
+@keyframes arkChipIn{from{opacity:0;transform:translateY(6px) scale(.96);}to{opacity:1;}}
 .ark-foot{display:flex;gap:8px;align-items:center;padding:12px 12px max(14px, env(safe-area-inset-bottom, 0px));border-top:1px solid var(--line);background:#fff;}
 .ark-foot input{flex:1;min-width:0;border:1px solid var(--glass-line);background:var(--bg);color:var(--ink);border-radius:999px;padding:12px 16px;font-size:14px;font-family:var(--sans);outline:none;transition:border-color .15s,box-shadow .15s;}
 .ark-foot input::placeholder{color:#94a3b8;}
@@ -868,7 +875,7 @@ section.page-body > .wrap.svc-grid{
   body:has(#arkChat:not([hidden])) .wa-float,
   body:has(#arkChat:not([hidden])) .ark-launch{visibility:hidden;pointer-events:none;}
 }
-@media (prefers-reduced-motion:reduce){.ark-chat,.ark-launch .pg,.ark-typing i{animation:none!important;}.ark-msgs{scroll-behavior:auto;}}
+@media (prefers-reduced-motion:reduce){.ark-chat,.ark-launch .pg,.ark-typing i,.ark-chip{animation:none!important;}.ark-msgs{scroll-behavior:auto;}}
 
 /* ===== aurora hero + spotlight (home) ===== */
 .aurora{display:none;}
