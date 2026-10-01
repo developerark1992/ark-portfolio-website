@@ -623,8 +623,10 @@ const AV = '/images/logo-icon.webp';
         /* Outside bubbles — keep short so they don’t crowd the fold */
         var FLOATS = [
           { label: 'About Abdul', val: 'about' },
-          { label: 'Services?', val: 'services' },
+          { label: 'Recent work', val: 'work' },
+          { label: 'Services', val: 'services' },
           { label: 'Price estimate', val: 'estimate' },
+          { label: 'Request a quote', val: 'quote' },
           { label: 'WhatsApp', val: 'whatsapp', wa: true }
         ];
 
@@ -680,24 +682,19 @@ const AV = '/images/logo-icon.webp';
           floatsEl.innerHTML = '';
           var openChat = !chat.hidden;
           floatsEl.classList.toggle('is-open', openChat);
-          var narrow = window.matchMedia('(max-width:720px)').matches;
-          var list = narrow && !openChat ? FLOATS.slice(0, 3) : FLOATS;
-          list.forEach(function (c) {
+          /* Only show brainstorm bubbles while the chat is open */
+          if (!openChat) {
+            floatsEl.hidden = true;
+            return;
+          }
+          FLOATS.forEach(function (c) {
             var b = document.createElement('button');
             b.type = 'button';
             b.className = 'ark-float' + (c.wa ? ' wa' : '');
             b.textContent = c.label;
             b.addEventListener('click', function () {
-              if (chat.hidden) {
-                open();
-                setTimeout(function () {
-                  if (busy) return;
-                  handleUser(c.val || c.label, c.label);
-                }, 280);
-              } else {
-                if (busy) return;
-                handleUser(c.val || c.label, c.label);
-              }
+              if (busy) return;
+              handleUser(c.val || c.label, c.label);
             });
             floatsEl.appendChild(b);
           });
@@ -815,7 +812,7 @@ const AV = '/images/logo-icon.webp';
         }
 
         renderFloats();
-        if (floatsEl) floatsEl.hidden = false;
+        /* closed by default — bubbles only appear after open() */
 
         launch.addEventListener('click', function () {
           if (typeof window.arkOpenChat === 'function') window.arkOpenChat();
@@ -857,7 +854,7 @@ const AV = '/images/logo-icon.webp';
 
       /* Always load site.js for calculator / lightbox — chat already works inline. */
       var s = document.createElement('script');
-      s.src = '/js/site.js?v=20261001e';
+      s.src = '/js/site.js?v=20261001f';
       s.defer = true;
       document.body.appendChild(s);
     })();
