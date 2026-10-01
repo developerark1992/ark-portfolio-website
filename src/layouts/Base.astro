@@ -557,18 +557,19 @@ const AV = '/images/logo-icon.webp';
           <span>Name *</span>
           <input id="arkLeadName" name="name" type="text" maxlength="120" autocomplete="name" placeholder="Your full name" />
         </label>
-        <label class="ark-gate-field ark-gate-profile">
-          <span>Phone *</span>
-          <input id="arkLeadPhone" name="phone" type="tel" maxlength="40" autocomplete="tel" placeholder="+92 300 0000000" />
-        </label>
-        <label class="ark-gate-field">
+        <label class="ark-gate-field ark-gate-profile-email">
           <span>Email *</span>
           <input id="arkLeadEmail" name="email" type="email" required maxlength="160" autocomplete="email" placeholder="you@company.com" />
+        </label>
+        <label class="ark-gate-field ark-gate-profile">
+          <span>Phone number *</span>
+          <input id="arkLeadPhone" name="phone" type="tel" maxlength="40" autocomplete="tel" placeholder="+92 300 0000000" />
         </label>
         <label class="ark-gate-field ark-gate-auth" hidden>
           <span>Password *</span>
           <input id="arkLeadPass" name="password" type="password" maxlength="80" autocomplete="current-password" placeholder="At least 6 characters" />
         </label>
+        <p class="ark-gate-hint ark-gate-guest-only">Name, email and phone are required to start.</p>
         <p class="ark-gate-hint ark-gate-signup-only" hidden>Sign up once — next visits you only sign in.</p>
         <p class="ark-gate-err" id="arkGateErr" hidden></p>
         <button type="submit" class="ark-gate-go" id="arkGateGo">Start chat</button>
@@ -746,10 +747,13 @@ const AV = '/images/logo-icon.webp';
               b.classList.toggle('is-on', b.getAttribute('data-mode') === gateMode);
             });
           }
+          /* Guest + Sign up: name, email, phone. Sign in: email + password only. */
           var showProfile = gateMode === 'guest' || gateMode === 'signup';
           var showAuth = gateMode === 'signin' || gateMode === 'signup';
           gate.querySelectorAll('.ark-gate-profile').forEach(function (el) { el.hidden = !showProfile; });
+          gate.querySelectorAll('.ark-gate-profile-email').forEach(function (el) { el.hidden = false; });
           gate.querySelectorAll('.ark-gate-auth').forEach(function (el) { el.hidden = !showAuth; });
+          gate.querySelectorAll('.ark-gate-guest-only').forEach(function (el) { el.hidden = gateMode !== 'guest'; });
           gate.querySelectorAll('.ark-gate-signup-only').forEach(function (el) { el.hidden = gateMode !== 'signup'; });
           if (gateGo) {
             gateGo.textContent = gateMode === 'signin' ? 'Sign in & chat' : (gateMode === 'signup' ? 'Create account & chat' : 'Start chat');
@@ -760,6 +764,7 @@ const AV = '/images/logo-icon.webp';
           }
           if (leadNameEl) leadNameEl.required = showProfile;
           if (leadPhoneEl) leadPhoneEl.required = showProfile;
+          if (leadEmailEl) leadEmailEl.required = true;
         }
         function setGateErr(msg) {
           if (!gateErr) return;
