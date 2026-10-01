@@ -801,10 +801,11 @@ const AV = '/images/logo-icon.webp';
             phone: lead.phone,
             page: location.href,
             sessionId: sessionId,
-            messages: (action === 'transcript' || action === 'end') ? transcript : []
+            messages: (action === 'transcript' || action === 'end' || action === 'sync') ? transcript : []
           };
           var body = JSON.stringify(payload);
-          if ((action === 'transcript' || action === 'end') && navigator.sendBeacon) {
+          /* Prefer fetch for start/sync so we get stored:true confirmation. Beacon only for leave. */
+          if ((action === 'transcript' || action === 'end') && typeof document !== 'undefined' && document.visibilityState === 'hidden' && navigator.sendBeacon) {
             try {
               var blob = new Blob([body], { type: 'application/json' });
               if (navigator.sendBeacon('/api/chat-lead', blob)) {
@@ -819,27 +820,33 @@ const AV = '/images/logo-icon.webp';
             body: body,
             keepalive: true
           }).then(function (r) { return r.json(); }).then(function (d) {
-            if ((action === 'start' || action === 'return') && d && d.ok) startNotified = true;
-            if ((action === 'transcript' || action === 'end') && d && d.ok) transcriptSent = true;
+            if ((action === 'transcript' || action === 'end') && d && (d.ok || d.stored)) transcriptSent = true;
             return d || { ok: false };
           }).catch(function () { return { ok: false }; });
         }
         function notifyStart(forceReturn) {
           if (!lead) return Promise.resolve({ ok: false });
-          try {
-            if (!forceReturn && sessionStorage.getItem('arkChatStartSent') === sessionId) {
+          return postLead(forceReturn ? 'return' : 'start').then(function (d) {
+            if (d && (d.stored || d.ok)) {
               startNotified = true;
-              return Promise.resolve({ ok: true, skipped: true });
+              try { sessionStorage.setItem('arkChatStartSent', sessionId); } catch (e) {}
             }
-          } catch (e) {}
-          if (startNotified && !forceReturn) return Promise.resolve({ ok: true, skipped: true });
-          startNotified = true;
-          try { sessionStorage.setItem('arkChatStartSent', sessionId); } catch (e) {}
-          return postLead(forceReturn ? 'return' : 'start');
+            return d || { ok: false };
+          });
         }
         function flushTranscript(asEnd) {
-          if (!lead || transcriptSent || !transcript.length) return Promise.resolve({ ok: true, skipped: true });
+          if (!lead || !transcript.length) return Promise.resolve({ ok: true, skipped: true });
+          if (transcriptSent && !asEnd) return Promise.resolve({ ok: true, skipped: true });
           return postLead(asEnd ? 'end' : 'transcript');
+        }
+        function syncTranscript() {
+          if (!lead || !transcript.length) return;
+          postLead('sync');
+        }
+        var syncTimer = null;
+        function queueSync() {
+          if (syncTimer) clearTimeout(syncTimer);
+          syncTimer = setTimeout(function () { syncTranscript(); }, 600);
         }
         function resetConversation() {
           started = false;
@@ -860,6 +867,7 @@ const AV = '/images/logo-icon.webp';
           r.innerHTML = '<div class="ark-me-wrap">' + who + '<div class="ark-bub">' + esc(t) + '</div></div>';
           msgs.appendChild(r);
           pushLog('user', t);
+          queueSync();
           scroll();
         }
         function untype() {
@@ -1009,6 +1017,7 @@ const AV = '/images/logo-icon.webp';
           msgs.appendChild(r);
           pushLog('bot', html);
           setChips(chips || MENU, title || 'Quick questions');
+          queueSync();
           scroll();
         }
         function bot(html, chips, delay, title) {
@@ -1203,9 +1212,12 @@ const AV = '/images/logo-icon.webp';
               }
               saveAccount(d.visitor);
               saveLead({ name: d.visitor.name, email: d.visitor.email, phone: d.visitor.phone, token: d.visitor.token });
-              startNotified = true;
-              try { sessionStorage.setItem('arkChatStartSent', sessionId); } catch (err) {}
-              beginChat({ returning: true, skipNotify: true });
+              startNotified = false;
+              notifyStart(true).then(function () {
+                beginChat({ returning: true, skipNotify: true });
+              }).catch(function () {
+                beginChat({ returning: true, skipNotify: true });
+              });
             }).catch(function () {
               if (gateGo) { gateGo.disabled = false; gateGo.textContent = 'Sign in & chat'; }
               setGateErr('Network error — try again.');
@@ -1232,9 +1244,12 @@ const AV = '/images/logo-icon.webp';
               }
               saveAccount(d.visitor);
               saveLead({ name: d.visitor.name, email: d.visitor.email, phone: d.visitor.phone, token: d.visitor.token });
-              startNotified = true;
-              try { sessionStorage.setItem('arkChatStartSent', sessionId); } catch (err) {}
-              beginChat({ returning: false, skipNotify: true });
+              startNotified = false;
+              notifyStart(false).then(function () {
+                beginChat({ returning: false, skipNotify: true });
+              }).catch(function () {
+                beginChat({ returning: false, skipNotify: true });
+              });
             }).catch(function () {
               if (gateGo) { gateGo.disabled = false; gateGo.textContent = 'Create account & chat'; }
               setGateErr('Network error — try again.');
@@ -1253,8 +1268,10 @@ const AV = '/images/logo-icon.webp';
           try { sessionStorage.removeItem('arkChatStartSent'); } catch (err) {}
           notifyStart(false).then(function (d) {
             if (gateGo) { gateGo.disabled = false; gateGo.textContent = 'Start chat'; }
-            if (d && d.ok === false && d.error && d.error !== 'mail-not-configured') {
-              setGateErr('Could not save lead — check connection and try again.');
+            if (d && d.error === 'crm-not-configured') {
+              setGateErr('Lead storage is not configured yet — chat will still work.');
+            } else if (d && d.stored === false && d.error) {
+              setGateErr('Lead could not be saved (' + String(d.error).slice(0, 80) + '). — chat will still open.');
             }
             beginChat({ returning: false, skipNotify: true });
           }).catch(function () {

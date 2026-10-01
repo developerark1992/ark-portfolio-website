@@ -55,30 +55,38 @@ function transcriptHtml(lines, visitorName) {
 
 async function addEvent(db, leadId, eventType, title, detail) {
   if (!db || !leadId) return;
-  try {
-    await db.from('lead_events').insert({
-      lead_id: leadId,
-      event_type: eventType,
-      title,
-      detail: detail || '',
-    });
-  } catch {
-    /* table may not exist until crm-visitors.sql is run */
-  }
+  const { error } = await db.from('lead_events').insert({
+    lead_id: leadId,
+    event_type: eventType,
+    title,
+    detail: detail || '',
+  });
+  return error ? error.message : null;
 }
 
 async function upsertLead(db, d) {
-  if (!db) return null;
-  const email = d.email.toLowerCase();
-  let leadId = null;
+  if (!db) return { id: null, isNew: false, error: 'crm-not-configured' };
 
+  let leadId = null;
   if (d.sessionId) {
-    const { data: bySession } = await db.from('leads').select('id').eq('session_id', d.sessionId).maybeSingle();
-    if (bySession?.id) leadId = bySession.id;
+    const { data: bySession, error: sErr } = await db
+      .from('leads')
+      .select('id')
+      .eq('session_id', d.sessionId)
+      .limit(1);
+    if (sErr) return { id: null, isNew: false, error: sErr.message };
+    if (bySession && bySession[0]) leadId = bySession[0].id;
   }
+
   if (!leadId) {
-    const { data: byEmail } = await db.from('leads').select('id').ilike('email', email).order('created_at', { ascending: false }).limit(1).maybeSingle();
-    if (byEmail?.id) leadId = byEmail.id;
+    const { data: byEmail, error: eErr } = await db
+      .from('leads')
+      .select('id')
+      .ilike('email', d.email)
+      .order('created_at', { ascending: false })
+      .limit(1);
+    if (eErr) return { id: null, isNew: false, error: eErr.message };
+    if (byEmail && byEmail[0]) leadId = byEmail[0].id;
   }
 
   const row = {
@@ -92,16 +100,18 @@ async function upsertLead(db, d) {
   };
 
   if (leadId) {
-    await db.from('leads').update(row).eq('id', leadId);
-    return { id: leadId, isNew: false };
+    const { error } = await db.from('leads').update(row).eq('id', leadId);
+    if (error) return { id: null, isNew: false, error: error.message };
+    return { id: leadId, isNew: false, error: null };
   }
+
   const { data, error } = await db.from('leads').insert({ ...row, status: 'new' }).select('id').single();
-  if (error) return null;
-  return { id: data?.id || null, isNew: true };
+  if (error) return { id: null, isNew: false, error: error.message };
+  return { id: data?.id || null, isNew: true, error: null };
 }
 
 async function upsertSession(db, d, leadId, lines) {
-  if (!db || !d.sessionId) return;
+  if (!db || !d.sessionId) return null;
   const payload = {
     session_id: d.sessionId,
     lead_id: leadId,
@@ -109,30 +119,41 @@ async function upsertSession(db, d, leadId, lines) {
     visitor_name: d.name,
     visitor_email: d.email,
     visitor_phone: d.phone,
-    message_count: lines.length,
+    message_count: Array.isArray(lines) ? lines.length : 0,
     updated_at: new Date().toISOString(),
   };
-  const { data: existing } = await db.from('chat_sessions').select('id').eq('session_id', d.sessionId).maybeSingle();
-  if (existing?.id) {
-    await db.from('chat_sessions').update(payload).eq('id', existing.id);
+
+  const { data: existing, error: findErr } = await db
+    .from('chat_sessions')
+    .select('id')
+    .eq('session_id', d.sessionId)
+    .limit(1);
+  if (findErr) return findErr.message;
+
+  if (existing && existing[0]) {
+    const { error } = await db.from('chat_sessions').update(payload).eq('id', existing[0].id);
+    if (error) return error.message;
   } else {
-    await db.from('chat_sessions').insert(payload);
+    const { error } = await db.from('chat_sessions').insert(payload);
+    if (error) return error.message;
   }
 
-  if (lines.length) {
+  if (lines && lines.length) {
     await db.from('chat_messages').delete().eq('session_id', d.sessionId);
-    await db.from('chat_messages').insert(
+    const { error: msgErr } = await db.from('chat_messages').insert(
       lines.map((m) => ({
         session_id: d.sessionId,
         role: m.role === 'user' ? 'user' : 'bot',
         body: m.text,
       }))
     );
+    if (msgErr) return msgErr.message;
     const lastUser = [...lines].reverse().find((m) => m.role === 'user');
     if (leadId && lastUser) {
       await db.from('leads').update({ last_message: lastUser.text.slice(0, 500) }).eq('id', leadId);
     }
   }
+  return null;
 }
 
 export default async function handler(req, res) {
@@ -143,7 +164,13 @@ export default async function handler(req, res) {
 
   try {
     let b = req.body;
-    if (typeof b === 'string') b = JSON.parse(b || '{}');
+    if (typeof b === 'string') {
+      try { b = JSON.parse(b || '{}'); } catch { b = {}; }
+    }
+    /* sendBeacon sometimes arrives as raw / Buffer */
+    if (b && Buffer.isBuffer(b)) {
+      try { b = JSON.parse(b.toString('utf8') || '{}'); } catch { b = {}; }
+    }
     b = b || {};
 
     const d = {
@@ -171,45 +198,65 @@ export default async function handler(req, res) {
     const db = getAdmin();
     let leadId = null;
     let isNewLead = false;
-    try {
+    let storeError = null;
+
+    if (!db) {
+      storeError = 'crm-not-configured';
+    } else {
       const up = await upsertLead(db, d);
-      leadId = up && up.id;
-      isNewLead = !!(up && up.isNew);
-      await upsertSession(db, d, leadId, (d.action === 'transcript' || d.action === 'end') ? lines : []);
-      if (d.action === 'start' || d.action === 'return') {
-        await addEvent(
-          db,
-          leadId,
-          d.action === 'return' ? 'returned' : (isNewLead ? 'new_lead' : 'chat_started'),
-          d.action === 'return'
-            ? `${d.name} signed in / returned`
-            : (isNewLead ? `${d.name} became a lead` : `${d.name} started a chat`),
-          `${d.email} · ${d.phone}`
-        );
+      leadId = up.id;
+      isNewLead = !!up.isNew;
+      if (up.error) storeError = up.error;
+
+      if (leadId) {
+        const saveMessages = d.action === 'transcript' || d.action === 'end' || d.action === 'sync';
+        const sessErr = await upsertSession(db, d, leadId, saveMessages ? lines : []);
+        if (sessErr) storeError = storeError || sessErr;
+
+        if (d.action === 'start' || d.action === 'return') {
+          await addEvent(
+            db,
+            leadId,
+            d.action === 'return' ? 'returned' : (isNewLead ? 'new_lead' : 'chat_started'),
+            d.action === 'return'
+              ? `${d.name} signed in / returned`
+              : (isNewLead ? `${d.name} became a lead` : `${d.name} started a chat`),
+            `${d.email} · ${d.phone}`
+          );
+        }
+        if (d.action === 'transcript' || d.action === 'end') {
+          await addEvent(
+            db,
+            leadId,
+            'transcript',
+            `${d.name} ended a chat session`,
+            `${lines.length} messages saved`
+          );
+        }
       }
-      if (d.action === 'transcript' || d.action === 'end') {
-        await addEvent(
-          db,
-          leadId,
-          'transcript',
-          `${d.name} ended a chat session`,
-          `${lines.length} messages saved`
-        );
-      }
-    } catch {
-      /* CRM optional — email still tries */
     }
 
-    const tx = transporter();
-    if (!tx) {
-      res.status(200).json({ ok: !!leadId, stored: !!leadId, emailed: false, leadId, error: 'mail-not-configured' });
+    /* Mid-chat sync — store only, no email */
+    if (d.action === 'sync') {
+      res.status(200).json({ ok: !!leadId, stored: !!leadId, leadId, error: storeError });
       return;
     }
 
-    const to = process.env.CONTACT_TO || tx.user;
+    const tx = transporter();
+    const to = tx ? (process.env.CONTACT_TO || tx.user) : null;
+
+    async function mailSafe(opts) {
+      if (!tx) return false;
+      try {
+        await tx.mail.sendMail(opts);
+        return true;
+      } catch {
+        return false;
+      }
+    }
 
     if (d.action === 'return') {
-      await tx.mail.sendMail({
+      const emailed = await mailSafe({
         from: `"${NAME} — Chat" <${tx.user}>`,
         to,
         replyTo: `"${d.name}" <${d.email}>`,
@@ -221,16 +268,16 @@ export default async function handler(req, res) {
           <p style="font-size:14px;color:#5b6b7a;line-height:1.6;">${esc(d.email)} · ${esc(d.phone)}<br>${esc(d.page || SITE)}</p>
         </div>`,
       });
-      res.status(200).json({ ok: true, stored: !!leadId, emailed: true, leadId, returning: true });
+      res.status(200).json({ ok: !!leadId, stored: !!leadId, emailed, leadId, returning: true, error: storeError });
       return;
     }
 
     if (d.action === 'transcript' || d.action === 'end') {
       if (!lines.length) {
-        res.status(200).json({ ok: true, skipped: true, stored: !!leadId, leadId });
+        res.status(200).json({ ok: !!leadId, skipped: true, stored: !!leadId, leadId, error: storeError });
         return;
       }
-      await tx.mail.sendMail({
+      const emailed = await mailSafe({
         from: `"${NAME} — Chat" <${tx.user}>`,
         to,
         replyTo: `"${d.name}" <${d.email}>`,
@@ -245,15 +292,15 @@ export default async function handler(req, res) {
             ${esc(d.page || SITE)}
           </p>
           <div style="border-top:1px solid #eef2f6;padding-top:16px;">${transcriptHtml(lines, d.name)}</div>
-          <p style="margin-top:20px;"><a href="mailto:${encodeURIComponent(d.email)}" style="display:inline-block;background:#0EA895;color:#fff;text-decoration:none;padding:12px 18px;border-radius:999px;font-weight:600;">Reply to ${esc(d.name.split(' ')[0])} →</a></p>
         </div>`,
       });
-      res.status(200).json({ ok: true, stored: !!leadId, emailed: true, leadId });
+      res.status(200).json({ ok: !!leadId, stored: !!leadId, emailed, leadId, error: storeError });
       return;
     }
 
-    await tx.mail.sendMail({
-      from: `"${NAME} — Chat" <${tx.user}>`,
+    /* Default: start — lead stored above; email is best-effort */
+    const emailed = await mailSafe({
+      from: `"${NAME} — Chat" <${tx && tx.user}>`,
       to,
       replyTo: `"${d.name}" <${d.email}>`,
       subject: `New chat started — ${d.name}`,
@@ -261,16 +308,17 @@ export default async function handler(req, res) {
       html: `<div style="font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;max-width:560px;margin:0 auto;padding:20px;">
         <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#0EA895;font-weight:700;">New chat lead</div>
         <h1 style="font-size:22px;margin:8px 0 16px;color:#0B1620;">${esc(d.name)} started a chat</h1>
-        <table style="width:100%;border-collapse:collapse;font-size:14px;">
-          <tr><td style="padding:8px 0;color:#5b6b7a;width:90px;">Email</td><td style="padding:8px 0;"><a href="mailto:${esc(d.email)}">${esc(d.email)}</a></td></tr>
-          <tr><td style="padding:8px 0;color:#5b6b7a;">Phone</td><td style="padding:8px 0;"><a href="tel:${esc(d.phone)}">${esc(d.phone)}</a></td></tr>
-          <tr><td style="padding:8px 0;color:#5b6b7a;">Page</td><td style="padding:8px 0;">${esc(d.page || '-')}</td></tr>
-        </table>
-        <p style="color:#5b6b7a;font-size:13px;margin:18px 0 0;">Open your dashboard to reply or view the full transcript.</p>
+        <p style="font-size:14px;color:#5b6b7a;line-height:1.6;">${esc(d.email)} · ${esc(d.phone)}<br>${esc(d.page || SITE)}</p>
       </div>`,
     });
 
-    res.status(200).json({ ok: true, stored: !!leadId, emailed: true });
+    res.status(200).json({
+      ok: !!leadId || (!db && emailed),
+      stored: !!leadId,
+      emailed,
+      leadId,
+      error: storeError,
+    });
   } catch (e) {
     res.status(200).json({ ok: false, error: 'send-failed', detail: String((e && e.message) || e).slice(0, 200) });
   }

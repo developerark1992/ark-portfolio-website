@@ -279,52 +279,68 @@ import BrandLogo from '../components/BrandLogo.astro';
       }
 
       async function loadOverview() {
-        const since = new Date(Date.now() - 7 * 864e5).toISOString();
-        const [
-          { count: leadCount },
-          { count: newLeads },
-          { count: chatCount },
-          { count: viewCount },
-          { data: recentLeads },
-          { data: views },
-          { data: events },
-        ] = await Promise.all([
-          supabase.from('leads').select('*', { count: 'exact', head: true }),
-          supabase.from('leads').select('*', { count: 'exact', head: true }).eq('status', 'new'),
-          supabase.from('chat_sessions').select('*', { count: 'exact', head: true }),
-          supabase.from('page_views').select('*', { count: 'exact', head: true }).gte('created_at', since),
-          supabase.from('leads').select('id,name,email,status,created_at').order('created_at', { ascending: false }).limit(6),
-          supabase.from('page_views').select('path').gte('created_at', since).limit(500),
-          supabase.from('lead_events').select('id,event_type,title,detail,created_at,lead_id').order('created_at', { ascending: false }).limit(12),
-        ]);
+        try {
+          const since = new Date(Date.now() - 7 * 864e5).toISOString();
+          const [
+            { count: leadCount, error: e1 },
+            { count: newLeads },
+            { count: chatCount },
+            { count: viewCount },
+            { data: recentLeads },
+            { data: views },
+            { data: events, error: eEv },
+          ] = await Promise.all([
+            supabase.from('leads').select('*', { count: 'exact', head: true }),
+            supabase.from('leads').select('*', { count: 'exact', head: true }).eq('status', 'new'),
+            supabase.from('chat_sessions').select('*', { count: 'exact', head: true }),
+            supabase.from('page_views').select('*', { count: 'exact', head: true }).gte('created_at', since),
+            supabase.from('leads').select('id,name,email,status,created_at').order('created_at', { ascending: false }).limit(6),
+            supabase.from('page_views').select('path').gte('created_at', since).limit(500),
+            supabase.from('lead_events').select('id,event_type,title,detail,created_at,lead_id').order('created_at', { ascending: false }).limit(12),
+          ]);
 
-        const pages = {};
-        (views || []).forEach((v) => { pages[v.path] = (pages[v.path] || 0) + 1; });
-        const top = Object.entries(pages).sort((a, b) => b[1] - a[1]).slice(0, 6);
+          if (e1) console.warn('[crm] leads', e1.message);
+          if (eEv) console.warn('[crm] events', eEv.message);
 
-        $('crmStats').innerHTML = [
-          ['Leads', leadCount || 0],
-          ['New', newLeads || 0],
-          ['Chats', chatCount || 0],
-          ['Views (7d)', viewCount || 0],
-        ].map(([l, v]) => `<div class="crm-stat"><span>${l}</span><b>${v}</b></div>`).join('');
+          const pages = {};
+          (views || []).forEach((v) => { pages[v.path] = (pages[v.path] || 0) + 1; });
+          const top = Object.entries(pages).sort((a, b) => b[1] - a[1]).slice(0, 6);
 
-        const ev = events || [];
-        $('ovEvents').innerHTML = ev.length
-          ? ev.map((e) => `<button type="button" class="crm-mini-row" data-open-lead="${e.lead_id || ''}">
-              <b>${esc(e.title || e.event_type)}</b>
-              <span class="crm-pill ${e.event_type === 'returned' ? 'contacted' : (e.event_type === 'new_lead' || e.event_type === 'signup' ? 'new' : 'archived')}">${esc(e.event_type)}</span>
-              <span>${esc(e.detail || '')} · ${ago(e.created_at)}</span>
-            </button>`).join('')
-          : '<p class="crm-empty">No activity yet — new chats and return visits show here.</p>';
+          $('crmStats').innerHTML = [
+            ['Leads', leadCount || 0],
+            ['New', newLeads || 0],
+            ['Chats', chatCount || 0],
+            ['Views (7d)', viewCount || 0],
+          ].map(([l, v]) => `<div class="crm-stat"><span>${l}</span><b>${v}</b></div>`).join('');
 
-        $('ovLeads').innerHTML = (recentLeads || []).length
-          ? recentLeads.map((l) => `<button type="button" class="crm-mini-row" data-open-lead="${l.id}"><b>${esc(l.name)}</b><span>${esc(l.email)} · ${ago(l.created_at)}</span></button>`).join('')
-          : '<p class="crm-empty">No leads yet — they appear when someone starts chat.</p>';
+          const ev = events || [];
+          const evEl = $('ovEvents');
+          if (evEl) {
+            evEl.innerHTML = ev.length
+              ? ev.map((e) => `<button type="button" class="crm-mini-row" data-open-lead="${e.lead_id || ''}">
+                  <b>${esc(e.title || e.event_type)}</b>
+                  <span class="crm-pill ${e.event_type === 'returned' ? 'contacted' : (e.event_type === 'new_lead' || e.event_type === 'signup' ? 'new' : 'archived')}">${esc(e.event_type)}</span>
+                  <span>${esc(e.detail || '')} · ${ago(e.created_at)}</span>
+                </button>`).join('')
+              : '<p class="crm-empty">No activity yet — new chats and return visits show here.</p>';
+          }
 
-        $('ovPages').innerHTML = top.length
-          ? top.map(([p, n]) => `<div class="crm-mini-row static"><b>${esc(p)}</b><span>${n} views</span></div>`).join('')
-          : '<p class="crm-empty">No page views tracked yet.</p>';
+          const leadEl = $('ovLeads');
+          if (leadEl) {
+            leadEl.innerHTML = (recentLeads || []).length
+              ? recentLeads.map((l) => `<button type="button" class="crm-mini-row" data-open-lead="${l.id}"><b>${esc(l.name)}</b><span>${esc(l.email)} · ${ago(l.created_at)}</span></button>`).join('')
+              : '<p class="crm-empty">No leads yet — they appear when someone starts chat.</p>';
+          }
+
+          const pageEl = $('ovPages');
+          if (pageEl) {
+            pageEl.innerHTML = top.length
+              ? top.map(([p, n]) => `<div class="crm-mini-row static"><b>${esc(p)}</b><span>${n} views</span></div>`).join('')
+              : '<p class="crm-empty">No page views tracked yet.</p>';
+          }
+        } catch (err) {
+          console.warn('[crm] overview', err);
+        }
       }
 
       function filteredLeads() {
@@ -690,6 +706,13 @@ import BrandLogo from '../components/BrandLogo.astro';
           try { tab = localStorage.getItem('arkCrmTab') || 'overview'; } catch {}
           setTab(tab);
           refreshAll();
+          if (!window.__arkCrmPoll) {
+            window.__arkCrmPoll = setInterval(function () {
+              if (document.visibilityState === 'visible') {
+                Promise.all([loadOverview(), loadLeads(), loadChats()]);
+              }
+            }, 8000);
+          }
         } else {
           $('crmLogin').hidden = false;
           $('crmApp').hidden = true;
