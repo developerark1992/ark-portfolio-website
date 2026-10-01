@@ -1,12 +1,16 @@
 ---
 export const prerender = false;
 import Base from '../layouts/Base.astro';
+import BrandLogo from '../components/BrandLogo.astro';
 ---
 <Base active="" title="Command center — ARK" description="Manage leads, chat transcripts, visitors, outreach and blog.">
   <section class="crm" id="crmRoot" data-page="dashboard">
     <div id="crmLogin" class="crm-login" hidden>
       <form class="crm-login-card" id="loginForm">
-        <p class="crm-kicker">ARK command center</p>
+        <div class="crm-login-brand">
+          <BrandLogo prefer="light" />
+        </div>
+        <p class="crm-kicker">Command center</p>
         <h1>Sign in</h1>
         <p class="crm-login-lead">Leads, chat transcripts, visitors and outreach — one place.</p>
         <label class="crm-field"><span>Email</span><input id="li-email" type="email" required autocomplete="username" placeholder="you@email.com" /></label>
@@ -21,12 +25,13 @@ import Base from '../layouts/Base.astro';
     </div>
 
     <div id="crmApp" class="crm-shell" hidden>
-      <aside class="crm-nav">
+      <div class="crm-scrim" id="crmScrim" hidden></div>
+      <aside class="crm-nav" id="crmNav">
         <div class="crm-brand">
-          <strong>ARK</strong>
-          <span>Command center</span>
+          <BrandLogo prefer="dark" class="crm-brand-logo" />
+          <span class="crm-brand-tag">Command center</span>
         </div>
-        <nav class="crm-tabs" id="crmTabs">
+        <nav class="crm-tabs" id="crmTabs" aria-label="Dashboard sections">
           <button type="button" data-tab="overview" class="is-on">Overview</button>
           <button type="button" data-tab="leads">Leads</button>
           <button type="button" data-tab="chats">Chats</button>
@@ -34,18 +39,27 @@ import Base from '../layouts/Base.astro';
           <button type="button" data-tab="outreach">Outreach</button>
           <button type="button" data-tab="blog">Blog</button>
         </nav>
-        <button type="button" class="crm-logout" id="logout">Log out</button>
+        <div class="crm-nav-foot">
+          <a class="crm-nav-link" href="/" target="_blank" rel="noopener">View site ↗</a>
+          <button type="button" class="crm-logout" id="logout">Log out</button>
+        </div>
       </aside>
 
-      <main class="crm-main">
+      <div class="crm-workspace">
         <header class="crm-top">
-          <div>
+          <button type="button" class="crm-menu" id="crmMenu" aria-label="Open menu" aria-controls="crmNav" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
+          <div class="crm-top-copy">
             <h1 id="crmTitle">Overview</h1>
             <p id="crmSub">Live snapshot of traffic and conversations</p>
           </div>
-          <button type="button" class="crm-btn ghost" id="crmRefresh">Refresh</button>
+          <div class="crm-top-actions">
+            <button type="button" class="crm-btn ghost" id="crmRefresh">Refresh</button>
+          </div>
         </header>
 
+        <div class="crm-content">
         <!-- Overview -->
         <section class="crm-panel is-on" data-panel="overview">
           <div class="crm-stats" id="crmStats"></div>
@@ -111,7 +125,7 @@ import Base from '../layouts/Base.astro';
             </form>
             <form class="crm-card crm-mail" id="broadcastForm">
               <h2>Email marketing</h2>
-              <p class="crm-hint">Send to all leads, or leave blank recipients to use everyone (max 100).</p>
+              <p class="crm-hint">Send to all leads (max 100 per send).</p>
               <label class="crm-field"><span>Subject</span><input id="bcSubject" type="text" required placeholder="A quick note from ARK" /></label>
               <label class="crm-field"><span>Message</span><textarea id="bcBody" required rows="8" placeholder="Share an update, offer, or case study…"></textarea></label>
               <button class="crm-btn primary" type="submit">Send broadcast</button>
@@ -129,7 +143,8 @@ import Base from '../layouts/Base.astro';
           </div>
           <div id="postList" class="crm-table-wrap"></div>
         </section>
-      </main>
+        </div>
+      </div>
     </div>
 
     <!-- Lead detail drawer -->
@@ -239,6 +254,16 @@ import Base from '../layouts/Base.astro';
         return token ? { Authorization: 'Bearer ' + token, 'content-type': 'application/json' } : { 'content-type': 'application/json' };
       }
 
+      function setNavOpen(open) {
+        const nav = $('crmNav');
+        const scrim = $('crmScrim');
+        const menu = $('crmMenu');
+        document.body.classList.toggle('crm-nav-open', !!open);
+        if (nav) nav.classList.toggle('is-open', !!open);
+        if (scrim) scrim.hidden = !open;
+        if (menu) menu.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+
       function setTab(tab) {
         document.querySelectorAll('.crm-tabs button').forEach((b) => b.classList.toggle('is-on', b.dataset.tab === tab));
         document.querySelectorAll('.crm-panel').forEach((p) => p.classList.toggle('is-on', p.dataset.panel === tab));
@@ -246,6 +271,7 @@ import Base from '../layouts/Base.astro';
         $('crmTitle').textContent = t[0];
         $('crmSub').textContent = t[1];
         try { localStorage.setItem('arkCrmTab', tab); } catch {}
+        setNavOpen(false);
       }
 
       async function loadOverview() {
@@ -453,6 +479,8 @@ import Base from '../layouts/Base.astro';
         const b = e.target.closest('button[data-tab]');
         if (b) setTab(b.dataset.tab);
       });
+      if ($('crmMenu')) $('crmMenu').onclick = () => setNavOpen(!document.body.classList.contains('crm-nav-open'));
+      if ($('crmScrim')) $('crmScrim').onclick = () => setNavOpen(false);
       $('crmRefresh').onclick = () => refreshAll();
       $('logout').onclick = async () => { await supabase.auth.signOut(); location.reload(); };
       $('leadSearch').oninput = renderLeads;
@@ -616,7 +644,8 @@ import Base from '../layouts/Base.astro';
         $('crmLogin').hidden = false;
         $('crmApp').hidden = true;
         $('loginForm').innerHTML = `
-          <p class="crm-kicker">ARK command center</p>
+          <div class="crm-login-brand"><span class="hlogo hlogo-light"><img class="hlogo-icon" src="/images/logo-icon.webp" alt="" width="44" height="44" /><span class="hlogo-sig-wrap" aria-hidden="true"><img class="hlogo-sig hlogo-sig-on-light" src="/images/signature-modern-dark.webp" alt="" width="280" height="48" /></span><span class="visually-hidden">Abdul Rehman Khan</span></span></div>
+          <p class="crm-kicker">Command center</p>
           <h1>Set new password</h1>
           <p class="crm-login-lead">Choose a new password for your dashboard.</p>
           <label class="crm-field"><span>New password</span><input id="np-pass" type="password" required minlength="8" autocomplete="new-password" placeholder="At least 8 characters" /></label>
