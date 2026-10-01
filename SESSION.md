@@ -62,18 +62,22 @@ Tabs: **Overview · Leads · Chats · Visitors · Outreach · Blog**
 
 | Variable | Purpose |
 |----------|---------|
-| `PUBLIC_SUPABASE_URL` | Supabase project URL |
+| `PUBLIC_SUPABASE_URL` | `https://tigewdixaysaojyijhjv.supabase.co` |
 | `PUBLIC_SUPABASE_ANON_KEY` | Legacy **anon** key (browser) |
-| `SUPABASE_SERVICE_ROLE_KEY` | Legacy **service_role** key (server writes) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Legacy **service_role** key (server writes) — must be JWT with `"role":"service_role"` |
 | `GMAIL_USER` | SMTP from-address |
 | `GMAIL_APP_PASSWORD` | Gmail app password |
 | `CONTACT_TO` | Optional inbox override |
 | `GROQ_API_KEY` | Free typed AI (preferred) |
 | `GEMINI_API_KEY` | AI fallback |
 
+**Project:** `tigewdixaysaojyijhjv` · MCP configured in `.cursor/mcp.json` (read-only).
+
 **Supabase keys:** Settings → API Keys → tab **Legacy anon, service_role API keys** (not the new `sb_publishable_` / `sb_secret_` keys).
 
-After adding `SUPABASE_SERVICE_ROLE_KEY`, redeploy.
+Live `/api/chat-lead` currently fails store with **`Invalid API key`** until `SUPABASE_SERVICE_ROLE_KEY` is the correct Legacy **service_role** secret, then redeploy.
+
+After fixing, verify: `/api/crm-health` → `"ok":true`.
 
 ---
 
