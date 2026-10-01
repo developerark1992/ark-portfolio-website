@@ -22,6 +22,7 @@ const {
   ogType = 'website',
   publishedTime,
   faqItems = [],
+  chrome = true,
 } = Astro.props;
 const SITE_URL = String(Astro.site || 'https://arkdesigningbureau.com').replace(/\/$/, '');
 const canonical = new URL(Astro.url.pathname, SITE_URL).href;
@@ -328,7 +329,7 @@ const AV = '/images/logo-icon.webp';
   })} />
   <slot name="head" />
 </head>
-<body class:list={[active === 'home' && 'has-fx-hero nav-over-hero']} data-av={AV} data-wa={WA}>
+<body class:list={[active === 'home' && 'has-fx-hero nav-over-hero', !chrome && 'crm-mode']} data-av={AV} data-wa={WA}>
   {active === 'home' && (
   <div id="preloader" class="preloader" aria-busy="true" aria-live="polite">
     <div class="pre-sky" aria-hidden="true">
@@ -438,6 +439,7 @@ const AV = '/images/logo-icon.webp';
   </script>
   )}
 
+  {chrome && (
   <nav class="topnav">
     <div class="nav-in">
       <a href="/" class="brand-link" aria-label="Abdul Rehman Khan — home">
@@ -463,11 +465,13 @@ const AV = '/images/logo-icon.webp';
       </div>
     </div>
   </nav>
+  )}
 
-  <main>
+  <main class:list={[!chrome && 'crm-main-root']}>
     <slot />
   </main>
 
+  {chrome && (
   <footer>
     <div class="wrap foot-top">
       <a href="/" class="foot-brand" aria-label="Abdul Rehman Khan — home">
@@ -488,12 +492,16 @@ const AV = '/images/logo-icon.webp';
       <a href="/contact">Let's talk →</a>
     </div>
   </footer>
+  )}
 
+  {chrome && (
   <a class="wa-float" href={`https://wa.me/${WA}`} target="_blank" rel="noopener" aria-label="Chat with Abdul Rehman Khan on WhatsApp" title="Chat on WhatsApp">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d={siWhatsapp.path} /></svg>
     <span class="visually-hidden">Chat with Abdul Rehman Khan on WhatsApp</span>
   </a>
+  )}
 
+  {chrome && (
   <!-- global project lightbox -->
   <div class="lb" id="lb" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Project preview">
     <button class="lb-x" id="lbClose" aria-label="Close preview">×</button>
@@ -508,7 +516,9 @@ const AV = '/images/logo-icon.webp';
       </aside>
     </div>
   </div>
+  )}
 
+  {chrome && (
   <!-- chatbot -->
   <button class="ark-launch" id="arkLaunch" type="button" aria-haspopup="dialog" aria-controls="arkChat">
     <span class="pg" aria-hidden="true"></span>
@@ -583,6 +593,7 @@ const AV = '/images/logo-icon.webp';
       </button>
     </form>
   </section>
+  )}
 
   <script is:inline>
     (function () {
