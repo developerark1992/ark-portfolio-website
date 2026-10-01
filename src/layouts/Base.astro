@@ -521,6 +521,7 @@ const AV = '/images/logo-icon.webp';
       <div class="who">
         <b>Abdul’s assistant</b>
         <span><i aria-hidden="true"></i> Online · replies in seconds</span>
+        <em class="ark-visitor-mini" id="arkVisitorMini" hidden></em>
       </div>
       <div class="ark-head-actions">
         <button class="ark-wa-btn" id="arkWa" type="button" aria-label="Message on WhatsApp" title="WhatsApp">
@@ -531,8 +532,29 @@ const AV = '/images/logo-icon.webp';
         </button>
       </div>
     </div>
-    <div class="ark-msgs" id="arkMsgs" aria-live="polite"></div>
-    <div class="ark-suggest" id="arkSuggest">
+    <div class="ark-gate" id="arkGate">
+      <p class="ark-gate-kicker">Before we start</p>
+      <h2 class="ark-gate-title">Your details</h2>
+      <p class="ark-gate-lead">Name, phone and email are required so Abdul can follow up on this chat.</p>
+      <form class="ark-gate-form" id="arkGateForm" autocomplete="on">
+        <label class="ark-gate-field">
+          <span>Name *</span>
+          <input id="arkLeadName" name="name" type="text" required maxlength="120" autocomplete="name" placeholder="Your full name" />
+        </label>
+        <label class="ark-gate-field">
+          <span>Phone *</span>
+          <input id="arkLeadPhone" name="phone" type="tel" required maxlength="40" autocomplete="tel" placeholder="+92 300 0000000" />
+        </label>
+        <label class="ark-gate-field">
+          <span>Email *</span>
+          <input id="arkLeadEmail" name="email" type="email" required maxlength="160" autocomplete="email" placeholder="you@company.com" />
+        </label>
+        <p class="ark-gate-err" id="arkGateErr" hidden></p>
+        <button type="submit" class="ark-gate-go" id="arkGateGo">Start chat</button>
+      </form>
+    </div>
+    <div class="ark-msgs" id="arkMsgs" aria-live="polite" hidden></div>
+    <div class="ark-suggest" id="arkSuggest" hidden>
       <button type="button" class="ark-suggest-toggle" id="arkSuggestToggle" aria-expanded="true" aria-controls="arkChips">
         <span id="arkSuggestLabel">Quick questions</span>
         <svg class="ark-suggest-chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -543,6 +565,7 @@ const AV = '/images/logo-icon.webp';
       class="ark-foot"
       id="arkForm"
       autocomplete="off"
+      hidden
       toolname="askArkAssistant"
       tooldescription="Send a short message to the on-site ARK Assistant about Abdul Rehman Khan, services, or hiring."
     >
@@ -601,7 +624,15 @@ const AV = '/images/logo-icon.webp';
         var suggestEl = document.getElementById('arkSuggest');
         var suggestToggle = document.getElementById('arkSuggestToggle');
         var suggestLabel = document.getElementById('arkSuggestLabel');
-        if (!launch || !chat || !msgs || !chipsEl || !form || !input) return;
+        var gate = document.getElementById('arkGate');
+        var gateForm = document.getElementById('arkGateForm');
+        var gateErr = document.getElementById('arkGateErr');
+        var gateGo = document.getElementById('arkGateGo');
+        var leadNameEl = document.getElementById('arkLeadName');
+        var leadPhoneEl = document.getElementById('arkLeadPhone');
+        var leadEmailEl = document.getElementById('arkLeadEmail');
+        var visitorMini = document.getElementById('arkVisitorMini');
+        if (!launch || !chat || !msgs || !chipsEl || !form || !input || !gate || !gateForm) return;
         if (launch.dataset.inlineBoot === '1') return;
         launch.dataset.inlineBoot = '1';
 
@@ -610,6 +641,11 @@ const AV = '/images/logo-icon.webp';
         var started = false;
         var busy = false;
         var aiHist = [];
+        var transcript = [];
+        var lead = null;
+        var sessionId = '';
+        var startNotified = false;
+        var transcriptSent = false;
         var MENU = [
           { label: 'About Abdul', val: 'about' },
           { label: 'Recent work', val: 'work' },
@@ -624,12 +660,120 @@ const AV = '/images/logo-icon.webp';
             return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
           });
         }
+        function firstName(n) {
+          return String(n || '').trim().split(/\s+/)[0] || 'there';
+        }
+        function emailOk(v) {
+          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v || '').trim());
+        }
+        function phoneOk(v) {
+          return String(v || '').replace(/\D/g, '').length >= 7;
+        }
+        function loadLead() {
+          try {
+            var raw = sessionStorage.getItem('arkChatLead');
+            if (!raw) return null;
+            var o = JSON.parse(raw);
+            if (o && o.name && emailOk(o.email) && phoneOk(o.phone)) return o;
+          } catch (e) {}
+          return null;
+        }
+        function saveLead(o) {
+          lead = o;
+          try { sessionStorage.setItem('arkChatLead', JSON.stringify(o)); } catch (e) {}
+        }
+        function ensureSession() {
+          try {
+            sessionId = sessionStorage.getItem('arkChatSid') || '';
+            if (!sessionId) {
+              sessionId = 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+              sessionStorage.setItem('arkChatSid', sessionId);
+            }
+          } catch (e) {
+            sessionId = 'c' + Date.now().toString(36);
+          }
+        }
+        function setGateErr(msg) {
+          if (!gateErr) return;
+          if (!msg) { gateErr.hidden = true; gateErr.textContent = ''; return; }
+          gateErr.hidden = false;
+          gateErr.textContent = msg;
+        }
+        function showVisitor(name) {
+          if (!visitorMini) return;
+          if (!name) { visitorMini.hidden = true; visitorMini.textContent = ''; return; }
+          visitorMini.hidden = false;
+          visitorMini.textContent = 'Chatting as ' + name;
+        }
+        function setChatReady(ready) {
+          if (gate) gate.hidden = !!ready;
+          if (msgs) msgs.hidden = !ready;
+          if (suggestEl) suggestEl.hidden = !ready;
+          if (form) form.hidden = !ready;
+          chat.classList.toggle('is-gated', !ready);
+        }
+        function pushLog(role, text) {
+          var t = String(text || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+          if (!t) return;
+          transcript.push({ role: role, text: t.slice(0, 2000) });
+          transcriptSent = false;
+        }
+        function postLead(action) {
+          if (!lead) return;
+          var payload = {
+            action: action || 'start',
+            name: lead.name,
+            email: lead.email,
+            phone: lead.phone,
+            page: location.href,
+            sessionId: sessionId,
+            messages: action === 'transcript' ? transcript : []
+          };
+          var body = JSON.stringify(payload);
+          try {
+            if (action === 'transcript' && navigator.sendBeacon) {
+              var blob = new Blob([body], { type: 'application/json' });
+              if (navigator.sendBeacon('/api/chat-lead', blob)) {
+                transcriptSent = true;
+                return;
+              }
+            }
+          } catch (e) {}
+          fetch('/api/chat-lead', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: body,
+            keepalive: true
+          }).then(function (r) { return r.json(); }).then(function (d) {
+            if (action === 'start' && d && d.ok) startNotified = true;
+            if (action === 'transcript' && d && d.ok) transcriptSent = true;
+          }).catch(function () {});
+        }
+        function notifyStart() {
+          if (!lead) return;
+          try {
+            if (sessionStorage.getItem('arkChatStartSent') === sessionId) {
+              startNotified = true;
+              return;
+            }
+          } catch (e) {}
+          if (startNotified) return;
+          startNotified = true;
+          try { sessionStorage.setItem('arkChatStartSent', sessionId); } catch (e) {}
+          postLead('start');
+        }
+        function flushTranscript() {
+          if (!lead || transcriptSent || !transcript.length) return;
+          postLead('transcript');
+        }
         function scroll() { msgs.scrollTop = msgs.scrollHeight; }
         function me(t) {
           var r = document.createElement('div');
           r.className = 'ark-row me';
-          r.innerHTML = '<div class="ark-bub">' + esc(t) + '</div>';
+          var who = lead && lead.name ? '<span class="ark-msg-name">' + esc(firstName(lead.name)) + '</span>' : '';
+          r.innerHTML = '<div class="ark-me-wrap">' + who + '<div class="ark-bub">' + esc(t) + '</div></div>';
           msgs.appendChild(r);
+          pushLog('user', t);
           scroll();
         }
         function untype() {
@@ -663,16 +807,14 @@ const AV = '/images/logo-icon.webp';
             b.className = 'ark-chip' + (c.wa ? ' wa' : '') + (c.send ? ' send' : '');
             b.textContent = c.label;
             b.addEventListener('click', function () {
-              if (busy) return;
+              if (busy || !lead) return;
               if (c.onClick) c.onClick();
               else handleUser(c.val || c.label, c.label);
             });
             chipsEl.appendChild(b);
           });
-          /* New suggestions should be visible */
           if (suggestEl && list && list.length) applySuggestMin(false);
         }
-        /* Contextual follow-ups under the conversation based on what they asked */
         function suggestFor(topic, text) {
           var t = String(text || topic || '').toLowerCase();
           if (topic === 'about' || /about|experience|who is|years|background|karachi/.test(t)) {
@@ -742,7 +884,6 @@ const AV = '/images/logo-icon.webp';
               ]
             };
           }
-          /* Free-typed AI answers — tags from keywords in the question */
           if (/wordpress|shopify|webflow|wix|framer/.test(t)) {
             return {
               title: 'Suggested next',
@@ -780,6 +921,7 @@ const AV = '/images/logo-icon.webp';
           r.className = 'ark-row bot';
           r.innerHTML = '<img src="' + AV + '" alt=""><div class="ark-bub">' + html + '</div>';
           msgs.appendChild(r);
+          pushLog('bot', html);
           setChips(chips || MENU, title || 'Quick questions');
           scroll();
         }
@@ -842,6 +984,7 @@ const AV = '/images/logo-icon.webp';
             });
         }
         function handleUser(val, label) {
+          if (!lead) return;
           var shown = label || val;
           me(shown);
           var key = String(val || '').toLowerCase();
@@ -857,22 +1000,59 @@ const AV = '/images/logo-icon.webp';
           askAI(shown);
         }
 
-        function open() {
-          chat.hidden = false;
-          launch.hidden = true;
+        function beginChat() {
+          setChatReady(true);
+          showVisitor(lead.name);
+          notifyStart();
           if (!started) {
             started = true;
-            bot('Hi — I’m Abdul’s assistant. Ask about his experience, get a quick price estimate, or leave a project enquiry. What would you like to know?', MENU, 220, 'Quick questions');
+            var hi = firstName(lead.name);
+            bot('Hi <b>' + esc(hi) + '</b> — I’m Abdul’s assistant. Ask about his experience, get a quick price estimate, or leave a project enquiry. What would you like to know?', MENU, 220, 'Quick questions');
           }
           setTimeout(function () { try { input.focus(); } catch (e) {} }, 250);
         }
+
+        function open() {
+          chat.hidden = false;
+          launch.hidden = true;
+          ensureSession();
+          lead = loadLead();
+          if (lead) {
+            if (leadNameEl) leadNameEl.value = lead.name;
+            if (leadPhoneEl) leadPhoneEl.value = lead.phone;
+            if (leadEmailEl) leadEmailEl.value = lead.email;
+            beginChat();
+          } else {
+            setChatReady(false);
+            showVisitor('');
+            setTimeout(function () { try { if (leadNameEl) leadNameEl.focus(); } catch (e) {} }, 200);
+          }
+        }
         function close() {
+          flushTranscript();
           chat.hidden = true;
           launch.hidden = false;
         }
 
         window.arkOpenChat = open;
         window.arkCloseChat = close;
+
+        gateForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var name = (leadNameEl && leadNameEl.value || '').trim();
+          var phone = (leadPhoneEl && leadPhoneEl.value || '').trim();
+          var email = (leadEmailEl && leadEmailEl.value || '').trim();
+          if (!name) { setGateErr('Please enter your name.'); if (leadNameEl) leadNameEl.focus(); return; }
+          if (!phoneOk(phone)) { setGateErr('Please enter a valid phone number.'); if (leadPhoneEl) leadPhoneEl.focus(); return; }
+          if (!emailOk(email)) { setGateErr('Please enter a valid email address.'); if (leadEmailEl) leadEmailEl.focus(); return; }
+          setGateErr('');
+          if (gateGo) { gateGo.disabled = true; gateGo.textContent = 'Starting…'; }
+          saveLead({ name: name, phone: phone, email: email });
+          startNotified = false;
+          try { sessionStorage.removeItem('arkChatStartSent'); } catch (e) {}
+          if (gateGo) { gateGo.disabled = false; gateGo.textContent = 'Start chat'; }
+          beginChat();
+        });
 
         if (suggestToggle) {
           try {
@@ -892,12 +1072,13 @@ const AV = '/images/logo-icon.webp';
         if (waBtn) {
           waBtn.addEventListener('click', function () {
             if (chat.hidden) open();
+            if (!lead) return;
             handleUser('whatsapp', 'WhatsApp Abdul');
           });
         }
         form.addEventListener('submit', function (e) {
           e.preventDefault();
-          if (busy) return;
+          if (busy || !lead) return;
           var t = input.value.trim();
           if (!t) return;
           input.value = '';
@@ -907,6 +1088,13 @@ const AV = '/images/logo-icon.webp';
           window.__arkEsc = true;
           document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape' && chat && !chat.hidden) close();
+          });
+        }
+        if (!window.__arkChatFlush) {
+          window.__arkChatFlush = true;
+          window.addEventListener('pagehide', flushTranscript);
+          document.addEventListener('visibilitychange', function () {
+            if (document.visibilityState === 'hidden') flushTranscript();
           });
         }
       }
@@ -920,7 +1108,7 @@ const AV = '/images/logo-icon.webp';
 
       /* Always load site.js for calculator / lightbox — chat already works inline. */
       var s = document.createElement('script');
-      s.src = '/js/site.js?v=20261001g';
+      s.src = '/js/site.js?v=20261001h';
       s.defer = true;
       document.body.appendChild(s);
     })();
