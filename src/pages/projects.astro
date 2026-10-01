@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import projectsRaw from '../data/projects.json';
 
 // newest first — new MEGA syncs (real timestamps) float above the seeded set
-const projects = [...projectsRaw].sort((a, b) => new Date(b.added || 0) - new Date(a.added || 0));
+const projects = [...projectsRaw].filter((p) => !p.archived).sort((a, b) => new Date(b.added || 0) - new Date(a.added || 0));
 
 const counts = {};
 projects.forEach((p) => { counts[p.category] = (counts[p.category] || 0) + 1; });

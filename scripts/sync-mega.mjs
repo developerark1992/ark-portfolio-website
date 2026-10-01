@@ -68,6 +68,11 @@ async function main(){
   const projects = existsSync(DATA) ? JSON.parse(readFileSync(DATA,'utf8')) : [];
   const manifest = existsSync(MANIFEST) ? JSON.parse(readFileSync(MANIFEST,'utf8')) : { seen: [] };
   const seen = new Set(manifest.seen);
+  for (const p of projects) {
+    if (!p.archived) continue;
+    if (p.slug) seen.add(p.slug);
+    seen.add(slugify(p.title || ''));
+  }
 
   const files = readdirSync(CACHE).filter(f => /\.(png|jpe?g|webp)$/i.test(f)).sort();
   let added = 0;

@@ -6,7 +6,8 @@
   "category": "Healthcare & Dental",
   "live": "https://alorasupports.com",
   "img": "/images/projects/alorasupports-com-wordpress.webp",
-  "added": "2026-07-20T17:28:36.615Z"
+  "added": "2026-07-20T17:28:36.615Z",
+  "archived": true
  },
  {
   "slug": "accessibility-partners",
@@ -68,7 +69,7 @@
   "platform": "WordPress",
   "category": "Healthcare & Dental",
   "live": "https://drumerpainrelief.pk",
-  "img": "/images/projects/dr-umer-pain-relief-clinic.webp",
+  "img": "/images/projects/dr-umer-pain-relief-clinic.webp?v=2",
   "added": "2026-05-31T23:54:00.000Z"
  },
  {
@@ -364,7 +365,7 @@
   "title": "BizHub",
   "platform": "WordPress",
   "category": "Agency & Business",
-  "live": "https://bizhub.ae",
+  "live": "https://bizhub.ae/",
   "img": "/images/projects/bizhub.webp",
   "added": "2026-05-31T23:21:00.000Z"
  },

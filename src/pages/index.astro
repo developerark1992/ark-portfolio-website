@@ -6,10 +6,13 @@ import { groups, marqueeTech } from '../data/tech.mjs';
 import { experienceHome, YEARS_EXPERIENCE, CAREER_START, CAREER_TAGLINE } from '../data/experience.mjs';
 import '../styles/ci-home.css';
 
+const visible = projects.filter((p) => !p.archived);
 const filenameLike = (title) => /\.(com|ai|pk|ca|io)|wordpress|shopify|shopfiy|webflow|framer|wix/i.test(title);
-const clean = projects.filter((p) => p.img && p.title && !filenameLike(p.title) && p.live);
-const pool = clean.length >= 8 ? clean : projects.filter((p) => p.img);
-const featured = pool.slice(0, 4);
+const clean = visible.filter((p) => p.img && p.title && !filenameLike(p.title) && p.live);
+const pool = clean.length >= 8 ? clean : visible.filter((p) => p.img);
+const pinSlugs = ['dr-umer-pain-relief-clinic', 'bizhub'];
+const pins = pinSlugs.map((slug) => pool.find((p) => p.slug === slug)).filter(Boolean);
+const featured = [...pins, ...pool.filter((p) => !pins.includes(p))].slice(0, 4);
 const stack = marqueeTech;
 
 const titles = [
